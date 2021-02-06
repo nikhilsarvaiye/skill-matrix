@@ -1,6 +1,11 @@
 # Getting Started with Skill Matrix
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#aspnetcore5
+#mongodb
+#Serilog
+#FluentValidation
+#middleware
+#helpers
 
 ## Available Scripts
 

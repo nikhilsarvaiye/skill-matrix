@@ -38,6 +38,7 @@ namespace Api
 
             // Configurations
             services.Configure<AppOptions>(Configuration.GetSection(nameof(AppOptions)));
+            services.Configure<MongoDbOptions>(Configuration.GetSection(nameof(MongoDbOptions)));
             services.AddSingleton<IDbOptions>(options => options.GetRequiredService<IOptions<MongoDbOptions>>().Value);
 
             // Services/Repositories Configurations
