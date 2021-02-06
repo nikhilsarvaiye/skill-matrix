@@ -1,5 +1,6 @@
 ﻿namespace Repositories
 {
+    using Common.Models;
     using Configuration.Options.Abstractions;
     using Models;
     using MongoDB.Driver;
@@ -23,6 +24,16 @@
 
         public async Task<T> GetAsync(string id) => (await _collection.FindAsync<T>(book => book.Id == id)).FirstOrDefault();
 
+        public async Task<PaginationResponse<T>> FilterAsync(PaginationCriteria<T> paginationCriteria)
+        {
+            var results = (await _collection.FindAsync<T>(paginationCriteria.Filter)).ToList();
+            return new PaginationResponse<T>
+            {
+                Count = await _collection.CountAsync(paginationCriteria.Filter).ConfigureAwait(false),
+                Items = results
+            };
+        }
+        
         public async Task<T> CreateAsync(T t)
         {
             await _collection.InsertOneAsync(t);

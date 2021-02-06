@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace Common.Models
 {
     using FluentValidation.Results;
     using Newtonsoft.Json;

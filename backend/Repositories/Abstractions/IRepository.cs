@@ -1,5 +1,6 @@
 ﻿namespace Repositories.Abstractions
 {
+    using Common.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -16,5 +17,7 @@
         Task RemoveAsync(T t);
 
         Task RemoveAsync(string id);
+
+        Task<PaginationResponse<T>> FilterAsync(PaginationCriteria<T> paginationCriteria);
     }
 }

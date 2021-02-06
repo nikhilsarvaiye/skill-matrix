@@ -1,6 +1,7 @@
 ﻿namespace Services
 {
     using Abstractions;
+    using Common.Models;
     using FluentValidation;
     using Models;
     using Repositories.Abstractions;
@@ -20,11 +21,16 @@
 
         public async Task<Skill> CreateAsync(Skill skill)
         {
-            var patientValidator = new SkillValidator();
+            var patientValidator = new SkillValidator(this);
 
             patientValidator.ValidateAndThrow(skill);
 
             return await this._skillRepository.CreateAsync(skill).ConfigureAwait(false);
+        }
+
+        public async Task<PaginationResponse<Skill>> FilterAsync(PaginationCriteria<Skill> paginationCriteria)
+        {
+            return await this._skillRepository.FilterAsync(paginationCriteria);
         }
 
         public async Task<List<Skill>> GetAsync()
