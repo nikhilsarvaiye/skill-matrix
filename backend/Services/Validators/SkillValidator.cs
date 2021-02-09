@@ -28,7 +28,7 @@
 
         private async Task<bool> NameIsUnique(string name)
         {
-            var skills = await this._skillService.FilterAsync(new PaginationCriteria<Skill>
+            var skills = await this._skillService.PaginateAsync(new PaginationCriteria<Skill>
             {
                 Filter = Builders<Skill>.Filter.Eq(x => x.Name, "React")
             });

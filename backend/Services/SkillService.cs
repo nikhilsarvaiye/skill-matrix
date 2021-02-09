@@ -28,9 +28,9 @@
             return await this._skillRepository.CreateAsync(skill).ConfigureAwait(false);
         }
 
-        public async Task<PaginationResponse<Skill>> FilterAsync(PaginationCriteria<Skill> paginationCriteria)
+        public async Task<PaginationResponse<Skill>> PaginateAsync(PaginationCriteria<Skill> paginationCriteria)
         {
-            return await this._skillRepository.FilterAsync(paginationCriteria);
+            return await this._skillRepository.PaginateAsync(paginationCriteria);
         }
 
         public async Task<List<Skill>> GetAsync()

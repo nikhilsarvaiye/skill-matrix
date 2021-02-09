@@ -3,6 +3,8 @@ namespace Api
     using Common.Middleware;
     using Configuration.Options;
     using Configuration.Options.Abstractions;
+    using Microsoft.AspNet.OData.Builder;
+    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -10,7 +12,9 @@ namespace Api
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Microsoft.OData.Edm;
     using Microsoft.OpenApi.Models;
+    using Models;
     using Serilog;
     using Services;
     using IApplicationLifetime = Microsoft.Extensions.Hosting.IApplicationLifetime;
@@ -43,6 +47,10 @@ namespace Api
 
             // Services/Repositories Configurations
             services.ConfigureServices();
+
+            // OData
+            // services.AddOData();
+            // services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,7 +96,20 @@ namespace Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                // odata
+                // endpoints.Select().Filter().OrderBy().Count().MaxTop(10);
+                // endpoints.EnableDependencyInjection();//This guy solves the problem    
+                // endpoints.MapODataRoute("odata", "odata", GetEdmModel());
             });
+        }
+
+        private IEdmModel GetEdmModel()
+        {
+            var odataBuilder = new ODataConventionModelBuilder();
+            odataBuilder.EntitySet<Skill>("Skills");
+
+            return odataBuilder.GetEdmModel();
         }
 
         private static void SetupLogging(IConfiguration configuration)

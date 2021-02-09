@@ -24,16 +24,17 @@
 
         public async Task<T> GetAsync(string id) => (await _collection.FindAsync<T>(book => book.Id == id)).FirstOrDefault();
 
-        public async Task<PaginationResponse<T>> FilterAsync(PaginationCriteria<T> paginationCriteria)
+        public async Task<PaginationResponse<T>> PaginateAsync(PaginationCriteria<T> paginationCriteria)
         {
-            var results = (await _collection.FindAsync<T>(paginationCriteria.Filter)).ToList();
+            paginationCriteria.Filter = paginationCriteria.Filter ?? Builders<T>.Filter.Empty;
+            var query = _collection.Find(paginationCriteria.Filter).Skip((paginationCriteria.Page - 1) * paginationCriteria.PageSize).Limit(paginationCriteria.PageSize);
             return new PaginationResponse<T>
             {
-                Count = await _collection.CountAsync(paginationCriteria.Filter).ConfigureAwait(false),
-                Items = results
+                Count = await query.CountDocumentsAsync().ConfigureAwait(false),
+                Items = query.ToList()
             };
         }
-        
+
         public async Task<T> CreateAsync(T t)
         {
             await _collection.InsertOneAsync(t);

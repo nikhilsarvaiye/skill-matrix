@@ -18,6 +18,6 @@
 
         Task RemoveAsync(string id);
 
-        Task<PaginationResponse<T>> FilterAsync(PaginationCriteria<T> paginationCriteria);
+        Task<PaginationResponse<T>> PaginateAsync(PaginationCriteria<T> paginationCriteria);
     }
 }
