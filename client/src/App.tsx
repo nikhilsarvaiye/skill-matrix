@@ -1,18 +1,25 @@
-import React from 'react';
+// import env from 'react-dotenv';
+import { Internationalization } from './internationalization';
+import { InternationalizationDemo } from './internationalization/internationalization-demo';
+import { Button } from './library/button/button';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Save and Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </header>
-    </div>
-  );
+    return (
+        <Internationalization>
+            <div className="App">
+                <header className="App-header">
+                    {/* <div>{env.ENV}</div> */}
+                    <Button primary={false}>Normal Button</Button>
+                    <Button primary={true}>Primary Button</Button>
+                    <InternationalizationDemo />
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <p>Check Internationalization Hot reload</p>
+                </header>
+            </div>
+        </Internationalization>
+    );
 }
 
 export default App;
