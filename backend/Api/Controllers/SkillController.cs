@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Common.Abstractions;
     using Common.Helpers;
     using Common.Models;
     using Microsoft.AspNet.OData.Builder;
@@ -25,18 +26,12 @@
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Skill>> GetAsync()
+        public async Task<IResponse<Skill>> GetAsync()
         {
-            return await this._skillService.GetAsync();
-        }
+            // https://localhost:5001/skill?$select=Id&$filter=Id eq '01'&$orderby=Id desc&$top=1&$count=true&$search=tom
+            var request = this.Request.ToPaginationCriteria<Skill>();
 
-        [HttpGet("paginate")]
-        public async Task<PaginationResponse<Skill>> PaginateAsync(PaginationCriteria<Skill> paginationCriteria)
-        {
-            // todo: need to get standard odata working properly
-            // paginationCriteria = this.Request.ToPaginationCriteria<Skill>();
-
-            return await this._skillService.PaginateAsync(paginationCriteria);
+            return await this._skillService.PaginateAsync(request);
         }
 
         [HttpPost]

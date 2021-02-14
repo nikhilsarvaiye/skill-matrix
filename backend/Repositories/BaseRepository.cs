@@ -1,8 +1,12 @@
 ﻿namespace Repositories
 {
+    using Common.Abstractions;
+    using Common.Helpers;
     using Common.Models;
     using Configuration.Options.Abstractions;
+    using Helpers;
     using Models;
+    using MongoDB.Bson;
     using MongoDB.Driver;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -24,14 +28,19 @@
 
         public async Task<T> GetAsync(string id) => (await _collection.FindAsync<T>(book => book.Id == id)).FirstOrDefault();
 
-        public async Task<PaginationResponse<T>> PaginateAsync(PaginationCriteria<T> paginationCriteria)
+        public async Task<IResponse<T>> PaginateAsync(IRequest request)
         {
-            paginationCriteria.Filter = paginationCriteria.Filter ?? Builders<T>.Filter.Empty;
-            var query = _collection.Find(paginationCriteria.Filter).Skip((paginationCriteria.Page - 1) * paginationCriteria.PageSize).Limit(paginationCriteria.PageSize);
-            return new PaginationResponse<T>
+            var query = this._collection.Query(request);
+
+            if (!request.Count)
             {
-                Count = await query.CountDocumentsAsync().ConfigureAwait(false),
-                Items = query.ToList()
+                return query.ToList().ToResponse();
+            }
+
+            return new Response<T>
+            {
+                Count = await this._collection.QueryCount(request).CountDocumentsAsync().ConfigureAwait(false),
+                Items = query.ToList().ToResponse()
             };
         }
 

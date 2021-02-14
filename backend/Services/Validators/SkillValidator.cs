@@ -1,11 +1,13 @@
 ﻿namespace Services.Validators
 {
+    using Common.Abstractions;
     using Common.Models;
     using FluentValidation;
     using Models;
     using MongoDB.Driver;
     using Services.Abstractions;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -28,11 +30,19 @@
 
         private async Task<bool> NameIsUnique(string name)
         {
-            var skills = await this._skillService.PaginateAsync(new PaginationCriteria<Skill>
+            var skills = await this._skillService.PaginateAsync(new Request
             {
-                Filter = Builders<Skill>.Filter.Eq(x => x.Name, "React")
+                Filters = new List<IFilter>
+                {
+                    new Filter
+                    {
+                        Property = nameof(Skill.Name),
+                        Operator = FilterOperator.IsEqualTo,
+                        Value = name
+                    }
+                }
             });
-            return !skills.Items.Any(x => x.Name == name);
+            return !(skills as IEnumerable<Skill>).Any(x => x.Name == name);
         }
     }
 }

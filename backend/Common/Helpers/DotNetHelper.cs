@@ -2,8 +2,10 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using Newtonsoft.Json;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using Common.Models;
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     public static class DotNetHelper
@@ -76,6 +78,28 @@
 			}
 
 			return tDocument.ToObject<T>();
+		}
+
+		public static Collection<T> ToCollection<T>(this List<T> items)
+		{
+			Collection<T> collection = new Collection<T>();
+
+			for (int i = 0; i < items.Count; i++)
+			{
+				collection.Add(items[i]);
+			}
+
+			return collection;
+		}
+
+		public static ResponseItemCollection<T> ToResponse<T>(this List<T> items)
+		{
+			var responseItemCollection = new ResponseItemCollection<T>();
+			for (int i = 0; i < items.Count; i++)
+			{
+				responseItemCollection.Add(items[i]);
+			}
+			return responseItemCollection;
 		}
 	}
 }
