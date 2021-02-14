@@ -1,7 +1,7 @@
 // import env from 'react-dotenv';
 import { Internationalization } from './internationalization';
 import { InternationalizationDemo } from './internationalization/internationalization-demo';
-import { Button } from './library/button/button';
+import { Button, ButtonHTMLType } from './library/button';
 import logo from './logo.svg';
 import './App.css';
 
@@ -11,8 +11,10 @@ function App() {
             <div className="App">
                 <header className="App-header">
                     {/* <div>{env.ENV}</div> */}
-                    <Button primary={false}>Normal Button</Button>
-                    <Button primary={true}>Primary Button</Button>
+                    <Button htmlType={ButtonHTMLType.Button}>
+                        Normal Button
+                    </Button>
+                    <Button primary>Primary Button</Button>
                     <InternationalizationDemo />
                     <img src={logo} className="App-logo" alt="logo" />
                     <p>Check Internationalization Hot reload</p>
