@@ -1,5 +1,3 @@
-import { TranslationService } from '../translation.service';
-
 const common = {};
 
 export const enTranslations = {

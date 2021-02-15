@@ -1,26 +1,28 @@
 // import env from 'react-dotenv';
 import { Internationalization } from './internationalization';
-import { InternationalizationDemo } from './internationalization/internationalization-demo';
-import { Button, ButtonHTMLType } from './library/button';
-import logo from './logo.svg';
+import { TopMenu } from './components/top-menu';
+import { Button, ButtonHTMLType, ButtonType } from './library/button';
 import './App.css';
 
 function App() {
     return (
-        <Internationalization>
-            <div className="App">
-                <header className="App-header">
-                    {/* <div>{env.ENV}</div> */}
-                    <Button htmlType={ButtonHTMLType.Button}>
-                        Normal Button
-                    </Button>
-                    <Button primary>Primary Button</Button>
-                    <InternationalizationDemo />
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <p>Check Internationalization Hot reload</p>
-                </header>
+        <div className="app">
+            <TopMenu />
+            <div className="content">
+                <Internationalization>
+                    <header className="App-header">
+                        {/* <div>{env.ENV}</div> */}
+                        <Button
+                            type={ButtonType.Primary}
+                            htmlType={ButtonHTMLType.Button}
+                        >
+                            Normal Button
+                        </Button>
+                        <Button primary>Primary Button</Button>
+                    </header>
+                </Internationalization>
             </div>
-        </Internationalization>
+        </div>
     );
 }
 

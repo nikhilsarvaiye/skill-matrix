@@ -1,8 +1,10 @@
 export enum ButtonType {
+    Default = 'default',
     Primary = 'primary',
-    Secondary = 'secondary',
-    Tertiary = 'tertiary',
-    Quaternary = 'quaternary',
+    Ghost = 'ghost',
+    Dashed = 'dashed',
+    Link = 'link',
+    Text = 'text',
 }
 
 export enum SubmitAction {

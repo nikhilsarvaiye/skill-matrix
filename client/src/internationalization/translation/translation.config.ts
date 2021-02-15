@@ -1,8 +1,8 @@
 const translationConfig = {
-    alias: <any>{
+    alias: {
         library: 'l',
         module: 'm',
-    },
+    } as any,
 };
 
 export { translationConfig as TranslationConfig };

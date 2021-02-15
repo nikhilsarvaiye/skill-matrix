@@ -3,7 +3,7 @@ import { TranslationService } from './translation/translation.service';
 export class InternationalizationService {
     /* TODO NS: Need to inject configuration service object
     to load client configuration details */
-    constructor() {}
+    // constructor() {}
 
     getLocale() {
         /* clientConfiguration.locale */

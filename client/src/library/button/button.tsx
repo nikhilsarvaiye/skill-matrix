@@ -22,22 +22,6 @@ interface IProps {
     tabIndex?: number;
 }
 
-export const Buttons = styled.button`
-    background: transparent;
-    border-radius: 3px;
-    border: 2px solid palevioletred;
-    color: palevioletred;
-    margin: 0 1em;
-    padding: 0.25em 1em;
-
-    ${(props: IProps) =>
-        props.primary &&
-        css`
-            background: palevioletred;
-            color: white;
-        `};
-`;
-
 const button = (props: IProps) => {
     return (
         <span>
@@ -52,6 +36,7 @@ const button = (props: IProps) => {
                 href={props.href}
                 onClick={props.onClick}
                 style={props.style}
+                type={props.type}
             >
                 {props.startIcon ? (
                     <span className="btn-icon start">{props.startIcon}</span>
@@ -65,7 +50,9 @@ const button = (props: IProps) => {
     );
 };
 
-export const Button = styled(button)`
+export const Button = styled(button)``;
+
+export const Buttonss = styled(button)`
     color: palevioletred;
     font-weight: normal;
     :focus {
@@ -95,7 +82,7 @@ export const Button = styled(button)`
         css`
             color: ffffff !important;
             background-color: 5e9acf !important;
-        
+
             &:hover:not([disabled]) {
                 background-color: #0e4472 !important;
                 cursor: pointer;

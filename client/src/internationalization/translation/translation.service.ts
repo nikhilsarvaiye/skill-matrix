@@ -2,8 +2,6 @@ import { EnTranslations } from './en/en-translations';
 import { TranslationConfig } from './translation.config';
 
 export class TranslationService {
-    constructor() {}
-
     getMessages(locale: string) {
         let messages = {};
         switch (locale) {

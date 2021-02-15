@@ -22,9 +22,9 @@
   },
   "scripts": {
     "start-react-dotenv": "react-dotenv && react-scripts start",
-    "build-react-dotenv": "react-dotenv && react-scripts build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start-react-scripts": "react-scripts start",
+    "start": "craco start",
+    "build": "react-dotenv && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prettier-check": "prettier --list-different \"{src}/**/*.{ts,tsx,js,jsx,css,scss}\"",
@@ -49,11 +49,16 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^6.1.1",
     "@types/classnames": "^2.2.11",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@types/react-intl": "^3.0.0",
-    "@types/styled-components": "^5.1.7"
+    "@types/styled-components": "^5.1.7",
+    "craco-antd": "^1.19.0",
+    "craco-less": "^1.17.1",
+    "webpack-bundle-analyzer": "^4.4.0",
+    "webpackbar": "^5.0.0-3"
   },
   "react-dotenv": {
     "whitelist": [
