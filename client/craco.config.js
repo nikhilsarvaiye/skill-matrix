@@ -1,15 +1,11 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBar = require('webpackbar');
 const CracoAntDesignPlugin = require('craco-antd');
+const CracoAlias = require('craco-alias');
 const path = require('path');
-const { Console } = require('console');
 
 // Don't open the browser during development
 // process.env.BROWSER = "none";
-
-module.exports = {
-    plugins: [{ plugin: CracoAntDesignPlugin }],
-};
 
 module.exports = {
     webpack: {
@@ -28,6 +24,18 @@ module.exports = {
                     __dirname,
                     'src/styles/theme.less',
                 ),
+            },
+        },
+        {
+            plugin: CracoAlias,
+            options: {
+                debug: false,
+                source: 'tsconfig',
+                // baseUrl SHOULD be specified
+                // plugin does not take it from tsconfig
+                baseUrl: './src',
+                // tsConfigPath should point to the file where "baseUrl" and "paths" are specified
+                tsConfigPath: './tsconfig.extend.json',
             },
         },
     ],

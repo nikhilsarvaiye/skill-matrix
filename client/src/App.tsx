@@ -1,6 +1,6 @@
 // import env from 'react-dotenv';
 import { Internationalization } from './internationalization';
-import { TopMenu } from './components/top-menu';
+import { TopMenu } from '@library/top-menu';
 import { Button, ButtonHTMLType, ButtonType } from './library/button';
 import './App.css';
 
