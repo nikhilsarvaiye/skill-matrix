@@ -3,6 +3,7 @@ import { Internationalization } from './internationalization';
 import { TopMenu } from '@library/top-menu';
 import { Input } from '@library/input';
 import { Dropdown } from '@library/dropdown';
+import { DatePicker } from '@library/date-picker';
 import { Button, ButtonHTMLType, ButtonType } from './library/button';
 import './App.css';
 
@@ -30,6 +31,7 @@ function App() {
                             textField="title"
                             valueField="id"
                         />
+                        <DatePicker name="dob" />
                     </div>
                     <div style={{ margin: '20px' }}>
                         <Button
