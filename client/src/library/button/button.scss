@@ -1,0 +1,127 @@
+@import '~styles/variables';
+
+.btn-container {
+    font-size: 1rem;
+    .btn,
+    .ant-btn,
+    .ant-btn[disabled] {
+        height: 30px;
+        line-height: 0;
+        min-width: 8.5467em;
+        border-radius: 1.4em;
+        border: none;
+        outline: none;
+        font-weight: 600;
+        color: $button-default-color;
+        padding: 0 1em;
+        cursor: pointer;
+        background-color: $button-default-background-color;
+
+        &:hover,
+        &:focus {
+            color: $button-default-color;
+            background-color: transparent;
+            border: none;
+        }
+
+        &:focus {
+            box-shadow: 0.14em 0.14em 0.14em rgba(0, 0, 0, 0.1);
+        }
+
+        &.ant-btn-primary,
+        &.primary {
+            color: $button-default-color !important;
+            background-color: $button-primary-background-color !important;
+
+            &:hover:not([disabled]) {
+                background-color: #0e4472 !important;
+                cursor: pointer;
+            }
+
+            &:focus {
+                background-color: #235a8b !important;
+            }
+        }
+
+        &.secondary {
+            color: $button-default-color !important;
+            background-color: $button-secondary-background-color !important;
+
+            &:hover:not([disabled]) {
+                background-color: #343434 !important;
+                cursor: pointer;
+            }
+
+            &:focus {
+                background-color: #535353 !important;
+            }
+        }
+
+        &.tertiary {
+            height: 2.05em;
+            // line-height: 2.05em;
+            background-color: $button-default-color;
+            border: 0.1em solid $button-tertiary-border-color;
+            color: $button-tertiary-color;
+
+            &:hover:not([disabled]) {
+                background-color: #0656b1 !important;
+                color: $button-default-color;
+                cursor: pointer;
+            }
+
+            &:focus {
+                background-color: #205a97;
+                color: $button-default-color;
+            }
+
+            &:disabled {
+                color: $button-tertiary-color !important;
+                border: 0.1em solid #b3cbe7;
+            }
+        }
+
+        &.quaternary {
+            background-color: $button-quaternary-background-color;
+            border: 0.1em solid $button-quaternary-border-color;
+            border-radius: 0.4em;
+            height: 1.7em;
+            line-height: 1.7em;
+            min-width: auto;
+            width: auto;
+            color: $button-quaternary-color;
+            padding: 0em 0.6em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover:not([disabled]) {
+                background-color: #a7bbd8;
+            }
+        }
+
+        &:disabled {
+            opacity: 0.3;
+            color: $button-default-disabled-color !important;
+        }
+
+        .btn-icon {
+            padding: 0 0 0 1em;
+
+            &.start {
+                padding: 0 0.5em 0 0;
+            }
+
+            &.end {
+                padding: 0 0 0 0.5em;
+            }
+        }
+    }
+
+    .btn:disabled,
+    .ant-btn:disabled,
+    .ant-btn[disabled]:disabled {
+        opacity: 0.3;
+        color: $button-default-color;
+    }
+}

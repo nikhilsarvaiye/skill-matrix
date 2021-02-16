@@ -2,6 +2,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBar = require('webpackbar');
 const CracoAntDesignPlugin = require('craco-antd');
 const CracoAlias = require('craco-alias');
+const sassResourcesLoader = require('craco-sass-resources-loader');
 const path = require('path');
 
 // Don't open the browser during development
@@ -36,6 +37,12 @@ module.exports = {
                 baseUrl: './src',
                 // tsConfigPath should point to the file where "baseUrl" and "paths" are specified
                 tsConfigPath: './tsconfig.extend.json',
+            },
+        },
+        {
+            plugin: sassResourcesLoader,
+            options: {
+                resources: ['./src/styles/_variables.scss'],
             },
         },
     ],

@@ -1,4 +1,18 @@
-import { useState, useEffect, useRef, MouseEventHandler } from 'react';
+import {
+    useState,
+    useEffect,
+    useRef,
+    KeyboardEventHandler,
+    MouseEvent,
+    ChangeEventHandler,
+    ChangeEvent,
+    FocusEventHandler,
+    RefObject,
+    cloneElement,
+    ReactNode,
+    createRef,
+    createElement,
+} from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,67 +22,67 @@ import {
     LoadingOutlined,
     SearchOutlined,
 } from '@ant-design/icons';
-import { Portal } from '@core/portal';
-import { Input } from '@core/input';
-import { Label } from '@core/label';
+import { Portal } from '@library/portal';
+import { Input, InputProps } from '@library/input';
+import { Label } from '@library/label';
 import { EventKeys } from '@util/event-keys';
 import { useDebounce } from '@util/debounce';
-import { filterBySearchText } from '@library/utils/data-filter';
+import { filterBySearchText } from '@library/util/data-filter';
 import './dropdown.scss';
 
-export const DropdownType = Object.freeze({
-    AutoComplete: 'autocomplete',
-    Combobox: 'combobox',
-    Dropdown: 'dropdown',
-});
-
-interface IProps {
-    type: string = DropdownType.Dropdown;
-    name: string;
-    value: any;
-    data: any[];
-    textField: string;
-    valueField: string;
-    dataItemKey: string;
-    onFocus?: MouseEventHandler<HTMLElement>;
-    onChange?: MouseEventHandler<HTMLElement>;
-    onBlur?: MouseEventHandler<HTMLElement>;
-    onTextChange?: MouseEventHandler<HTMLElement>;
-    onKeyDownChange?: MouseEventHandler<HTMLElement>;
-    onOpen?: MouseEventHandler<HTMLElement>;
-    onClose?: MouseEventHandler<HTMLElement>;
-    onDebouncedValueChange?: MouseEventHandler<HTMLElement>;
-    loading: boolean;
-    itemRender?: MouseEventHandler<HTMLElement>;
-    placeholder: string;
-    preEndIcon: any;
-    onPreEndIconClick?: MouseEventHandler<HTMLElement>;
-    endIcon: any;
-    onEndIconClick?: MouseEventHandler<HTMLElement>;
-    allowCustom: boolean;
-    disabled: boolean;
-    filterable: boolean;
-    filterColumns: string[];
-    filterCaseSensitivity: boolean;
-    minFilterLength: number;
-    visibleFilterInput: boolean;
-    className: string;
-    pageSize: number;
-    onShowMoreItems: (event: Event) => {};
-    visibleDropdownItems: number;
-    tabIndex: number;
-    visibleDropdown: boolean;
-    visibleNoData: boolean;
-    noDataText: string;
-    lock: boolean;
-    autoFocus: boolean;
+export enum DropdownType {
+    AutoComplete = 'autocomplete',
+    Combobox = 'combobox',
+    Dropdown = 'dropdown',
 }
 
-const dropdown = ({
+interface IProps {
+    type?: DropdownType;
+    name: string;
+    value?: any;
+    data?: any[];
+    textField?: string;
+    valueField?: string;
+    dataItemKey?: string;
+    onFocus?: FocusEventHandler<HTMLElement>;
+    onChange?: ChangeEventHandler<HTMLElement>;
+    onBlur?: FocusEventHandler<HTMLElement>;
+    onTextChange?: (value: any) => {};
+    onKeyDownChange?: KeyboardEventHandler<HTMLElement>;
+    onOpen?: () => {};
+    onClose?: () => {};
+    onDebouncedValueChange?: (value: any) => {};
+    loading?: boolean;
+    itemRender?: (li: any, itemProps: any) => ReactNode;
+    placeholder?: string;
+    preEndIcon?: any;
+    onPreEndIconClick?: ChangeEventHandler<HTMLElement>;
+    endIcon?: any;
+    onEndIconClick?: ChangeEventHandler<HTMLElement>;
+    allowCustom?: boolean;
+    disabled?: boolean;
+    filterable?: boolean;
+    filterColumns?: string[];
+    filterCaseSensitivity?: boolean;
+    minFilterLength?: number;
+    visibleFilterInput?: boolean;
+    className?: string;
+    pageSize?: number;
+    onShowMoreItems?: () => void;
+    visibleDropdownItems?: number;
+    tabIndex?: number;
+    visibleDropdown?: boolean;
+    visibleNoData?: boolean;
+    noDataText?: string;
+    lock?: boolean;
+    autoFocus?: boolean;
+}
+
+export const Dropdown = ({
     type = DropdownType.Dropdown,
     name,
     value,
-    data,
+    data = [],
     textField,
     valueField,
     dataItemKey,
@@ -107,17 +121,17 @@ const dropdown = ({
     ...props
 }: IProps) => {
     data = data || [];
-    const scrollBar = useRef();
-    const input = useRef();
-    const [inputRef, setInputRef] = useState(null);
+    const scrollBar = useRef() as RefObject<Scrollbars>;
+    const input = useRef() as RefObject<HTMLInputElement>;
+    const [inputRef, setInputRef] = useState<RefObject<HTMLInputElement>>();
     const isFirstRun = useRef(true);
     const [openTop, setOpenTop] = useState(false);
-    const [itemRefs, setItemRefs] = useState([]);
+    const [itemRefs, setItemRefs] = useState<RefObject<HTMLInputElement>[]>([]);
     const [displayValue, setDisplayValue] = useState('');
     const [filterValue, setFilterValue] = useState('');
-    const [inputValue, setInputValue] = useState();
-    const [selectableItem, setSelectableItem] = useState();
-    const [filteredData, setFilteredData] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const [selectableItem, setSelectableItem] = useState(null);
+    const [filteredData, setFilteredData] = useState<any[]>([]);
     const [visibleShowMoreItems, setVisibleShowMoreItems] = useState(false);
     const [skip, setSkip] = useState(0);
     const [visibleDropdownContainer, setVisibleDropdownContainer] = useState(
@@ -202,7 +216,7 @@ const dropdown = ({
             closeDropdown();
         } else if (EventKeys.isAltS(event) || EventKeys.isAltB(event)) {
             if (onShowMoreItems) {
-                onShowMoreItems(event);
+                onShowMoreItems();
                 closeDropdown();
             }
         } else {
@@ -227,7 +241,7 @@ const dropdown = ({
     const validate = (event: any) => {
         let item = parseValidValue(inputValue);
         const text = parseText(item);
-        if (event.target.value != text) {
+        if (event.target.value !== text) {
             item = null;
         }
         return item;
@@ -277,7 +291,7 @@ const dropdown = ({
 
     const setDefaultSelectableItem = (value: any, filteredData: any[]) => {
         setSelectableItem(null);
-        if (hasNoValue(value) || filteredData.length == 0) {
+        if (hasNoValue(value) || filteredData.length === 0) {
             setSelectableItem(null);
             return;
         }
@@ -298,12 +312,12 @@ const dropdown = ({
     };
 
     const getDataItemKey = (data: any[], item: any) => {
-        dataItemKey && typeof item == 'object'
+        return dataItemKey && typeof item === 'object'
             ? item[dataItemKey]
             : data.indexOf(item);
     };
 
-    const clearValue = (event: any) => {
+    const clearValue = (event?: ChangeEvent<HTMLInputElement>) => {
         if (lock) {
             return;
         }
@@ -317,13 +331,13 @@ const dropdown = ({
 
         setDisplayValue('');
         setFilterValue('');
-        setInputValue(null);
+        setInputValue('');
         filter(data, '');
         setSelectableItem(null);
         setTimeout(() => {
             setSelectableItem(null);
             if (scrollBar.current) {
-                scrollBar.current.scrollTop(0);
+                scrollBar.current?.scrollTop(0);
             }
         });
         filter(data, '');
@@ -334,7 +348,7 @@ const dropdown = ({
             return;
         }
         if (inputRef) {
-            inputRef.current.focus();
+            inputRef.current?.focus();
         }
         if (!visibleDropdownContainer) {
             setVisibleDropdownContainer(true);
@@ -350,7 +364,7 @@ const dropdown = ({
     };
 
     const closeDropdown = () => {
-        if (filteredData.length == 0) {
+        if (filteredData.length === 0) {
             filter(data, '');
         }
 
@@ -361,12 +375,12 @@ const dropdown = ({
         }
     };
 
-    const handleItemSelection = (event: any, item) => {
+    const handleItemSelection = (event: any, item: any) => {
         setSelection(item, event);
         closeDropdown();
     };
 
-    const setSelection = (item: any, event: any) => {
+    const setSelection = (item: any, event?: any) => {
         const text = parseText(item);
         setDisplayValue(text);
         const value = parseValue(item);
@@ -421,8 +435,12 @@ const dropdown = ({
             if (itemRef.current) {
                 let scrollItemHeight = itemRef.current.offsetHeight;
                 const itemOffset = scrollItemHeight * selectableItemIndex;
-                const scrollTop = scrollBar.current.getScrollTop();
-                const contentHeight = scrollBar.current.getClientHeight();
+                const scrollTop = scrollBar.current
+                    ? scrollBar.current.getScrollTop()
+                    : 0;
+                const contentHeight = scrollBar.current
+                    ? scrollBar.current.getClientHeight()
+                    : 0;
                 const viewport = scrollTop + contentHeight;
                 if (
                     itemOffset < scrollTop ||
@@ -431,7 +449,7 @@ const dropdown = ({
                     if (!bottom) {
                         scrollItemHeight = scrollItemHeight * -1;
                     }
-                    scrollBar.current.scrollTop(scrollTop + scrollItemHeight);
+                    scrollBar.current?.scrollTop(scrollTop + scrollItemHeight);
                 }
             }
         }
@@ -443,8 +461,8 @@ const dropdown = ({
             const containerLeft = inputRect.left;
             const containerTop = inputRect.top + inputRect.height;
 
-            const dropdownContainer =
-                scrollBar.current.view.parentElement.parentElement;
+            const dropdownContainer = (scrollBar.current as any)?.view
+                .parentElement.parentElement;
             const parentContainer = scrollparent(dropdownContainer);
             const dropdownContainerRect = dropdownContainer.getBoundingClientRect();
             const dropdownContainerHeight = dropdownContainerRect.height;
@@ -462,7 +480,7 @@ const dropdown = ({
                     parentContainerRect.height;
             const positionDifference =
                 dropdownContainerHeight + inputRect.height;
-            if (isVerticallyInViewPort == false) {
+            if (isVerticallyInViewPort === false) {
                 // Top
                 setOpenTop(true);
                 setContainerStyle({
@@ -483,17 +501,17 @@ const dropdown = ({
 
     const regex = /(auto|scroll)/;
 
-    const style = (node, prop) =>
+    const style = (node: any, prop: any) =>
         getComputedStyle(node, null).getPropertyValue(prop);
 
-    const scroll = (node) =>
+    const scroll = (node: any) =>
         regex.test(
             style(node, 'overflow') +
                 style(node, 'overflow-y') +
                 style(node, 'overflow-x'),
         );
 
-    const scrollparent = (node) =>
+    const scrollparent = (node: any): any =>
         !node || node === document.body
             ? document.body
             : scroll(node)
@@ -509,12 +527,12 @@ const dropdown = ({
         }
     };
 
-    const scrollToItem = (selectableItem) => {
+    const scrollToItem = (selectableItem: any) => {
         const selectableItemIndex = filteredData.indexOf(selectableItem);
         filteredData.every((x, i) => {
             setSelectableItem(selectableItem);
             scrollItem(x);
-            return i != selectableItemIndex;
+            return i !== selectableItemIndex;
         });
     };
 
@@ -524,8 +542,8 @@ const dropdown = ({
             ? parseValue(selectableItem)
             : null;
         return selectableItem
-            ? selectableItemValue == itemValue
-            : itemValue == inputValue;
+            ? selectableItemValue === itemValue
+            : itemValue === inputValue;
     };
 
     const parseText = (item: any) => {
@@ -543,7 +561,7 @@ const dropdown = ({
             return value;
         }
         const item = data.find(
-            (x) => (valueField ? x[valueField] : x) == value,
+            (x) => (valueField ? x[valueField] : x) === value,
         );
         return item;
     };
@@ -553,7 +571,7 @@ const dropdown = ({
             return '';
         }
         if (value && valueField) {
-            return value[valueField] == undefined ? '' : value[valueField];
+            return value[valueField] === undefined ? '' : value[valueField];
         }
         return value;
     };
@@ -565,9 +583,9 @@ const dropdown = ({
         setFilteredData(_filteredData);
 
         // add or remove refs
-        const refs = [];
+        const refs = [] as RefObject<HTMLInputElement>[];
         (_filteredData || []).forEach((item: any) => {
-            refs.push(React.createRef());
+            refs.push(createRef());
         });
         setItemRefs(refs);
         handleVisibleShowMoreItems(data);
@@ -577,25 +595,19 @@ const dropdown = ({
         !hasNoValue(inputValue) || !hasNoValue(displayValue);
 
     const isAutoComplete = () => {
-        return type == DropdownType.AutoComplete;
+        return type === DropdownType.AutoComplete;
     };
 
     const setPlaceholder = () => {
         switch (type) {
             case DropdownType.Dropdown:
-                {
-                    placeholder = placeholder || 'Select';
-                }
+                placeholder = placeholder || 'Select';
                 break;
             case DropdownType.Combobox:
-                {
-                    placeholder = placeholder || 'Enter text and select';
-                }
+                placeholder = placeholder || 'Enter text and select';
                 break;
             case DropdownType.AutoComplete:
-                {
-                    placeholder = placeholder || 'Enter text';
-                }
+                placeholder = placeholder || 'Enter text';
                 break;
         }
     };
@@ -609,7 +621,8 @@ const dropdown = ({
         preEndIcon =
             preEndIcon ||
             (hasControlValue() && !disabled && !lock && defaultPreEndIcon);
-        onPreEndIconClick = onPreEndIconClick || defaultOnPreEndIconClick;
+        onPreEndIconClick =
+            onPreEndIconClick || (defaultOnPreEndIconClick as any);
 
         let defaultEndIcon = (
             <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>
@@ -617,22 +630,16 @@ const dropdown = ({
         let defaultOnEndIconClick = null;
         switch (type) {
             case DropdownType.Dropdown:
-                {
-                    defaultEndIcon = <CaretDownOutlined />;
-                    defaultOnEndIconClick = toggleDropdownContainer;
-                }
+                defaultEndIcon = <CaretDownOutlined />;
+                defaultOnEndIconClick = toggleDropdownContainer;
                 break;
             case DropdownType.Combobox:
-                {
-                    defaultEndIcon = <SearchOutlined />;
-                    defaultOnEndIconClick = onEndIconClick;
-                }
+                defaultEndIcon = <SearchOutlined />;
+                defaultOnEndIconClick = onEndIconClick;
                 break;
             case DropdownType.AutoComplete:
-                {
-                    defaultEndIcon = endIcon;
-                    defaultOnEndIconClick = onEndIconClick;
-                }
+                defaultEndIcon = endIcon;
+                defaultOnEndIconClick = onEndIconClick;
                 break;
         }
 
@@ -644,23 +651,25 @@ const dropdown = ({
             : !disabled && !lock && (endIcon || defaultEndIcon);
         onEndIconClick = loading
             ? loadingOnEndIconClick
-            : !disabled && !lock && (onEndIconClick || defaultOnEndIconClick);
+            : !disabled &&
+              !lock &&
+              ((onEndIconClick || defaultOnEndIconClick) as any);
     };
 
     const defineItemRender = () => {
         if (!itemRender) {
-            itemRender = (li, itemProps) => {
+            itemRender = (li: any, itemProps: any) => {
                 const itemChildren = textField ? (
                     <span>{itemProps.dataItem[textField]}</span>
                 ) : (
                     <span>{itemProps.dataItem}</span>
                 );
-                return React.cloneElement(li, li.props, itemChildren);
+                return cloneElement(li, li.props, itemChildren);
             };
         }
     };
 
-    const getInputProps = () => {
+    const getInputProps = (): InputProps => {
         return {
             name: name,
             value: displayValue,
@@ -678,10 +687,10 @@ const dropdown = ({
             lock: lock,
             autoFocus: autoFocus,
             ...props,
-        };
+        } as any;
     };
 
-    const handleValueDataChange = (clearValueIfNotAutoComplete) => {
+    const handleValueDataChange = (clearValueIfNotAutoComplete?: boolean) => {
         const item = parseValidValue(value);
         if (item) {
             setSelection(item);
@@ -700,7 +709,7 @@ const dropdown = ({
         }
     };
 
-    const handleInputRef = (ref) => {
+    const handleInputRef = (ref: any) => {
         setInputRef(ref);
     };
 
@@ -790,15 +799,14 @@ const dropdown = ({
                                                     handleFilterInputChange
                                                 }
                                                 lock={lock}
-                                                value={null}
+                                                // value={null}
                                                 preEndIcon={null}
-                                                onPreEndIconClick={null}
+                                                onPreEndIconClick={undefined}
                                                 endIcon={null}
-                                                onEndIconClick={null}
+                                                onEndIconClick={undefined}
                                                 tabIndex={1}
                                                 autoFocus={true}
                                             />
-                                            <input onchange />
                                         </li>
                                     </ul>
                                 </div>
@@ -829,9 +837,10 @@ const dropdown = ({
                                                     filteredData,
                                                     item,
                                                 ),
-                                                onMouseDown: (e) =>
-                                                    e.preventDefault(),
-                                                onClick: (event) =>
+                                                onMouseDown: (
+                                                    event: MouseEvent,
+                                                ) => event.preventDefault(),
+                                                onClick: (event: MouseEvent) =>
                                                     handleItemSelection(
                                                         event,
                                                         item,
@@ -840,12 +849,9 @@ const dropdown = ({
                                                     selected: isSelected(item),
                                                 }),
                                                 dataItem: item,
-                                            };
-                                            return itemRender(
-                                                React.createElement(
-                                                    'li',
-                                                    props,
-                                                ),
+                                            } as any;
+                                            return (itemRender as any)(
+                                                createElement('li', props),
                                                 props,
                                             );
                                         })
@@ -867,7 +873,11 @@ const dropdown = ({
                                             onMouseDown={(e) =>
                                                 e.preventDefault()
                                             }
-                                            onClick={onShowMoreItems}
+                                            onClick={() => {
+                                                if (onShowMoreItems) {
+                                                    onShowMoreItems();
+                                                }
+                                            }}
                                         >
                                             <Label
                                                 link={true}
@@ -890,5 +900,3 @@ const dropdown = ({
         </div>
     );
 };
-
-export { dropdown as Dropdown };

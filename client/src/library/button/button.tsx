@@ -1,11 +1,14 @@
 import { ReactNode, MouseEventHandler, CSSProperties } from 'react';
 import classNames from 'classnames';
 import { Button as AntdButton } from 'antd';
-import styled, { css } from 'styled-components';
+import './button.scss';
 
 export enum ButtonType {
     Default = 'default',
     Primary = 'primary',
+    Secondary = 'secondary',
+    Tertiary = 'tertiary',
+    Quaternary = 'quaternary',
     Ghost = 'ghost',
     Dashed = 'dashed',
     Link = 'link',
@@ -50,9 +53,9 @@ interface IProps {
     tabIndex?: number;
 }
 
-const button = (props: IProps) => {
+export const Button = (props: IProps) => {
     return (
-        <span>
+        <span className="btn-container">
             <AntdButton
                 tabIndex={props.tabIndex}
                 htmlType={props.htmlType || ButtonHTMLType.Button}
@@ -64,7 +67,7 @@ const button = (props: IProps) => {
                 href={props.href}
                 onClick={props.onClick}
                 style={props.style}
-                type={props.type}
+                type={props.type as any}
             >
                 {props.startIcon ? (
                     <span className="btn-icon start">{props.startIcon}</span>
@@ -77,47 +80,3 @@ const button = (props: IProps) => {
         </span>
     );
 };
-
-export const Button = styled(button)``;
-
-export const Buttonss = styled(button)`
-    color: palevioletred;
-    font-weight: normal;
-    :focus {
-        color: palevioletred;
-        border-color: palevioletred;
-    }
-    :hover {
-        color: palevioletred;
-        border-color: palevioletred;
-    }
-    &.ant-btn-clicked:after {
-        content: '';
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        bottom: -1px;
-        right: -1px;
-        border-radius: inherit;
-        border: 0 solid palevioletred;
-        opacity: 0.4;
-        -webkit-animation: buttonEffect 0.4s;
-        animation: buttonEffect 0.4s;
-        display: block;
-    }
-    ${(props: IProps) =>
-        props.primary &&
-        css`
-            color: ffffff !important;
-            background-color: 5e9acf !important;
-
-            &:hover:not([disabled]) {
-                background-color: #0e4472 !important;
-                cursor: pointer;
-            }
-
-            &:focus {
-                background-color: #235a8b !important;
-            }
-        `};
-`;
