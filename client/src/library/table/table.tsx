@@ -1,0 +1,70 @@
+import React, { useState, useEffect } from 'react';
+import { TableComponent, ITableComponentProps } from './table-component';
+import './table.scss';
+
+export interface ITableProps extends ITableComponentProps {
+    dragColumns?: boolean;
+    resizeColumns?: boolean;
+    defaultColumnWidth?: string;
+    emptyPlaceholderHeight?: string;
+    maxHeight?: string;
+}
+
+export const Table = ({
+    columns,
+    dataSource,
+    components,
+    dragColumns = true,
+    resizeColumns = true,
+    defaultColumnWidth = '6em',
+    rowSelection,
+    height,
+    scroll,
+    emptyPlaceholderHeight = '12em',
+    maxHeight = 'calc(100vh - 150px)',
+    ...props
+}: ITableProps) => {
+    const [tableColumns, setTableColumns] = useState(columns);
+    scroll = scroll || {};
+    
+    // Uncomment for Fix Heigh
+    scroll.y = scroll.y || emptyPlaceholderHeight;
+
+    // const handleResizeColumns = () => {
+    //     const htmlDocumentFontSize = getHtmlDocumentFontSize();
+    //     // 1.2 is the table font-size
+    //     const fontSize = parseNumberFromCssValue(htmlDocumentFontSize) * 1.2;
+    //     columns = resizeTableColumns(
+    //         columns,
+    //         tableColumns,
+    //         setTableColumns,
+    //         defaultColumnWidth,
+    //         fontSize,
+    //     );
+    //     components = resizeTableComponents(components, fontSize);
+    // };
+
+    if (resizeColumns) {
+        // handleResizeColumns();
+    }
+
+    const selection = rowSelection && rowSelection.type ? true : false;
+
+    useEffect(() => {
+        setTableColumns(columns);
+    }, []);
+
+    const table = (
+        <TableComponent
+            {...props}
+            dataSource={dataSource}
+            columns={tableColumns}
+            components={components}
+            rowSelection={rowSelection}
+            height={height}
+            scroll={scroll}
+        />
+    );
+
+    return <div className="table-wrapper">{table}</div>;
+};

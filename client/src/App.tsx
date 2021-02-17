@@ -4,6 +4,7 @@ import { TopMenu } from '@library/top-menu';
 import { Input } from '@library/input';
 import { Dropdown } from '@library/dropdown';
 import { DatePicker } from '@library/date-picker';
+import { TableDemo } from '@library/table/demo';
 import { Button, ButtonHTMLType, ButtonType } from './library/button';
 import './App.css';
 
@@ -14,6 +15,9 @@ function App() {
             <div className="content">
                 <Internationalization>
                     {/* <div>{env.ENV}</div> */}
+                    <div>
+                        <TableDemo />
+                    </div>
                     <div>
                         <Input name="firstName" />
                         <Dropdown
