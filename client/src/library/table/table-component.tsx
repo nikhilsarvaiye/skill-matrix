@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import { Table } from 'antd';
 import {
@@ -64,7 +63,7 @@ export interface ITableComponentProps {
     sticky?: boolean | TableSticky;
 }
 
-const tableComponent = ({
+export const TableComponent = ({
     title,
     tableLayout = TableLayout.Auto,
     columns,
@@ -96,7 +95,7 @@ const tableComponent = ({
     pagination = {
         position: ['none', 'bottomCenter'] as any,
         current:
-            pagination == undefined
+            pagination === undefined
                 ? 1
                 : (pagination as TablePaginationConfig).current,
         showSizeChanger: false,
@@ -109,7 +108,7 @@ const tableComponent = ({
         ? {
               ...rowSelection,
               columnTitle:
-                  rowSelection.type == 'radio'
+                  rowSelection.type === 'radio'
                       ? rowSelection.columnTitle || 'Select'
                       : rowSelection.columnTitle,
               columnWidth: rowSelection.columnWidth || '5em',
@@ -145,11 +144,21 @@ const tableComponent = ({
                 className={className}
                 style={{ height: height, width: width }}
                 rowKey={rowKey}
-                locale={{ emptyText: 'No matching results found' }}
+                // locale={{ emptyText: 'No matching results found' }}
                 footer={footer}
             />
         </div>
     );
 };
 
-export { tableComponent as TableComponent };
+export type Record<K extends keyof any, T> = {
+    [P in K]: T;
+};
+
+export type {
+    TablePaginationConfig,
+    Key,
+    TableCurrentDataSource,
+    SorterResult,
+    SortOrder,
+};

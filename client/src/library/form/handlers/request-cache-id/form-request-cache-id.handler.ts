@@ -58,7 +58,7 @@ export class FormRequestCacheIdHandler {
 
     onResetting = (values: any, form: any) => {
         const url = this.clearQueryStringValue(this.url);
-        if (this.config.urlUpdate && decodeURI(url) != decodeURI(this.url)) {
+        if (this.config.urlUpdate && decodeURI(url) !== decodeURI(this.url)) {
             this.updateUrl(url);
         }
         return values;
@@ -84,7 +84,7 @@ export class FormRequestCacheIdHandler {
         } else {
             url = this.clearQueryStringValue(this.url);
         }
-        if (this.config.urlUpdate && decodeURI(url) != decodeURI(this.url)) {
+        if (this.config.urlUpdate && decodeURI(url) !== decodeURI(this.url)) {
             this.updateUrl(url);
         }
 

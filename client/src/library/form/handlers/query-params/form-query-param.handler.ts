@@ -69,7 +69,7 @@ export class FormQueryParamsHandler {
         } else {
             url = this.clearQueryStringValue(this.url);
         }
-        if (this.config.urlUpdate && decodeURI(url) != decodeURI(this.url)) {
+        if (this.config.urlUpdate && decodeURI(url) !== decodeURI(this.url)) {
             this.updateUrl(url);
         }
 
@@ -152,7 +152,7 @@ export class FormQueryParamsHandler {
 
     isDate(value: any) {
         return Date.parse(value)
-            ? new Date(value).toISOString() == value
+            ? new Date(value).toISOString() === value
             : false;
     }
 }

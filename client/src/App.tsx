@@ -1,12 +1,15 @@
 import { TopMenu } from '@library/top-menu';
-import { AppDemo } from './App-Demo';
+import { SkillScreen } from '@screens/skill';
+// import { AppDemo } from './App-Demo';
 import './App.css';
 
 function App() {
     return (
-        <div>
+        <div className="app">
             <TopMenu />
-            <AppDemo />
+            <div className="content">
+                <SkillScreen />
+            </div>
         </div>
     );
 }

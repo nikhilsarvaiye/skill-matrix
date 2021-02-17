@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import {
     FormSection,
     FormSectionLayoutType,
@@ -44,21 +44,21 @@ export const FormConfig = ({ configuration, setConfiguration }: any) => {
             value: {
                 numberOfRowFields: 2,
             },
-            hide: configuration.layout == FormSectionLayoutType.Vertical,
+            hide: configuration.layout === FormSectionLayoutType.Vertical,
         },
         {
             title: '4 Fields',
             value: {
                 numberOfRowFields: 4,
             },
-            hide: configuration.layout == FormSectionLayoutType.Vertical,
+            hide: configuration.layout === FormSectionLayoutType.Vertical,
         },
         {
             title: '6 Fields',
             value: {
                 numberOfRowFields: 6,
             },
-            hide: configuration.layout == FormSectionLayoutType.Vertical,
+            hide: configuration.layout === FormSectionLayoutType.Vertical,
         },
     ];
 
@@ -71,7 +71,7 @@ export const FormConfig = ({ configuration, setConfiguration }: any) => {
             >
                 {configProperties.map((property: any) => {
                     return (
-                        <React.Fragment key={property}>
+                        <Fragment key={property}>
                             {!property.hide ? (
                                 <Button
                                     type={ButtonType.Tertiary}
@@ -82,7 +82,7 @@ export const FormConfig = ({ configuration, setConfiguration }: any) => {
                                     {property.title}
                                 </Button>
                             ) : null}
-                        </React.Fragment>
+                        </Fragment>
                     );
                 })}
             </FormSection>

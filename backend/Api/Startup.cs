@@ -70,6 +70,8 @@ namespace Api
 
             app.UseRouting();
 
+            app.UseCors();
+
             app.UseAuthorization();
 
             /* Enable

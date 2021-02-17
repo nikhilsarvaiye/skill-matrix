@@ -173,7 +173,7 @@ export const DatePicker = ({
     };
 
     const parseMoment = (value: any) => {
-        return typeof value == 'string' &&
+        return typeof value === 'string' &&
             moment(value, YYYYMMDDHHmmssFormat, true).isValid()
             ? moment(value, format)
             : value && (moment.isMoment(value) || moment.isDate(value))

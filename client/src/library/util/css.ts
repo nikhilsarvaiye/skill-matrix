@@ -1,5 +1,5 @@
 export const getHtmlDocumentFontSize = () => {
-    const screenWidth = screen.width;
+    const screenWidth = window.screen.width;
     if (screenWidth < 1299) {
         return '8px';
     } else if (screenWidth < 1599) {

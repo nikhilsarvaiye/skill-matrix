@@ -78,11 +78,12 @@ export const Form = ({
             if (Array.isArray(value)) {
                 for (const subKey in value) {
                     for (const subNestKey in value[parseInt(subKey)]) {
+                        const key = `${name}[${subKey}].${subNestKey}`;
                         form.register({
-                            name: name + '[' + subKey + ']' + '.' + subNestKey,
+                            name: key,
                         });
                         form.setValue(
-                            name + '[' + subKey + ']' + '.' + subNestKey,
+                            key,
                             value[parseInt(subKey)][subNestKey],
                             {
                                 shouldValidate: true,

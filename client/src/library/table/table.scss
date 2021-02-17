@@ -10,7 +10,12 @@
             > tr {
                 > th {
                     padding: $rowPadding;
+                    background-color: $secondary-body-background-color;
                 }
+            }
+
+            .ant-table-column-sorters {
+                padding: 0;
             }
         }
         .ant-table-tbody {

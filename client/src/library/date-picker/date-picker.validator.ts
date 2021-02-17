@@ -54,15 +54,15 @@ export const isDate = (value: any, strict = true) => {
 };
 
 export const formatYearToCentury = (value: any) => {
-    if (value && (value.length == 6 || value.length == 8)) {
+    if (value && (value.length === 6 || value.length === 8)) {
         let year;
-        if (value.length == 8 && !value.includes('/')) {
+        if (value.length === 8 && !value.includes('/')) {
             year = value.toString().substring(value.length - 4, value.length);
         } else {
             year = value.toString().substring(value.length - 2, value.length);
         }
 
-        if (!isNaN(year) && year.length != 4) {
+        if (!isNaN(year) && year.length !== 4) {
             let currentCentury = Math.floor(new Date().getFullYear() / 100);
             if (year >= 50) {
                 currentCentury--;

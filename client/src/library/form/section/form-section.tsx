@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import classNames from 'classnames';
 import { FormSectionLayoutType } from './form-section.model';
 import './form-section.scss';
@@ -27,7 +27,6 @@ export const FormSection = ({
     children,
 }: any) => {
     layout = layout || FormSectionLayoutType.Vertical;
-    theme = theme;
     style = style || {};
     style = width ? { ...style, width: width } : style;
 
@@ -79,7 +78,7 @@ const wrapSectionChildOrReturn = (
     autoSpacing: boolean,
 ) => {
     return !autoSpacing ? (
-        <React.Fragment key={key}>{child}</React.Fragment>
+        <Fragment key={key}>{child}</Fragment>
     ) : (
         <div key={key} className="section-item">
             {child}

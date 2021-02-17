@@ -63,8 +63,8 @@ $button-primary-focus-background-color: #1854ff;
 $button-secondary-background-color: #868686;
 $button-secondary-hover-background-color: #343434;
 $button-secondary-focus-background-color: #535353;
-$button-tertiary-color: #f53939;
-$button-tertiary-border-color: #f53939;
+$button-tertiary-color: $button-primary-background-color;
+$button-tertiary-border-color: $button-primary-background-color;
 
 // Label
 $label-link-color: #0656b1; // #065681
@@ -86,8 +86,13 @@ $input-border-light-color: #e0e0e0;
 $input-selection-hover-background-color: #f1f1f1;
 
 // modal
-$modal-background-color: #f1f3f5;
+$modal-color: #000;
+$modal-background-color: #fff;
+$modal-hover-btn-background-color: #5e9acf;
 $modal-border-color: #bbb;
+$color-404040: '#404040';
+$color-ffffff: '#ffffff';
+$color-949494: '#949494';
 
 // Date-Picker
 $date-picker-color: #515151;

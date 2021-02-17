@@ -134,7 +134,7 @@ export const DemoForm = () => {
                                     layout={FormSectionLayoutType.Horizontal}
                                     align={FormSectionAlignment.Center}
                                     autoSpacing={true}
-                                    cssClasses="patient-search-footer"
+                                    className="patient-search-footer"
                                 >
                                     {/* Button for default enter */}
                                     <input

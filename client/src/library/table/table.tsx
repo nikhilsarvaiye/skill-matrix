@@ -20,7 +20,7 @@ export const Table = ({
     rowSelection,
     height,
     scroll,
-    emptyPlaceholderHeight = '12em',
+    emptyPlaceholderHeight = '20em',
     maxHeight = 'calc(100vh - 150px)',
     ...props
 }: ITableProps) => {
@@ -28,7 +28,7 @@ export const Table = ({
     scroll = scroll || {};
     
     // Uncomment for Fix Heigh
-    scroll.y = scroll.y || emptyPlaceholderHeight;
+    // scroll.y = scroll.y || emptyPlaceholderHeight;
 
     // const handleResizeColumns = () => {
     //     const htmlDocumentFontSize = getHtmlDocumentFontSize();
@@ -47,8 +47,6 @@ export const Table = ({
     if (resizeColumns) {
         // handleResizeColumns();
     }
-
-    const selection = rowSelection && rowSelection.type ? true : false;
 
     useEffect(() => {
         setTableColumns(columns);

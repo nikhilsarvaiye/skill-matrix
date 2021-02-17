@@ -25,7 +25,7 @@ export const filterBySearchText = (
 
     data.forEach((x) => {
         if (
-            results.indexOf(x) == -1 &&
+            results.indexOf(x) === -1 &&
             isMatch(x, searchText, caseSensitive, _filterColumns)
         ) {
             results.push(x);
@@ -50,28 +50,28 @@ const isMatch = (
             ? x.toString().toLowerCase()
             : x.toString();
         if (exact) {
-            return value == searchText ? true : false;
-        } else if (x.indexOf(searchText) != -1) {
+            return value === searchText ? true : false;
+        } else if (x.indexOf(searchText) !== -1) {
             return true;
         }
     } else {
         for (const key in x) {
             if (
                 filterColumns.length > 0 &&
-                !filterColumns.find((y) => y == key)
+                !filterColumns.find((y) => y === key)
             ) {
                 continue;
             }
             let value = x[key];
-            if (value != undefined && value != null) {
+            if (value !== undefined && value !== null) {
                 value = !caseSensitive
                     ? value.toString().toLowerCase()
                     : value.toString();
                 if (exact) {
-                    if (value == searchText) {
+                    if (value === searchText) {
                         return true;
                     }
-                } else if (value.indexOf(searchText) != -1) {
+                } else if (value.indexOf(searchText) !== -1) {
                     return true;
                 }
             }

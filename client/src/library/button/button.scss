@@ -5,10 +5,11 @@
     .btn,
     .ant-btn,
     .ant-btn[disabled] {
+        font-size: 1.2em;
         height: 30px;
         line-height: 0;
-        min-width: 8.5467em;
-        // border-radius: 1.4em;
+        min-width: 5em;
+        border-radius: 1.4em;
         border: none;
         outline: none;
         font-weight: 600;
@@ -84,7 +85,7 @@
         &.quaternary {
             background-color: $button-quaternary-background-color;
             border: 0.1em solid $button-quaternary-border-color;
-            // border-radius: 0.4em;
+            border-radius: 0.4em;
             height: 1.7em;
             line-height: 1.7em;
             min-width: auto;
