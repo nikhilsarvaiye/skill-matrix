@@ -31,7 +31,7 @@ export enum InputSize {
 export interface InputProps {
     id?: string;
     type?: InputType;
-    name: string;
+    name?: string;
     value?: any;
     maxLength?: number;
     className?: string;
@@ -63,7 +63,7 @@ export const Input = ({
     value,
     maxLength,
     className,
-    size = InputSize.Medium,
+    size,
     placeholder,
     onChange,
     onTextChange,

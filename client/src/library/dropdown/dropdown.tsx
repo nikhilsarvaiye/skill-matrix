@@ -37,8 +37,8 @@ export enum DropdownType {
 }
 
 interface IProps {
+    name?: string;
     type?: DropdownType;
-    name: string;
     value?: any;
     data?: any[];
     textField?: string;

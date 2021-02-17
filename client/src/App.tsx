@@ -5,6 +5,7 @@ import { Input } from '@library/input';
 import { Dropdown } from '@library/dropdown';
 import { DatePicker } from '@library/date-picker';
 import { TableDemo } from '@library/table/demo';
+import { DemoForm } from '@library/form/demo';
 import { Button, ButtonHTMLType, ButtonType } from './library/button';
 import './App.css';
 
@@ -15,8 +16,11 @@ function App() {
             <div className="content">
                 <Internationalization>
                     {/* <div>{env.ENV}</div> */}
-                    <div>
+                    <div style={{ margin: '20px' }}>
                         <TableDemo />
+                    </div>
+                    <div style={{ margin: '20px' }}>
+                        <DemoForm />
                     </div>
                     <div>
                         <Input name="firstName" />

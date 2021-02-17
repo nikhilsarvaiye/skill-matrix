@@ -2,7 +2,7 @@ import { RefObject } from 'react';
 import Scrollbars, { ScrollbarProps } from 'react-custom-scrollbars';
 
 export interface IScrollbarProps extends ScrollbarProps {
-    ref: RefObject<Scrollbars>
+    ref?: RefObject<Scrollbars>
 }
 
 export const ScrollBar = ({

@@ -24,7 +24,7 @@ import {
 import './date-picker.scss';
 
 export interface IDatePickerProps {
-    name: string;
+    name?: string;
     value?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
     onFocus?: FocusEventHandler<HTMLInputElement>;

@@ -39,9 +39,9 @@ interface IProps {
     primary?: boolean;
     type?: ButtonType;
     disabled?: boolean;
-    startIcon?: ReactNode;
-    endIcon?: ReactNode;
-    children?: ReactNode;
+    startIcon?: any;
+    endIcon?: any;
+    children?: any;
     onClick?: MouseEventHandler<HTMLElement>;
     htmlType?: ButtonHTMLType;
     danger?: boolean;
