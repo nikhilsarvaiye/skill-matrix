@@ -1,65 +1,12 @@
-// import env from 'react-dotenv';
-import { Internationalization } from './internationalization';
 import { TopMenu } from '@library/top-menu';
-import { Input } from '@library/input';
-import { Dropdown } from '@library/dropdown';
-import { DatePicker } from '@library/date-picker';
-import { TableDemo } from '@library/table/demo';
-import { DemoForm } from '@library/form/demo';
-import { Button, ButtonHTMLType, ButtonType } from './library/button';
+import { AppDemo } from './App-Demo';
 import './App.css';
 
 function App() {
     return (
-        <div className="app">
+        <div>
             <TopMenu />
-            <div className="content">
-                <Internationalization>
-                    {/* <div>{env.ENV}</div> */}
-                    <div style={{ margin: '20px' }}>
-                        <TableDemo />
-                    </div>
-                    <div style={{ margin: '20px' }}>
-                        <DemoForm />
-                    </div>
-                    <div>
-                        <Input name="firstName" />
-                        <Dropdown
-                            name="gender"
-                            data={[
-                                {
-                                    id: 1,
-                                    title: 'Male',
-                                },
-                                {
-                                    id: 2,
-                                    title: 'Female',
-                                },
-                            ]}
-                            textField="title"
-                            valueField="id"
-                        />
-                        <DatePicker name="dob" />
-                    </div>
-                    <div style={{ margin: '20px' }}>
-                        <Button
-                            type={ButtonType.Primary}
-                            htmlType={ButtonHTMLType.Button}
-                        >
-                            Primary Button
-                        </Button>
-                        <Button type={ButtonType.Secondary}>
-                            Secondary Button
-                        </Button>
-                        <Button type={ButtonType.Tertiary}>
-                            Tertiary Button
-                        </Button>
-                        <Button type={ButtonType.Quaternary}>
-                            Quaternary Button
-                        </Button>
-                    </div>
-                </Internationalization>
-            </div>
+            <AppDemo />
         </div>
     );
 }

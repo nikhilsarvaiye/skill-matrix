@@ -88,15 +88,17 @@ export const DemoForm = () => {
                                     </FormSectionHeaderTitle>
                                 </FormSection>
                             </FormSectionHeader>
-                            <FormSectionBody>
-                                {JSON.stringify(form.values, null, 2)}
+                            <FormSectionBody padding>
+                                {/* {JSON.stringify(form.values, null, 2)} */}
                                 <ScrollBar
                                     autoHeightMax={'200px'}
                                     // autoHeightMax={'calc(100vh - 150px)'}
                                 >
                                     <FormSection
-                                        layout={FormSectionLayoutType.Vertical}
-                                        numberOfRowFields={1}
+                                        layout={
+                                            FormSectionLayoutType.Horizontal
+                                        }
+                                        numberOfRowFields={2}
                                     >
                                         <FormField
                                             name="middleName"
