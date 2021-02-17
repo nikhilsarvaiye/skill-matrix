@@ -12,11 +12,14 @@ $primary-content-text-color: #5a5a5b;
 $transitionAnimation: cubic-bezier(0.4, 0, 1, 1);
 $color42: #424242;
 
-$primary-heading-color: #0656b1;
+$primary-color: #1890ff;
+$primary-heading-color: #1890ff;
+$primary-background-color: #ffffff;
 $primary-border-color: #b9b9b9;
+$primary-highlight-color: #f53939;
 
 // general
-$error-text-color: #dd7184;
+$error-text-color: $primary-highlight-color;
 $error-background-color: #fffbfb;
 $error-box-shadow-color: #f7ccd0;
 $error-border-color: $error-text-color;
@@ -31,7 +34,7 @@ $tab-padding: $form-padding !important;
 // top nav
 $top-nav-text-color: #5d5d5d;
 $panel-heading-text-color: #404040; //#5d5d5d
-$panel-heading-background-color: $secondary-body-background-color;
+$panel-heading-background-color: #fafafa;
 $panel-body-color: #f1f3f5;
 $panel-body-text-color: #717272;
 $panel-border-color: $primary-border-color;
@@ -42,12 +45,26 @@ $button-default-color: #fff;
 $button-default-background-color: #949494;
 $button-default-disabled-color: #b3cbe7;
 $button-primary-background-color: #5e9acf;
+$button-primary-hover-background-color: #0e4472;
+$button-primary-focus-background-color: #235a8b;
 $button-secondary-background-color: #949494;
+$button-secondary-hover-background-color: #343434;
+$button-secondary-focus-background-color: #535353;
 $button-tertiary-color: #0857b2;
 $button-tertiary-border-color: #0656b1;
 $button-quaternary-color: #1f67b8;
 $button-quaternary-background-color: #d5dfed;
 $button-quaternary-border-color: #bdcee2;
+
+// Button theme
+$button-primary-background-color: #1890ff;
+$button-primary-hover-background-color: #1834ff;
+$button-primary-focus-background-color: #1854ff;
+$button-secondary-background-color: #868686;
+$button-secondary-hover-background-color: #343434;
+$button-secondary-focus-background-color: #535353;
+$button-tertiary-color: #f53939;
+$button-tertiary-border-color: #f53939;
 
 // Label
 $label-link-color: #0656b1; // #065681

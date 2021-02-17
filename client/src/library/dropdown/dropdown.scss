@@ -65,10 +65,10 @@
                 &:hover {
                     cursor: pointer;
                     background-color: $input-selection-hover-background-color;
-                    color: #ff4d8a;
+                    color: $primary-highlight-color;
                 }
                 &.selected {
-                    color: #ff4d8a;
+                    color: $primary-highlight-color;
                 }
                 &.no-data {
                     text-align: center;
@@ -76,7 +76,7 @@
                     line-height: 0;
                     padding: 1.5em;
                     &:hover {
-                        background-color: #fff;
+                        background-color: $primary-background-color;
                         color: $input-text-color;
                     }
                 }

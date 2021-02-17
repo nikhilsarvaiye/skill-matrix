@@ -8,7 +8,7 @@
         height: 30px;
         line-height: 0;
         min-width: 8.5467em;
-        border-radius: 1.4em;
+        // border-radius: 1.4em;
         border: none;
         outline: none;
         font-weight: 600;
@@ -30,30 +30,30 @@
 
         &.ant-btn-primary,
         &.primary {
-            color: $button-default-color !important;
-            background-color: $button-primary-background-color !important;
+            color: $button-default-color;
+            background-color: $button-primary-background-color;
 
             &:hover:not([disabled]) {
-                background-color: #0e4472 !important;
+                background-color: $button-primary-hover-background-color;
                 cursor: pointer;
             }
 
             &:focus {
-                background-color: #235a8b !important;
+                background-color: $button-primary-focus-background-color;
             }
         }
 
         &.secondary {
-            color: $button-default-color !important;
-            background-color: $button-secondary-background-color !important;
+            color: $button-default-color;
+            background-color: $button-secondary-background-color;
 
             &:hover:not([disabled]) {
-                background-color: #343434 !important;
+                background-color: $button-secondary-hover-background-color;
                 cursor: pointer;
             }
 
             &:focus {
-                background-color: #535353 !important;
+                background-color: $button-secondary-focus-background-color;
             }
         }
 
@@ -65,18 +65,18 @@
             color: $button-tertiary-color;
 
             &:hover:not([disabled]) {
-                background-color: #0656b1 !important;
+                background-color: $button-tertiary-color;
                 color: $button-default-color;
                 cursor: pointer;
             }
 
             &:focus {
-                background-color: #205a97;
+                background-color: $button-tertiary-color;
                 color: $button-default-color;
             }
 
             &:disabled {
-                color: $button-tertiary-color !important;
+                color: $button-tertiary-color;
                 border: 0.1em solid #b3cbe7;
             }
         }
@@ -84,7 +84,7 @@
         &.quaternary {
             background-color: $button-quaternary-background-color;
             border: 0.1em solid $button-quaternary-border-color;
-            border-radius: 0.4em;
+            // border-radius: 0.4em;
             height: 1.7em;
             line-height: 1.7em;
             min-width: auto;
@@ -102,7 +102,7 @@
 
         &:disabled {
             opacity: 0.3;
-            color: $button-default-disabled-color !important;
+            color: $button-default-disabled-color;
         }
 
         .btn-icon {

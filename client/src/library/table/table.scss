@@ -3,4 +3,34 @@
 .table {
     font-size: 1rem;
     background: transparent;
+    $rowPadding: 1em;
+
+    .ant-table {
+        .ant-table-thead {
+            > tr {
+                > th {
+                    padding: $rowPadding;
+                }
+            }
+        }
+        .ant-table-tbody {
+            > tr {
+                > td {
+                    padding: $rowPadding;
+                }
+            }
+        }
+        .ant-table {
+            tfoot {
+                > tr {
+                    > th {
+                        padding: $rowPadding;
+                    }
+                    > td {
+                        padding: $rowPadding;
+                    }
+                }
+            }
+        }
+    }
 }
