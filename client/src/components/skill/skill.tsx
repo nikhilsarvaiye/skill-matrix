@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -59,68 +58,63 @@ export const Skill = ({
     ];
 
     return (
-        <Fragment>
-            <div className="skill">
-                <FormSection theme={FormSectionTheme.White}>
-                    <FormSection>
-                        <FormSectionHeader>
-                            <FormSection align={FormSectionAlignment.Left}>
-                                <FormSectionHeaderTitle>
-                                    {'Skills'}
-                                </FormSectionHeaderTitle>
-                            </FormSection>
-                            <FormSection
-                                layout={FormSectionLayoutType.Horizontal}
-                                align={FormSectionAlignment.Right}
-                                autoSpacing={true}
+        <div className="skill">
+            <FormSection theme={FormSectionTheme.White}>
+                <FormSection>
+                    <FormSectionHeader>
+                        <FormSection align={FormSectionAlignment.Left}>
+                            <FormSectionHeaderTitle>
+                                {'Skills'}
+                            </FormSectionHeaderTitle>
+                        </FormSection>
+                        <FormSection
+                            layout={FormSectionLayoutType.Horizontal}
+                            align={FormSectionAlignment.Right}
+                            autoSpacing={true}
+                        >
+                            <Button
+                                startIcon={
+                                    <FontAwesomeIcon
+                                        icon={faPlus}
+                                    ></FontAwesomeIcon>
+                                }
+                                type={ButtonType.Tertiary}
+                                onClick={onNew}
                             >
-                                <Button
-                                    startIcon={
-                                        <FontAwesomeIcon
-                                            icon={faPlus}
-                                        ></FontAwesomeIcon>
-                                    }
-                                    type={ButtonType.Tertiary}
-                                    onClick={onNew}
-                                >
-                                    New
-                                </Button>
-                            </FormSection>
-                        </FormSectionHeader>
-                    </FormSection>
-                    <FormSection>
-                        <FormSectionBody>
-                            <Table
-                                columns={columns}
-                                dataSource={data}
-                                // pagination={pagination}
-                                loading={loading}
-                                onChange={onChange}
-                                rowKey="id"
-                                rowSelection={{
-                                    type: 'radio',
-                                    onChange: (
-                                        selectedRowKeys,
-                                        selectedRows,
-                                    ) => {
-                                        const record = selectedRows[0];
-                                        if (onEdit) {
-                                            onEdit(record);
-                                        }
-                                    },
-                                    // selectedRowKeys: rowSelectionKeys,
-                                    // type: 'checkbox',
-                                    // onChange: (
-                                    //     selectedRowKey,
-                                    //     selectedRows,
-                                    // ) => {},
-                                    // selectedRowKeys: rowSelectionKeys,
-                                }}
-                            />
-                        </FormSectionBody>
-                    </FormSection>
+                                New
+                            </Button>
+                        </FormSection>
+                    </FormSectionHeader>
                 </FormSection>
-            </div>
-        </Fragment>
+                <FormSection>
+                    <FormSectionBody>
+                        <Table
+                            columns={columns}
+                            dataSource={data}
+                            // pagination={pagination}
+                            loading={loading}
+                            onChange={onChange}
+                            rowKey="id"
+                            rowSelection={{
+                                type: 'radio',
+                                onChange: (selectedRowKeys, selectedRows) => {
+                                    const record = selectedRows[0];
+                                    if (onEdit) {
+                                        onEdit(record);
+                                    }
+                                },
+                                // selectedRowKeys: rowSelectionKeys,
+                                // type: 'checkbox',
+                                // onChange: (
+                                //     selectedRowKey,
+                                //     selectedRows,
+                                // ) => {},
+                                // selectedRowKeys: rowSelectionKeys,
+                            }}
+                        />
+                    </FormSectionBody>
+                </FormSection>
+            </FormSection>
+        </div>
     );
 };

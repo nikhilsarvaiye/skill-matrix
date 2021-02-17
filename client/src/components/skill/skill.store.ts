@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { makeObservable, observable, computed, action } from 'mobx';
 import {
     TablePaginationConfig,
     Key,
@@ -9,10 +9,26 @@ import { SkillModel } from './skill.model';
 import { SkillService } from './skill.service';
 
 class SkillStore {
-    @observable loading = false;
-    @observable skills: SkillModel[] = [];
+    loading = false;
+    skills: SkillModel[] = [];
+    criteria = {
+        page: 1,
+        pageSize: 25,
+    };
+    /**
+     *
+     */
+    constructor() {
+        makeObservable(this, {
+            loading: observable,
+            skills: observable,
+            criteria: observable,
+            getAll: action,
+            change: action,
+        });
+    }
 
-    @action getAll = async (searchCriteria?: any) => {
+    getAll = async (searchCriteria?: any) => {
         try {
             this.loading = true;
             const skillService = new SkillService();
@@ -22,7 +38,7 @@ class SkillStore {
         }
     };
 
-    @action create = async (skill: SkillModel) => {
+    create = async (skill: SkillModel) => {
         try {
             this.loading = true;
             const skillService = new SkillService();
@@ -32,7 +48,7 @@ class SkillStore {
         }
     };
 
-    @action update = async (id: string, skill: SkillModel) => {
+    update = async (id: string, skill: SkillModel) => {
         try {
             this.loading = true;
             const skillService = new SkillService();
@@ -42,12 +58,7 @@ class SkillStore {
         }
     };
 
-    @observable criteria = {
-        page: 1,
-        pageSize: 25,
-    };
-
-    @action change = async (
+    change = async (
         pagination: TablePaginationConfig,
         filters: Record<string, (Key | boolean)[] | null>,
         sorter: SorterResult<any> | SorterResult<any>[],

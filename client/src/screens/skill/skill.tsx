@@ -11,31 +11,28 @@ export const SkillScreen = () => {
     return (
         <Observer>
             {() => (
-                <div>
-                    {JSON.stringify(SkillStore.skills)}
-                    <Skill
-                        data={SkillStore.skills}
-                        loading={SkillStore.loading}
-                        onChange={SkillStore.change}
-                        onNew={() => {
-                            error({
-                                content: 'Need to implement',
-                                onOk: () => {},
-                            });
-                        }}
-                        onEdit={(skill: SkillModel) => {
-                            success({
-                                content: 'Edit ' + skill.name,
-                                onOk: () => {},
-                            });
-                        }}
-                        pagination={{
-                            current: SkillStore.criteria.page,
-                            pageSize: SkillStore.criteria.pageSize,
-                            total: SkillStore.skills.length,
-                        }}
-                    />
-                </div>
+                <Skill
+                    data={SkillStore.skills}
+                    loading={SkillStore.loading}
+                    onChange={SkillStore.change}
+                    onNew={() => {
+                        error({
+                            content: 'Need to implement',
+                            onOk: () => {},
+                        });
+                    }}
+                    onEdit={(skill: SkillModel) => {
+                        success({
+                            content: 'Edit ' + skill.name,
+                            onOk: () => {},
+                        });
+                    }}
+                    pagination={{
+                        current: SkillStore.criteria.page,
+                        pageSize: SkillStore.criteria.pageSize,
+                        total: SkillStore.skills.length,
+                    }}
+                />
             )}
         </Observer>
     );
