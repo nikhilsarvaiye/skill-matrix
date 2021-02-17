@@ -61,12 +61,12 @@
                 .ant-btn {
                     color: $modal-color;
                     &:hover {
-                        background-color: $modal-background-color;
+                        // background-color: $modal-background-color;
                     }
                     &.ant-btn-primary {
                         color: $modal-background-color;
                         &:hover {
-                            background-color: $modal-hover-btn-background-color;
+                            // background-color: $modal-hover-btn-background-color;
                         }
                     }
                 }
@@ -133,10 +133,10 @@
 
                         .ant-btn {
                             &.secondary {
-                                color: $color-ffffff;
+                                // color: $color-ffffff;
 
                                 &:hover {
-                                    background-color: $color-949494;
+                                    // background-color: $color-949494;
                                 }
                             }
                         }
