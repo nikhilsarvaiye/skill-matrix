@@ -1,20 +1,19 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 import {
     MailOutlined,
     AppstoreOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
-import { SkillScreen } from './skill';
 
 const { SubMenu } = Menu;
 
-export const TopMenu = () => {
+export const TopNav = () => {
     const handleClick = (e: any) => {
         console.log('click ', e);
     };
     return (
-        <Router>
+        <div className="top-nav">
             <Menu onClick={handleClick} selectedKeys={[]} mode="horizontal">
                 <Menu.Item key="mail" icon={<MailOutlined />}>
                     <Link to="/">Home</Link>
@@ -35,17 +34,23 @@ export const TopMenu = () => {
                     </Menu.Item>
                 </SubMenu>
             </Menu>
-            <div className="content">
-                <Switch>
-                    <Route path="/skill">
-                        <SkillScreen />
-                    </Route>
-                    <Route path="/employees"></Route>
-                    <Route path="/">
-                        <SkillScreen />
-                    </Route>
-                </Switch>
-            </div>
-        </Router>
+        </div>
+        // <Router>
+
+        //     <div className="content">
+        //         <Switch>
+        //             <Route path="/skills">
+        //                 <SkillScreen />
+        //             </Route>
+        //             <Route path="/skill/:id?">
+        //                 <SkillRouter />
+        //             </Route>
+        //             <Route path="/employees"></Route>
+        //             <Route path="/">
+        //                 <SkillScreen />
+        //             </Route>
+        //         </Switch>
+        //     </div>
+        // </Router>
     );
 };

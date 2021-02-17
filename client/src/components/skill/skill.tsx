@@ -1,120 +1,133 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { ScrollBar } from '@library/scrollbar';
 import {
-    Table,
-    TablePaginationConfig,
-    Key,
-    SorterResult,
-    TableCurrentDataSource,
-} from '@library/table';
-import { Button, ButtonType } from '@library/button';
-import {
+    Form,
     FormSection,
+    FormSectionHeader,
+    FormSectionHeaderTitle,
+    FormSectionBody,
+    FormSectionFooter,
     FormSectionTheme,
     FormSectionAlignment,
     FormSectionLayoutType,
-    FormSectionBody,
-    FormSectionHeader,
-    FormSectionHeaderTitle,
+    FormAction,
+    FormField,
+    useForm,
+    IForm,
 } from '@library/form';
-import './skill.scss';
+import { validationSchema } from './skill.validator';
+import { Spin } from '@library/spin';
+import { Input } from '@library/input';
+import { Button, ButtonHTMLType, ButtonType } from '@library/button';
+import { useEffect } from 'react';
 import { SkillModel } from './skill.model';
 
-export interface ISKillProps {
-    loading: boolean;
-    data: any[];
-    onNew: () => void;
-    onEdit: (skill: SkillModel) => void;
-    pagination: TablePaginationConfig;
-    onChange: (
-        pagination: TablePaginationConfig,
-        filters: Record<string, (Key | boolean)[] | null>,
-        sorter: SorterResult<any> | SorterResult<any>[],
-        extra: TableCurrentDataSource<any>,
-    ) => void;
-}
-
 export const Skill = ({
+    initialState,
+    skill,
     loading,
-    data,
-    onNew,
-    onEdit,
-    pagination,
-    onChange,
-}: ISKillProps) => {
-    const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            sorter: true,
+    onSave,
+}: {
+    initialState: any;
+    skill: SkillModel | null;
+    loading: boolean;
+    onSave: (values: SkillModel) => void;
+}) => {
+    const form = useForm({
+        defaultValues: initialState,
+        validationSchema: validationSchema,
+        onSubmit: (values: SkillModel, form: IForm) => {
+            if (onSave) {
+                onSave(values);
+            }
         },
-        {
-            title: 'Skill',
-            dataIndex: 'skill',
-            key: 'skill',
-            sorter: true,
-        },
-    ];
+        onReset: (values: SkillModel, form: IForm) => {},
+    });
+
+    useEffect(() => {
+        form.setValues(skill);
+    }, [skill]);
 
     return (
         <div className="skill">
-            <FormSection theme={FormSectionTheme.White}>
-                <FormSection>
+            <Form form={form}>
+                <FormSection theme={FormSectionTheme.White}>
                     <FormSectionHeader>
                         <FormSection align={FormSectionAlignment.Left}>
-                            <FormSectionHeaderTitle>
-                                {'Skills'}
-                            </FormSectionHeaderTitle>
-                        </FormSection>
-                        <FormSection
-                            layout={FormSectionLayoutType.Horizontal}
-                            align={FormSectionAlignment.Right}
-                            autoSpacing={true}
-                        >
-                            <Button
+                            <FormSectionHeaderTitle
                                 startIcon={
                                     <FontAwesomeIcon
                                         icon={faPlus}
                                     ></FontAwesomeIcon>
                                 }
-                                type={ButtonType.Tertiary}
-                                onClick={onNew}
                             >
-                                New
-                            </Button>
+                                Add New Skill
+                            </FormSectionHeaderTitle>
                         </FormSection>
                     </FormSectionHeader>
+                    <Spin spinning={loading}>
+                        <FormSectionBody padding>
+                            {JSON.stringify(form.getValues(), null, 4)}
+                            <ScrollBar autoHeightMax={'calc(100vh - 200px)'}>
+                                <FormSection
+                                    layout={FormSectionLayoutType.Horizontal}
+                                    numberOfRowFields={2}
+                                >
+                                    <FormField name="name" label="Name" key="0">
+                                        <Input />
+                                    </FormField>
+                                    <FormField
+                                        name="skill"
+                                        label="Skill"
+                                        key="1"
+                                    >
+                                        <Input />
+                                    </FormField>
+                                </FormSection>
+                            </ScrollBar>
+                        </FormSectionBody>
+                        <FormSectionFooter>
+                            <FormSection
+                                layout={FormSectionLayoutType.Horizontal}
+                                align={FormSectionAlignment.Center}
+                                autoSpacing={true}
+                            >
+                                <FormAction>
+                                    <Button
+                                        startIcon={
+                                            <FontAwesomeIcon
+                                                icon={faPlus}
+                                            ></FontAwesomeIcon>
+                                        }
+                                        type={ButtonType.Primary}
+                                        onClick={() => {
+                                            form.submitForm();
+                                        }}
+                                    >
+                                        Add
+                                    </Button>
+                                </FormAction>
+                                <FormAction>
+                                    <Button
+                                        startIcon={
+                                            <FontAwesomeIcon
+                                                icon={faEraser}
+                                            ></FontAwesomeIcon>
+                                        }
+                                        type={ButtonType.Secondary}
+                                        onClick={() => {
+                                            form.resetForm();
+                                        }}
+                                    >
+                                        Clear
+                                    </Button>
+                                </FormAction>
+                            </FormSection>
+                        </FormSectionFooter>
+                    </Spin>
                 </FormSection>
-                <FormSection>
-                    <FormSectionBody>
-                        <Table
-                            columns={columns}
-                            dataSource={data}
-                            // pagination={pagination}
-                            loading={loading}
-                            onChange={onChange}
-                            rowKey="id"
-                            rowSelection={{
-                                type: 'radio',
-                                onChange: (selectedRowKeys, selectedRows) => {
-                                    const record = selectedRows[0];
-                                    if (onEdit) {
-                                        onEdit(record);
-                                    }
-                                },
-                                // selectedRowKeys: rowSelectionKeys,
-                                // type: 'checkbox',
-                                // onChange: (
-                                //     selectedRowKey,
-                                //     selectedRows,
-                                // ) => {},
-                                // selectedRowKeys: rowSelectionKeys,
-                            }}
-                        />
-                    </FormSectionBody>
-                </FormSection>
-            </FormSection>
+            </Form>
         </div>
     );
 };

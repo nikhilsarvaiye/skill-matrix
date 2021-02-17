@@ -4,7 +4,7 @@ import { Input } from '@library/input';
 import { Dropdown } from '@library/dropdown';
 import { DatePicker } from '@library/date-picker';
 import { TableDemo } from '@library/table/demo';
-import { DemoForm } from '@library/form/demo';
+// import { DemoForm } from '@library/form/demo';
 import { Button, ButtonHTMLType, ButtonType } from './library/button';
 
 export const AppDemo = () => {
@@ -18,7 +18,7 @@ export const AppDemo = () => {
                         <TableDemo />
                     </div>
                     <div>
-                        <DemoForm />
+                        {/* <DemoForm /> */}
                     </div>
                     <div style={{ display: 'flex', margin: '20px' }}>
                         <Button

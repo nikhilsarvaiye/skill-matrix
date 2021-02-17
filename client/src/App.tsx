@@ -1,11 +1,11 @@
-import { TopMenu } from '@screens/top-menu';
+import { ScreenRoutes } from '@screens/screens.router';
 // import { AppDemo } from './App-Demo';
 import './App.css';
 
 function App() {
     return (
         <div className="app">
-            <TopMenu />
+            <ScreenRoutes />
         </div>
     );
 }

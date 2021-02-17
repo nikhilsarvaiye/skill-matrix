@@ -5,7 +5,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { useFormContext } from 'react-hook-form/dist/index.ie11';
+import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 import { Label } from '@library/label';
 import { FormFieldHandlers } from './form-field.handlers';
