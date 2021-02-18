@@ -1,27 +1,18 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { SkillRouter, SkillRouteNames, SkillEdit, SkillsScreen } from './skill';
+import { SkillRouter } from './skill';
 
 export const ScreenRoutes = () => {
     return (
         <Router>
-            <li>
-                <Link to="/">Home</Link>
-            </li>
-            <li>
-                <Link to="/skills">About</Link>
-            </li>
-            <li>
-                <Link to="/skill">Dashboard</Link>
-            </li>
+            {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+            {/* NS - Switch Route Order is important, as keeping Home route as last, else use 'exact' */}
             <Switch>
-                <Route path="/">
-                    <SkillsScreen />
-                </Route>
                 <Route path="/skills">
-                    <SkillsScreen />
+                    <SkillRouter />
                 </Route>
-                <Route path="/skill/id?">
-                    <SkillEdit />
+                <Route path="/">
+                    <SkillRouter />
                 </Route>
             </Switch>
         </Router>
