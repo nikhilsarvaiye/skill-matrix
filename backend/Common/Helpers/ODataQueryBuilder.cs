@@ -62,7 +62,8 @@
             var binaryOperator = filterClause.Expression as BinaryOperatorNode;
             if (binaryOperator != null)
             {
-                var property = (binaryOperator.Left as ConvertNode).Source as SingleValuePropertyAccessNode;
+                /*
+                 var property = (binaryOperator.Left as ConvertNode).Source as SingleValuePropertyAccessNode;
 
                 //  ?? binaryOperator.Right as SingleValuePropertyAccessNode
                 var constant = binaryOperator.Right as ConstantNode ?? binaryOperator.Right as ConstantNode;
@@ -80,6 +81,7 @@
                         Value = constant.Value
                     });
                 }
+                 */
             }
 
             var inOperator = filterClause.Expression as InNode;

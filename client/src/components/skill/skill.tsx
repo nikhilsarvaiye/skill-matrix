@@ -21,6 +21,7 @@ import { Spin } from '@library/spin';
 import { Input } from '@library/input';
 import { Button, ButtonHTMLType, ButtonType } from '@library/button';
 import { useEffect } from 'react';
+import { SkillPicker } from './skill.picker';
 import { SkillModel } from './skill.model';
 
 export const Skill = ({
@@ -74,15 +75,14 @@ export const Skill = ({
                                     layout={FormSectionLayoutType.Horizontal}
                                     numberOfRowFields={2}
                                 >
-                                    <FormField name="name" label="Name" key="0">
+                                    <FormField name="name" label="Name">
                                         <Input />
                                     </FormField>
-                                    <FormField
-                                        name="skill"
-                                        label="Skill"
-                                        key="1"
-                                    >
+                                    <FormField name="skillId" label="Skill">
                                         <Input />
+                                    </FormField>
+                                    <FormField name="skillId" label="Skill">
+                                        <SkillPicker />
                                     </FormField>
                                 </FormSection>
                             </ScrollBar>

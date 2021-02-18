@@ -51,7 +51,7 @@ interface IProps {
     onKeyDownChange?: KeyboardEventHandler<HTMLElement>;
     onOpen?: () => {};
     onClose?: () => {};
-    onDebouncedValueChange?: (value: any) => {};
+    onDebouncedValueChange?: (value: string) => void;
     loading?: boolean;
     itemRender?: (li: any, itemProps: any) => ReactNode;
     placeholder?: string;

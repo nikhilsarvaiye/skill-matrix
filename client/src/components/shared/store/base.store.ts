@@ -7,6 +7,7 @@ import {
 } from '@library/table';
 import { BaseModel } from '../models';
 import { BaseService } from '../services';
+import { success } from '@library/modal';
 
 export class BaseStore<BaseModel, BaseService> {
     loading = false;
@@ -49,21 +50,37 @@ export class BaseStore<BaseModel, BaseService> {
         }
     };
 
-    create = async (skill: BaseModel) => {
+    create = async (skill: BaseModel, onCreate?: () => void) => {
         try {
             this.loading = true;
             const service = new BaseService(this.route);
-            this.selectedItem = (await service.create(skill)) as BaseModel;
+            // this.selectedItem = (await service.create(skill)) as BaseModel;
+            success({
+                content: `${this.route} has been created successfully.`,
+                onOk: () => {
+                    if (onCreate) {
+                        onCreate();
+                    }
+                },
+            });
         } finally {
             this.loading = false;
         }
     };
 
-    update = async (id: string, skill: BaseModel) => {
+    update = async (id: string, skill: BaseModel, onUpdate?: () => void) => {
         try {
             this.loading = true;
             const service = new BaseService(this.route);
             this.selectedItem = (await service.update(id, skill)) as BaseModel;
+            success({
+                content: `${this.route} has been updated successfully.`,
+                onOk: () => {
+                    if (onUpdate) {
+                        onUpdate();
+                    }
+                },
+            });
         } finally {
             this.loading = false;
         }

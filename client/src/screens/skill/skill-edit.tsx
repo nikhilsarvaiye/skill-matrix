@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Screen } from '@screens/screen';
 import { Skill, SkillModel, SkillStore } from '@components/skill';
+import { SkillRouteNames, SkillRouter } from './skill.router';
 
 export const SkillEdit = () => {
-    debugger;
+    const history = useHistory();
     let { id } = useParams() as any;
 
     useEffect(() => {
@@ -24,9 +25,13 @@ export const SkillEdit = () => {
                 skill={SkillStore.selectedItem}
                 onSave={(skill: SkillModel) => {
                     if (!skill.id) {
-                        SkillStore.create(skill);
+                        SkillStore.create(skill, () => {
+                            history.push(SkillRouteNames.Skills);
+                        });
                     } else {
-                        SkillStore.update(skill.id, skill);
+                        SkillStore.update(skill.id, skill, () => {
+                            history.push(SkillRouteNames.Skills);
+                        });
                     }
                 }}
             />

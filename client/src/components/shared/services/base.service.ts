@@ -11,6 +11,16 @@ export class BaseService<T> {
         return response.data;
     };
 
+    getAllByName = async (name: string, pageSize: number) => {
+        if (!name) {
+            return await this.getAll();
+        }
+        const response = await Api.get<T[]>(
+            `${this.route}?$filter=name eq '${name}'&$top=${pageSize}`,
+        );
+        return response.data;
+    };
+
     get = async (id: string) => {
         const response = await Api.get<T>(`${this.route}/${id}`);
         return response.data;
@@ -22,10 +32,7 @@ export class BaseService<T> {
     };
 
     update = async (id: string, skill: T) => {
-        const response = await Api.put<T>(
-            `${this.route}/${id}`,
-            skill,
-        );
+        const response = await Api.put<T>(`${this.route}/${id}`, skill);
         return response.data;
     };
 }
