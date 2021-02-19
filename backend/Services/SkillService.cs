@@ -56,6 +56,10 @@
 
         public async Task UpdateAsync(string id, Skill skill)
         {
+            var patientValidator = new SkillValidator(this);
+
+            patientValidator.ValidateAndThrow(skill);
+
             await this._skillRepository.UpdateAsync(id, skill).ConfigureAwait(false);
         }
     }

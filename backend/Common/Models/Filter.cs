@@ -6,8 +6,6 @@
     public class Filter : IFilter
     {
         public string Property { get; set; }
-
-        public Type PropertyType { get; set; }
         
         public FilterOperator Operator { get; set; }
         

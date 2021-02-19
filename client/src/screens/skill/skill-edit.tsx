@@ -10,6 +10,7 @@ export const SkillEdit = () => {
     let { id } = useParams() as any;
 
     useEffect(() => {
+        SkillStore.clearSelectedItem();
         if (id) {
             SkillStore.get(id);
         }

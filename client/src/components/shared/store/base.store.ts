@@ -27,6 +27,7 @@ export class BaseStore<BaseModel, BaseService> {
             criteria: observable,
             getAll: action,
             change: action,
+            clearSelectedItem: action,
         });
     }
 
@@ -99,5 +100,9 @@ export class BaseStore<BaseModel, BaseService> {
             // sortField: (sorter as any).field,
             // sortOrder: (sorter as any).order,
         };
+    };
+
+    clearSelectedItem = () => {
+        this.selectedItem = null;
     };
 }
