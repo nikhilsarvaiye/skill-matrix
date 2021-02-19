@@ -158,7 +158,7 @@ export const Dropdown = ({
         if (allowCustom) {
             setInputValue(event.target.value);
             const item = validate(event);
-            handleValueChange(formatEvent(event, event.target.value, item));
+            emitValueChange(formatEvent(event, event.target.value, item));
         }
         if (hasNoValue(event.target.value)) {
             clearValue(event);
@@ -247,7 +247,7 @@ export const Dropdown = ({
         return item;
     };
 
-    const handleValueChange = (event: any) => {
+    const emitValueChange = (event: any) => {
         if (onChange) {
             onChange(event);
         }
@@ -325,7 +325,7 @@ export const Dropdown = ({
             if (onTextChange) {
                 onTextChange(formatEvent(event, '', null));
             }
-            handleValueChange(formatEvent(event, '', null));
+            emitValueChange(formatEvent(event, '', null));
             setSelection(null, event);
         }
 
@@ -389,7 +389,7 @@ export const Dropdown = ({
             if (onTextChange) {
                 onTextChange(formatEvent(event, text, item));
             }
-            handleValueChange(formatEvent(event, value, item));
+            emitValueChange(formatEvent(event, value, item));
         }
     };
 
@@ -690,7 +690,7 @@ export const Dropdown = ({
         } as any;
     };
 
-    const handleValueDataChange = (clearValueIfNotAutoComplete?: boolean) => {
+    const handleValueChange = (clearValueIfNotAutoComplete?: boolean) => {
         const item = parseValidValue(value);
         if (item) {
             setSelection(item);
@@ -734,12 +734,12 @@ export const Dropdown = ({
     useEffect(() => {
         if (data && data.length > 0) {
             handleDataChange();
-            handleValueDataChange();
+            handleValueChange();
         }
     }, [data]);
 
     useEffect(() => {
-        handleValueDataChange(true);
+        handleValueChange(true);
     }, [value]);
 
     useEffect(() => {

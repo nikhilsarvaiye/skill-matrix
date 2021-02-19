@@ -79,8 +79,9 @@ export const Skills = ({
                                     ></FontAwesomeIcon>
                                 }
                                 type={ButtonType.Tertiary}
+                                onClick={onNew}
                             >
-                                <Link to={'/skill'}>New</Link>
+                                New
                             </Button>
                         </FormSection>
                     </FormSectionHeader>

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Observer } from 'mobx-react';
 import { Screen } from '@screens/screen';
 import { Skills, SkillModel, SkillStore } from '@components/skill';
-import { error } from '@library/modal/modal';
-import { success } from '@library/modal';
+import { Routes } from './skill.router';
 
 export const SkillsScreen = () => {
+    const history = useHistory();
     useEffect(() => {
         SkillStore.getAll();
     }, []);
@@ -18,16 +19,10 @@ export const SkillsScreen = () => {
                         loading={SkillStore.loading}
                         onChange={SkillStore.change}
                         onNew={() => {
-                            error({
-                                content: 'Need to implement',
-                                onOk: () => {},
-                            });
+                            history.push(Routes.RouteToSkill(undefined));
                         }}
                         onEdit={(skill: SkillModel) => {
-                            success({
-                                content: 'Edit ' + skill.name,
-                                onOk: () => {},
-                            });
+                            history.push(Routes.RouteToSkill(skill.id));
                         }}
                         pagination={{
                             current: SkillStore.criteria.page,

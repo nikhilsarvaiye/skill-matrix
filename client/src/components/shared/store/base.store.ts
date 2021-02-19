@@ -54,7 +54,7 @@ export class BaseStore<BaseModel, BaseService> {
         try {
             this.loading = true;
             const service = new BaseService(this.route);
-            // this.selectedItem = (await service.create(skill)) as BaseModel;
+            this.selectedItem = (await service.create(skill)) as BaseModel;
             success({
                 content: `${this.route} has been created successfully.`,
                 onOk: () => {

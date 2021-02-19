@@ -1,8 +1,13 @@
 ﻿namespace Repositories.Helpers
 {
     using Common.Abstractions;
+    using Common.Models;
     using Models;
+    using MongoDB.Bson;
     using MongoDB.Driver;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public static class MongoDbQueryHelper
     {
@@ -67,19 +72,23 @@
             where T : BaseModel
         {
             // return Builders<T>.Filter.Eq("", "1");
-            
+            if (request.Filters?.Count > 0)
+            {
+                var filterDefinition = GetFilterDefinitions<T>(null, request.Filters);
+                return filterDefinition;
+            }
             return Builders<T>.Filter.Empty;
         }
 
-        /*
-        private static FilterDefinition<T> GetFilterDefinition<T>(this FilterDefinition<T> filterDefinition, List<IFilter> filters, LogicalOperator logicalOperator = LogicalOperator.And, int filterCount = 0)
+        private static FilterDefinition<T> GetFilterDefinitions<T>(this FilterDefinition<T> filterDefinition, List<IFilter> filters, LogicalOperator logicalOperator = LogicalOperator.And)
             where T : BaseModel
         {
             if (filters == null)
             {
-                return filterDefinition;
+                return null;
             }
 
+            var filterDefinitions = new List<FilterDefinition<T>>();
             foreach (var filterItem in filters)
             {
                 switch (filterItem)
@@ -87,69 +96,94 @@
                     case CompositeFilter _:
 
                         var compositeFilter = filterItem as CompositeFilter;
-                        filterDefinition = GetFilterDefinition(filterDefinition,
+
+                        filterDefinition = GetFilterDefinitions(filterDefinition,
                                                                     compositeFilter?.Filters,
-                                                                    compositeFilter.LogicalOperator,
-                                                                    filterCount);
+                                                                    compositeFilter.LogicalOperator);
+                        filterDefinitions.Add(filterDefinition);
                         break;
 
                     case Filter _:
 
                         var filter = filterItem as Filter;
-                        filterCount++;
-                        if ((!string.IsNullOrEmpty(logicalOperator) && filterDefinition.Contains(logicalOperator)) || (filterCount == 2))
-                        {
-                            filterDefinition = $"{filterDefinition} {logicalOperator} ";
-                        }
-
-                        filterDefinition = $"{filterDefinition}{filter.GetFilterExpression()}";
+                        filterDefinitions.Add(filter.GetFilterExpression<T>());
                         break;
                 }
+            }
+
+            if (filterDefinitions.Count == 1)
+            {
+                return filterDefinitions.FirstOrDefault();
+            }
+            else if (filterDefinitions.Count == 2)
+            {
+                return logicalOperator.GetFilterExpression<T>(filterDefinitions);
             }
 
             return filterDefinition;
         }
 
-        private static FilterDefinition<T> GetFilterExpression<T>(this FilterDefinition<T> filterDefinition, Filter filter)
+        private static List<FilterDefinition<T>> ClubFilters<T>(this List<FilterDefinition<T>> filterDefinitions, LogicalOperator logicalOperator)
             where T : BaseModel
         {
-            // [NS] TODO: Need to write for other operator like IN
-            FilterDefinition<T> filterDefinition;
+            if (filterDefinitions.Count <= 1)
+            {
+                return filterDefinitions;
+            }
+
+            var clubFilters = new List<FilterDefinition<T>>();
+
+            foreach (var range in Enumerable.Range(0, filterDefinitions.Count - 2).Select(x => x))
+            {
+                clubFilters.Add(filterDefinitions[range]);
+            }
+
+            clubFilters.Add(logicalOperator.GetFilterExpression<T>(filterDefinitions));
+            return clubFilters;
+        }
+
+        private static FilterDefinition<T> GetFilterExpression<T>(this LogicalOperator logicalOperator, IEnumerable<FilterDefinition<T>> filters)
+            where T : BaseModel
+        {
+            switch (logicalOperator)
+            {
+                case LogicalOperator.And:
+                    return Builders<T>.Filter.And(filters);
+                case LogicalOperator.Or:
+                    return Builders<T>.Filter.Or(filters);
+                default:
+                    throw new NotImplementedException(nameof(logicalOperator));
+            }
+        }
+
+        private static FilterDefinition<T> GetFilterExpression<T>(this Filter filter)
+            where T : BaseModel
+        {
             var filterColumn = $"{filter.Property}";
             var filterValue = GetFilterValue(filter.Value);
 
             switch (filter.Operator)
             {
                 case FilterOperator.IsEqualTo:
-                    filterDefinition = filterDefinition;
-                    break;
+                    return Builders<T>.Filter.Eq(filterColumn, filterValue);
                 case FilterOperator.IsNotEqualTo:
-                    filterDefinition = $"{filterColumn}!={filterValue}";
-                    break;
+                    return Builders<T>.Filter.Not(Builders<T>.Filter.Eq(filterColumn, filterValue));
                 case FilterOperator.IsGreaterThan:
-                    filterDefinition = $"{filterColumn}>{filterValue}";
-                    break;
+                    return Builders<T>.Filter.Gt(filterColumn, filterValue);
                 case FilterOperator.IsGreaterThanOrEqualTo:
-                    filterDefinition = $"{filterColumn}>{filterValue}";
-                    break;
+                    return Builders<T>.Filter.Gte(filterColumn, filterValue);
                 case FilterOperator.IsLessThan:
-                    filterDefinition = $"{filterColumn}<{filterValue}";
-                    break;
+                    return Builders<T>.Filter.Lt(filterColumn, filterValue);
                 case FilterOperator.IsLessThanOrEqualTo:
-                    filterDefinition = $"{filterColumn}<={filterValue}";
-                    break;
+                    return Builders<T>.Filter.Lte(filterColumn, filterValue);
                 case FilterOperator.Contains:
-                    filterDefinition = $"CONTAINS(LOWER({filterColumn}),LOWER({filterValue}))";
-                    break;
+                    return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"{filterValue}", "i"));
                 case FilterOperator.StartsWith:
-                    filterDefinition = $"STARTSWITH(LOWER({filterColumn}),LOWER({filterValue}))";
-                    break;
+                    return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"^{filterValue}", "i"));
                 case FilterOperator.EndsWith:
-                    filterDefinition = $"ENDSWITH(LOWER({filterColumn}),LOWER({filterValue}))";
-                    break;
+                    return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"{filterValue}$", "i"));
                 case FilterOperator.IsNull:
-                    filterDefinition = $"IS_NULL({filterColumn})";
-                    break;
+                    throw new NotImplementedException(nameof(filter.Operator));
                 case FilterOperator.IsContainedIn:
                     throw new NotImplementedException(nameof(filter.Operator));
                 case FilterOperator.DoesNotContain:
@@ -163,20 +197,22 @@
                 default:
                     throw new NotImplementedException(nameof(filter.Operator));
             }
-
-            return filterDefinition;
         }
 
         private static object GetFilterValue(object value)
         {
             // [NS] TODO: Need to write for other types like date
+            // ObjectId? objectId = null;
             if (value is bool)
             {
-                return Convert.ToBoolean(value) ? 1 : 0;
+                return Convert.ToBoolean(value) ? true : false;
+            }
+            else if (ObjectId.TryParse(Convert.ToString(value), out ObjectId objectId) && objectId != null)
+            {
+                return objectId;
             }
 
-            return value is string ? $"'{value}'" : value;
+            return value;
         }
-        */
     }
 }

@@ -26,8 +26,13 @@
         }
 
         [HttpGet]
-        public async Task<IResponse<Skill>> GetAsync()
+        public async Task<IResponse<Skill>> GetAsync(string id = null)
         {
+            if (!string.IsNullOrEmpty(id))
+            {
+                return new List<Skill>() { await this._skillService.GetAsync(id) }.ToResponse();
+            }
+
             // https://localhost:5001/skill?$select=Id&$filter=Id eq '01'&$orderby=Id desc&$top=1&$count=true&$search=tom
             var request = this.Request.ToPaginationCriteria<Skill>();
 
@@ -38,6 +43,17 @@
         public async Task<Skill> CreateAsync(Skill skill)
         {
             return await this._skillService.CreateAsync(skill);
+        }
+
+        [HttpPut]
+        public async Task UpdateAsync(string id, Skill skill)
+        {
+            if(string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            await this._skillService.UpdateAsync(skill.Id, skill);
         }
     }
 }

@@ -7,10 +7,31 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const getSkills = async (key: string) => {
+        if (!key) {
+            return;
+        }
         try {
             setLoading(true);
             var skillService = new SkillService();
-            const skills = await skillService.getAllByName(key, 20);
+            const skills = await skillService.getAll({
+                filter: key
+                    ? {
+                          or: [
+                              {
+                                  name: {
+                                      startswith: key,
+                                  },
+                              },
+                              {
+                                  name: {
+                                      contains: key,
+                                  },
+                              },
+                          ],
+                      }
+                    : {},
+                select: ['id', 'name'],
+            });
             setSkills(skills);
         } finally {
             setLoading(false);
@@ -20,6 +41,10 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
     const handleDebouncedValueChange = (debouncedValue: string) => {
         getSkills(debouncedValue);
     };
+
+    useEffect(() => {
+        getSkills('');
+    }, []);
 
     return (
         <Dropdown

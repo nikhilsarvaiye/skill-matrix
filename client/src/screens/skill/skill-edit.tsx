@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { Observer } from 'mobx-react';
 import { Screen } from '@screens/screen';
 import { Skill, SkillModel, SkillStore } from '@components/skill';
-import { SkillRouteNames, SkillRouter } from './skill.router';
+import { Routes } from './skill.router';
 
 export const SkillEdit = () => {
     const history = useHistory();
@@ -15,26 +16,33 @@ export const SkillEdit = () => {
     }, [id]);
 
     return (
-        <Screen>
-            <Skill
-                initialState={{
-                    name: '',
-                    skill: '',
-                }}
-                loading={SkillStore.loading}
-                skill={SkillStore.selectedItem}
-                onSave={(skill: SkillModel) => {
-                    if (!skill.id) {
-                        SkillStore.create(skill, () => {
-                            history.push(SkillRouteNames.Skills);
-                        });
-                    } else {
-                        SkillStore.update(skill.id, skill, () => {
-                            history.push(SkillRouteNames.Skills);
-                        });
-                    }
-                }}
-            />
-        </Screen>
+        <Observer>
+            {() => (
+                <Screen>
+                    <Skill
+                        initialState={{
+                            name: '',
+                            skill: '',
+                        }}
+                        loading={SkillStore.loading}
+                        skill={SkillStore.selectedItem}
+                        onSave={(skill: SkillModel) => {
+                            if (!skill.id) {
+                                SkillStore.create(skill, () => {
+                                    history.push(Routes.Skills);
+                                });
+                            } else {
+                                SkillStore.update(skill.id, skill, () => {
+                                    history.push(Routes.Skills);
+                                });
+                            }
+                        }}
+                        onCancel={() => {
+                            history.goBack();
+                        }}
+                    />
+                </Screen>
+            )}
+        </Observer>
     );
 };

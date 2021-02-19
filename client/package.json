@@ -20,6 +20,7 @@
     "mobx": "^6.1.6",
     "mobx-react": "^7.1.0",
     "mobx-utils": "^6.0.3",
+    "odata-query": "^6.7.0",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-custom-scrollbars": "^4.2.1",

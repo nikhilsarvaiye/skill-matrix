@@ -29,11 +29,13 @@ export const Skill = ({
     skill,
     loading,
     onSave,
+    onCancel,
 }: {
     initialState: any;
     skill: SkillModel | null;
     loading: boolean;
     onSave: (values: SkillModel) => void;
+    onCancel: () => void;
 }) => {
     const form = useForm({
         defaultValues: initialState,
@@ -45,6 +47,10 @@ export const Skill = ({
         },
         onReset: (values: SkillModel, form: IForm) => {},
     });
+
+    const isUpdate = (): boolean => {
+        return skill && skill.id ? true : false;
+    };
 
     useEffect(() => {
         form.setValues(skill);
@@ -105,7 +111,7 @@ export const Skill = ({
                                             form.submitForm();
                                         }}
                                     >
-                                        Add
+                                        {isUpdate() ? 'Update' : 'Add'}
                                     </Button>
                                 </FormAction>
                                 <FormAction>
@@ -121,6 +127,19 @@ export const Skill = ({
                                         }}
                                     >
                                         Clear
+                                    </Button>
+                                </FormAction>
+                                <FormAction>
+                                    <Button
+                                        startIcon={
+                                            <FontAwesomeIcon
+                                                icon={faEraser}
+                                            ></FontAwesomeIcon>
+                                        }
+                                        type={ButtonType.Secondary}
+                                        onClick={onCancel}
+                                    >
+                                        Cancel
                                     </Button>
                                 </FormAction>
                             </FormSection>

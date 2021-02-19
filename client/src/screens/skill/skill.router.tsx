@@ -7,9 +7,12 @@ import {
 import { SkillsScreen } from './skills';
 import { SkillEdit } from './skill-edit';
 
-export const SkillRouteNames = {
-    Skills: 'skills',
-    EditSkill: '/skill/:id?',
+export const Routes = {
+    Skills: '/skills',
+    Skill: '/skill',
+    RouteToSkill: (id?: string) => {
+        return id ? `skill/${id}` : `/skill`;
+    },
 };
 
 export const SkillRouter = ({ routes }: any) => {
@@ -20,7 +23,7 @@ export const SkillRouter = ({ routes }: any) => {
 
     return (
         <Switch>
-            <Route path={SkillRouteNames.EditSkill}>
+            <Route path={`${Routes.Skill}/:id?`}>
                 <SkillEdit />
             </Route>
             <Route path={url}>

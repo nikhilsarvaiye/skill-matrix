@@ -9,6 +9,7 @@
     using Models;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public static class ODataQueryBuilder
     {
@@ -57,45 +58,130 @@
                 return null;
             }
 
-            var filters = new List<IFilter>();
+            var filters = new List<IFilter>().ToFilters(filterClause.Expression);
 
-            var binaryOperator = filterClause.Expression as BinaryOperatorNode;
-            if (binaryOperator != null)
+            return filters;
+        }
+
+        private static List<IFilter> ToFilters(this List<IFilter> filters, QueryNode queryNode)
+        {
+            filters = filters ?? new List<IFilter>();
+
+
+            switch (queryNode.GetType().Name)
             {
-                /*
-                 var property = (binaryOperator.Left as ConvertNode).Source as SingleValuePropertyAccessNode;
-
-                //  ?? binaryOperator.Right as SingleValuePropertyAccessNode
-                var constant = binaryOperator.Right as ConstantNode ?? binaryOperator.Right as ConstantNode;
-
-                if (property != null && property.Property != null && constant != null && constant.Value != null)
-                {
-                    Console.WriteLine("Property: " + property.Property.Name);
-                    Console.WriteLine("Operator: " + binaryOperator.OperatorKind);
-                    Console.WriteLine("Value: " + constant.LiteralText);
-                    filters.Add(new Filter()
+                case nameof(BinaryOperatorNode):
                     {
-                        Operator = binaryOperator.OperatorKind.ToFilterOperator(),
-                        Property = property.Property.Name,
-                        PropertyType = typeof(SingleValuePropertyAccessNode),
-                        Value = constant.Value
-                    });
-                }
-                 */
-            }
+                        var binaryOperator = queryNode as BinaryOperatorNode;
+                        
+                        var property = binaryOperator.Left.GetProperty();
+                        if (property == null)
+                        {
+                            filters = filters.ToFilters(binaryOperator.Left);
+                        }
 
-            var inOperator = filterClause.Expression as InNode;
-            if (inOperator != null)
-            {
-                var property = inOperator.Left as SingleValueNode;
-                var constant = inOperator.Right as CollectionNode;
+                        var value = binaryOperator.Right.GetValue();
+                        if (value == null)
+                        {
+                            filters = filters.ToFilters(binaryOperator.Right);
+                        }
 
-                Console.WriteLine("Property: " + inOperator.Left.ToString());
-                Console.WriteLine("Operator: " + inOperator.Kind);
-                Console.WriteLine("Value: " + inOperator.Right.ToString());
+                        if (binaryOperator.OperatorKind.IsLogicalOperator() && filters.Count >= 2)
+                        {
+                            filters = filters.ClubFilters(binaryOperator.OperatorKind);
+                        }
+                        
+                        if (property != null && value != null)
+                        {
+                            filters.Add(new Filter()
+                            {
+                                Operator = binaryOperator.OperatorKind.ToFilterOperator(),
+                                Property = property,
+                                Value = value
+                            });
+                        }
+                    };
+                    break;
+                case nameof(SingleValueFunctionCallNode):
+                    {
+                        var singleValueFunctionCallNode = (queryNode as SingleValueFunctionCallNode);
+                        var parameters = singleValueFunctionCallNode.Parameters.ToList();
+
+                        var property = parameters.FirstOrDefault().GetProperty();
+                        var value = parameters.LastOrDefault().GetValue();
+                        filters.Add(new Filter()
+                        {
+                            Operator = singleValueFunctionCallNode.Name.ToFilterOperator(),
+                            Property = property,
+                            Value = value
+                        });
+
+                    }; break;
             }
 
             return filters;
+        }
+
+        private static string GetProperty(this QueryNode queryNode)
+        {
+            switch (queryNode.GetType().Name)
+            {
+                case nameof(BinaryOperatorNode):
+                    {
+                        var binaryOperator = queryNode as BinaryOperatorNode;
+
+                        return binaryOperator.Left.GetProperty();
+                    };
+                case nameof(ConvertNode): return (queryNode as ConvertNode).Source.GetProperty();
+                case nameof(SingleValuePropertyAccessNode): return (queryNode as SingleValuePropertyAccessNode).Property.Name;
+                case nameof(ConstantNode): return (queryNode as ConstantNode).GetProperty();
+            }
+
+            return null;
+        }
+
+        private static object GetValue(this QueryNode queryNode)
+        {
+            switch (queryNode.GetType().Name)
+            {
+                case nameof(BinaryOperatorNode):
+                    {
+                        var binaryOperator = queryNode as BinaryOperatorNode;
+
+                        return binaryOperator.Right.GetValue();
+                    };
+                case nameof(ConvertNode): return (queryNode as ConvertNode).Source.GetValue();
+                case nameof(SingleValuePropertyAccessNode): return (queryNode as SingleValuePropertyAccessNode).GetValue();
+                case nameof(ConstantNode): return (queryNode as ConstantNode).Value;
+            }
+
+            return null;
+        }
+
+        private static List<IFilter> ClubFilters(this List<IFilter> filters, BinaryOperatorKind binaryOperatorKind)
+        {
+            if (filters.Count <= 1)
+            {
+                return filters;
+            }
+            
+            var clubFilters = new List<IFilter>();
+            
+            foreach (var range in Enumerable.Range(0, filters.Count - 2).Select(x => x))
+            {
+                clubFilters.Add(filters[range]);
+            }
+
+            clubFilters.Add(new CompositeFilter()
+            {
+                LogicalOperator = binaryOperatorKind.ToLogicalOperator(),
+                Filters = new List<IFilter>()
+                                    {
+                                        filters[filters.Count - 2],
+                                        filters.LastOrDefault()
+                                    }
+            });
+            return clubFilters;
         }
 
         private static List<string> ToSelect(this SelectExpandClause selectExpandClause)
@@ -146,6 +232,28 @@
             return sorts;
         }
 
+        private static bool IsLogicalOperator(this BinaryOperatorKind binaryOperatorKind)
+        {
+            switch (binaryOperatorKind)
+            {
+                case BinaryOperatorKind.And: return true;
+                case BinaryOperatorKind.Or: return true;
+            }
+
+            return false;
+        }
+
+        private static LogicalOperator ToLogicalOperator(this BinaryOperatorKind binaryOperatorKind)
+        {
+            switch (binaryOperatorKind)
+            {
+                case BinaryOperatorKind.And: return LogicalOperator.And;
+                case BinaryOperatorKind.Or: return LogicalOperator.Or;
+            }
+
+            throw new NotImplementedException(nameof(binaryOperatorKind));
+        }
+
         private static FilterOperator ToFilterOperator(this BinaryOperatorKind binaryOperatorKind)
         {
             switch (binaryOperatorKind)
@@ -160,6 +268,17 @@
             }
 
             throw new NotImplementedException(nameof(binaryOperatorKind));
+        }
+
+        private static FilterOperator ToFilterOperator(this string operatorName)
+        {
+            switch (operatorName.ToLowerInvariant())
+            {
+                case "startswith": return FilterOperator.StartsWith;
+                case "contains": return FilterOperator.Contains;
+            }
+
+            throw new NotImplementedException(nameof(operatorName));
         }
 
         private static IEdmModel GetEdmModel<T>(string entityName)
