@@ -5,14 +5,14 @@ import {
     SorterResult,
     TableCurrentDataSource,
 } from '@library/table';
-import { BaseModel } from '../models';
-import { BaseService } from '../services';
+import { IService } from '../services';
 import { success } from '@library/modal';
+import { QueryOptions } from 'odata-query';
 
-export class BaseStore<BaseModel, BaseService> {
+export class BaseStore<IModel> {
     loading = false;
-    items: BaseModel[] = [];
-    selectedItem: BaseModel | null = null;
+    items: IModel[] = [];
+    selectedItem: IModel | null = null;
     criteria = {
         page: 1,
         pageSize: 25,
@@ -20,7 +20,7 @@ export class BaseStore<BaseModel, BaseService> {
     /**
      *
      */
-    constructor(public route: string) {
+    constructor(public service: IService<IModel>) {
         makeObservable(this, {
             loading: observable,
             items: observable,
@@ -31,11 +31,10 @@ export class BaseStore<BaseModel, BaseService> {
         });
     }
 
-    getAll = async (searchCriteria?: any) => {
+    getAll = async (queryOptions?: Partial<QueryOptions<IModel>>) => {
         try {
             this.loading = true;
-            const service = new BaseService(this.route);
-            this.items = (await service.getAll()) as BaseModel[];
+            this.items = (await this.service.getAll(queryOptions)) as IModel[];
         } finally {
             this.loading = false;
         }
@@ -44,20 +43,18 @@ export class BaseStore<BaseModel, BaseService> {
     get = async (id: string) => {
         try {
             this.loading = true;
-            const service = new BaseService(this.route);
-            this.selectedItem = (await service.get(id)) as BaseModel;
+            this.selectedItem = (await this.service.get(id)) as IModel;
         } finally {
             this.loading = false;
         }
     };
 
-    create = async (skill: BaseModel, onCreate?: () => void) => {
+    create = async (skill: IModel, onCreate?: () => void) => {
         try {
             this.loading = true;
-            const service = new BaseService(this.route);
-            this.selectedItem = (await service.create(skill)) as BaseModel;
+            this.selectedItem = (await this.service.create(skill)) as IModel;
             success({
-                content: `${this.route} has been created successfully.`,
+                content: `${this.service.name} has been created successfully.`,
                 onOk: () => {
                     if (onCreate) {
                         onCreate();
@@ -69,13 +66,12 @@ export class BaseStore<BaseModel, BaseService> {
         }
     };
 
-    update = async (id: string, skill: BaseModel, onUpdate?: () => void) => {
+    update = async (id: string, skill: IModel, onUpdate?: () => void) => {
         try {
             this.loading = true;
-            const service = new BaseService(this.route);
-            this.selectedItem = (await service.update(id, skill)) as BaseModel;
+            await this.service.update(id, skill);
             success({
-                content: `${this.route} has been updated successfully.`,
+                content: `${this.service.name} has been updated successfully.`,
                 onOk: () => {
                     if (onUpdate) {
                         onUpdate();
