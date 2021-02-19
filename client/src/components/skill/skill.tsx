@@ -35,9 +35,6 @@ export const Skill = ({
                     <Input />
                 </FormField>
                 <FormField name="skillId" label="Skill">
-                    <Input />
-                </FormField>
-                <FormField name="skillId" label="Skill">
                     <SkillPicker />
                 </FormField>
             </FormSection>
