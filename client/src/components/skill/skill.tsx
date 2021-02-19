@@ -1,18 +1,18 @@
 import { validationSchema } from './skill.validator';
 import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
 import { Input } from '@library/input';
-import { BaseCrudForm } from '@components/shared/components';
+import { BaseCrudForm } from '@components/base/components';
 import { SkillPicker } from './skill.picker';
 import { SkillModel } from './skill.model';
 
 export const Skill = ({
-    initialState,
+    defaultValues,
     skill,
     loading,
     onSave,
     onCancel,
 }: {
-    initialState: any;
+    defaultValues: any;
     skill: SkillModel | null;
     loading: boolean;
     onSave: (values: SkillModel) => void;
@@ -20,7 +20,7 @@ export const Skill = ({
 }) => {
     return (
         <BaseCrudForm
-            initialState={initialState}
+            defaultValues={defaultValues}
             model={skill}
             loading={loading}
             onSave={onSave}

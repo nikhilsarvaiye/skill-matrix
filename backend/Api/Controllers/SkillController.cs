@@ -55,5 +55,16 @@
 
             await this._skillService.UpdateAsync(skill.Id, skill);
         }
+
+        [HttpDelete]
+        public async Task DeleteAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            await this._skillService.RemoveAsync(id);
+        }
     }
 }

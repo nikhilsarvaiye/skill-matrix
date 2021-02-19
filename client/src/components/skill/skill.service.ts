@@ -1,4 +1,4 @@
-import { IService, BaseService } from '@components/shared/services';
+import { IService, BaseService } from '@components/base/services';
 import { SkillModel } from './skill.model';
 
 export class SkillService

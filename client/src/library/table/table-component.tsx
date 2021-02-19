@@ -12,13 +12,16 @@ import {
     ExpandableConfig,
     Key,
     SorterResult,
-    SortOrder,
     TableCurrentDataSource,
     TablePaginationConfig,
     TableRowSelection,
 } from 'antd/lib/table/interface';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
+export enum SortOrder {
+    Descend = 'descend',
+    Ascend = 'ascend',
+}
 export enum TableLayout {
     Auto = 'auto',
     Fixed = 'fixed',
@@ -55,9 +58,9 @@ export interface ITableComponentProps {
     sortDirections?: SortOrder[];
     showSorterTooltip?: boolean;
     className?: string;
-    height?: number;
+    height?: string;
     rowKey?: string | GetRowKey<any>;
-    width?: number;
+    width?: string;
     components?: TableComponents<any>;
     maxHeight?: string;
     sticky?: boolean | TableSticky;
@@ -160,5 +163,4 @@ export type {
     Key,
     TableCurrentDataSource,
     SorterResult,
-    SortOrder,
 };

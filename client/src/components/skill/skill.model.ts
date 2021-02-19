@@ -1,4 +1,4 @@
-import { BaseModel } from "@components/shared/models/base.model";
+import { BaseModel } from '@components/base/models/base.model';
 
 export class SkillModel extends BaseModel {
     name?: string;

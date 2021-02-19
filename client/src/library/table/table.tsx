@@ -26,9 +26,9 @@ export const Table = ({
 }: ITableProps) => {
     const [tableColumns, setTableColumns] = useState(columns);
     scroll = scroll || {};
-    
+
     // Uncomment for Fix Heigh
-    // scroll.y = scroll.y || emptyPlaceholderHeight;
+    // scroll.y = scroll.y || maxHeight;
 
     // const handleResizeColumns = () => {
     //     const htmlDocumentFontSize = getHtmlDocumentFontSize();

@@ -183,17 +183,17 @@
                 case FilterOperator.EndsWith:
                     return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"{filterValue}$", "i"));
                 case FilterOperator.IsNull:
-                    throw new NotImplementedException(nameof(filter.Operator));
+                    return Builders<T>.Filter.Exists(filterColumn, false);
                 case FilterOperator.IsContainedIn:
-                    throw new NotImplementedException(nameof(filter.Operator));
+                    return Builders<T>.Filter.In(filterColumn, new List<object>() { filter.Value });
                 case FilterOperator.DoesNotContain:
-                    throw new NotImplementedException(nameof(filter.Operator));
+                    return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"^((?!{filterValue}).)*$", "i"));
                 case FilterOperator.IsNotNull:
-                    throw new NotImplementedException(nameof(filter.Operator));
+                    return Builders<T>.Filter.Exists(filterColumn);
                 case FilterOperator.IsEmpty:
-                    throw new NotImplementedException(nameof(filter.Operator));
+                    return Builders<T>.Filter.Eq(filterColumn, string.Empty);
                 case FilterOperator.IsNotEmpty:
-                    throw new NotImplementedException(nameof(filter.Operator));
+                    return Builders<T>.Filter.Not(Builders<T>.Filter.Eq(filterColumn, string.Empty));
                 default:
                     throw new NotImplementedException(nameof(filter.Operator));
             }

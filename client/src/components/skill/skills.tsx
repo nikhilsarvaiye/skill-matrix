@@ -1,7 +1,7 @@
 import {
     BaseCrudTable,
     IBaseCrudTableProps,
-} from '@components/shared/components';
+} from '@components/base/components';
 
 export interface ISKillsProps extends IBaseCrudTableProps {}
 
@@ -12,6 +12,7 @@ export const Skills = ({
     onEdit,
     pagination,
     onChange,
+    onDelete,
 }: ISKillsProps) => {
     const columns = [
         {
@@ -38,6 +39,7 @@ export const Skills = ({
             onEdit={onEdit}
             pagination={pagination}
             onChange={onChange}
+            onDelete={onDelete}
         />
     );
 };

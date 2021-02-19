@@ -84,13 +84,13 @@
 
         &.quaternary {
             background-color: $button-quaternary-background-color;
+            color: $button-quaternary-color;
             border: 0.1em solid $button-quaternary-border-color;
             border-radius: 0.4em;
             height: 1.7em;
             line-height: 1.7em;
             min-width: auto;
             width: auto;
-            color: $button-quaternary-color;
             padding: 0em 0.6em;
             display: flex;
             align-items: center;
@@ -98,6 +98,15 @@
 
             &:hover:not([disabled]) {
                 background-color: #a7bbd8;
+            }
+
+            &.danger {
+                background-color: $button-quaternary-danger-background-color;
+                color: $button-quaternary-danger-color;
+                border: 0.1em solid $button-quaternary-danger-border-color;
+                &:hover:not([disabled]) {
+                    background-color: $button-quaternary-danger-hover-background-color;
+                }
             }
         }
 

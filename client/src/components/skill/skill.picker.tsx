@@ -13,7 +13,7 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
         try {
             setLoading(true);
             var skillService = new SkillService();
-            const skills = await skillService.getAll({
+            const skills = await skillService.list({
                 filter: key
                     ? {
                           or: [

@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Observer } from 'mobx-react';
 import { Screen } from '@screens/screen';
-import { Skill, SkillModel } from '@components/skill';
-import { skillStore } from '@components/ioc';
-import { Routes } from './skill.router';
+import { Skill, SkillModel, skillStore } from '@components/skill';
+import { SkillRouter } from './skill.router';
 
 export const SkillEdit = () => {
     const history = useHistory();
@@ -22,21 +21,18 @@ export const SkillEdit = () => {
             {() => (
                 <Screen>
                     <Skill
-                        initialState={{
-                            name: '',
-                            skill: '',
-                        }}
+                        defaultValues={skillStore.defaultValues}
                         loading={skillStore.loading}
                         skill={skillStore.selectedItem}
                         onSave={(skill: SkillModel) => {
                             if (!skill.id) {
                                 skillStore.create(skill, () => {
-                                    history.push(Routes.Skills);
+                                    history.push(
+                                        SkillRouter.getRoutes().root.path,
+                                    );
                                 });
                             } else {
-                                skillStore.update(skill.id, skill, () => {
-                                    history.push(Routes.Skills);
-                                });
+                                skillStore.update(skill.id, skill);
                             }
                         }}
                         onCancel={() => {

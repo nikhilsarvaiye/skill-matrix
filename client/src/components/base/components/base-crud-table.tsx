@@ -1,3 +1,4 @@
+import { Fragment, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -18,9 +19,9 @@ import {
     FormSectionHeaderTitle,
 } from '@library/form';
 import { IModel } from '../models';
+import { Label } from '@library/label';
 
 export interface IBaseCrudTableProps {
-    title: string;
     loading: boolean;
     data: any[];
     onNew: () => void;
@@ -32,6 +33,11 @@ export interface IBaseCrudTableProps {
         sorter: SorterResult<any> | SorterResult<any>[],
         extra: TableCurrentDataSource<any>,
     ) => void;
+    onDelete?: (id: string) => void;
+}
+
+export interface IBaseCrudTableAdditionalProps extends IBaseCrudTableProps {
+    title: string;
     columns: any[];
 }
 
@@ -44,7 +50,38 @@ export const BaseCrudTable = ({
     pagination,
     onChange,
     columns,
-}: IBaseCrudTableProps) => {
+    onDelete,
+}: IBaseCrudTableAdditionalProps) => {
+    const addDelete = () => {
+        if (onDelete) {
+            columns = columns || [];
+            columns.push({
+                title: 'Delete',
+                // dataIndex: 'skill',
+                key: 'delete',
+                render: (text: string, item: any) => (
+                    <Fragment>
+                        <Button
+                            type={ButtonType.Quaternary}
+                            onClick={() => {
+                                if (onDelete) {
+                                    onDelete(item.id);
+                                }
+                            }}
+                            danger
+                        >
+                            Delete
+                        </Button>
+                    </Fragment>
+                ),
+            });
+        }
+    };
+
+    useEffect(() => {
+        addDelete();
+    }, []);
+
     return (
         <FormSection theme={FormSectionTheme.White}>
             <FormSection>
@@ -76,7 +113,7 @@ export const BaseCrudTable = ({
                     <Table
                         columns={columns}
                         dataSource={data}
-                        // pagination={pagination}
+                        pagination={pagination}
                         loading={loading}
                         onChange={onChange}
                         rowKey="id"

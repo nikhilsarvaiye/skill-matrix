@@ -58,9 +58,7 @@
                 return null;
             }
 
-            var filters = new List<IFilter>().ToFilters(filterClause.Expression);
-
-            return filters;
+            return new List<IFilter>().ToFilters(filterClause.Expression);
         }
 
         private static List<IFilter> ToFilters(this List<IFilter> filters, QueryNode queryNode)

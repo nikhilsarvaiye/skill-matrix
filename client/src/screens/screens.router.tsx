@@ -9,10 +9,10 @@ export const ScreenRoutes = () => {
             {/* NS - Switch Route Order is important, as keeping Home route as last, else use 'exact' */}
             <Switch>
                 <Route path="/skills">
-                    <SkillRouter />
+                    <SkillRouter.Router />
                 </Route>
                 <Route path="/">
-                    <SkillRouter />
+                    <SkillRouter.Router />
                 </Route>
             </Switch>
         </Router>

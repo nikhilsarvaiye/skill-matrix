@@ -21,7 +21,7 @@ import { Button, ButtonType } from '@library/button';
 import { IModel } from '../models';
 
 export const BaseCrudForm = ({
-    initialState,
+    defaultValues,
     model,
     loading,
     onSave,
@@ -29,7 +29,7 @@ export const BaseCrudForm = ({
     validationSchema,
     children,
 }: {
-    initialState: any;
+    defaultValues: any;
     model: IModel | null;
     loading: boolean;
     onSave: (values: IModel) => void;
@@ -38,7 +38,7 @@ export const BaseCrudForm = ({
     children?: ReactNode;
 }) => {
     const form = useForm({
-        defaultValues: initialState,
+        defaultValues: defaultValues,
         validationSchema: validationSchema,
         onSubmit: (values: IModel, form: IForm) => {
             if (onSave) {
