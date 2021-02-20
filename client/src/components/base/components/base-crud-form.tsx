@@ -73,7 +73,7 @@ export const BaseCrudForm = ({
                 </FormSectionHeader>
                 <Spin spinning={loading}>
                     <FormSectionBody padding>
-                        <ScrollBar autoHeightMax={'calc(100vh - 200px)'}>
+                        <ScrollBar autoHeightMax={'calc(100vh - 17.5em)'}>
                             {children}
                         </ScrollBar>
                     </FormSectionBody>

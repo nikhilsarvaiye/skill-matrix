@@ -21,14 +21,14 @@ export const Table = ({
     height,
     scroll,
     emptyPlaceholderHeight = '20em',
-    maxHeight = 'calc(100vh - 150px)',
+    maxHeight = 'calc(100vh - 12.5em)',
     ...props
 }: ITableProps) => {
     const [tableColumns, setTableColumns] = useState(columns);
     scroll = scroll || {};
 
     // Uncomment for Fix Heigh
-    // scroll.y = scroll.y || maxHeight;
+    scroll.y = scroll.y || maxHeight;
 
     // const handleResizeColumns = () => {
     //     const htmlDocumentFontSize = getHtmlDocumentFontSize();

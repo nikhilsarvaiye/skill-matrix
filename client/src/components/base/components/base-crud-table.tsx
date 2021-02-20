@@ -59,8 +59,8 @@ export const BaseCrudTable = ({
             columns = columns || [];
             columns.push({
                 title: 'Delete',
-                // dataIndex: 'skill',
                 key: 'delete',
+                width: '10em',
                 render: (text: string, item: any) => (
                     <Fragment>
                         <Button
@@ -127,6 +127,7 @@ export const BaseCrudTable = ({
                         loading={loading}
                         onChange={onChange}
                         rowKey="id"
+                        height={'calc(100vh - 12em)'}
                         rowSelection={{
                             type: 'radio',
                             onChange: (selectedRowKeys, selectedRows) => {

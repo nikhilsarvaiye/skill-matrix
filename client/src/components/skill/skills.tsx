@@ -26,7 +26,6 @@ export const Skills = ({
             title: 'Parent Skill',
             dataIndex: 'parentSkillName',
             key: 'parentSkillName',
-            sorter: true,
         },
     ];
 

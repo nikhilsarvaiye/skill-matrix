@@ -27,16 +27,21 @@ export const SkillEdit = () => {
                         onSave={(skill: SkillModel) => {
                             if (!skill.id) {
                                 skillStore.create(skill, () => {
+                                    skillStore.clearSelectedItem();
                                     history.push(
                                         SkillRouter.getRoutes().root.path,
                                     );
                                 });
                             } else {
-                                skillStore.update(skill.id, skill);
+                                skillStore.update(skill.id, skill, () => {
+                                    skillStore.clearSelectedItem();
+                                    history.push(
+                                        SkillRouter.getRoutes().root.path,
+                                    );
+                                });
                             }
                         }}
                         onCancel={() => {
-                            skillStore.clearSelectedItem();
                             history.goBack();
                         }}
                     />

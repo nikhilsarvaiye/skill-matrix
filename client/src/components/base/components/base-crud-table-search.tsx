@@ -1,6 +1,7 @@
 import { useEffect, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { ScrollBar } from '@library/scrollbar';
 import {
     Form,
     FormSection,
@@ -63,7 +64,7 @@ export const BaseCrudTableSearch = ({
                         <FormSectionHeaderTitle
                             startIcon={
                                 <FontAwesomeIcon
-                                    icon={faPlus}
+                                    icon={faSearch}
                                 ></FontAwesomeIcon>
                             }
                         >
@@ -72,7 +73,11 @@ export const BaseCrudTableSearch = ({
                     </FormSection>
                 </FormSectionHeader>
                 <Spin spinning={loading}>
-                    <FormSectionBody padding>{children}</FormSectionBody>
+                    <FormSectionBody padding>
+                        <ScrollBar autoHeightMax={'calc(100vh - 17.5em)'}>
+                            {children}
+                        </ScrollBar>
+                    </FormSectionBody>
                     <FormSectionFooter>
                         <FormSection
                             layout={FormSectionLayoutType.Horizontal}
@@ -83,7 +88,7 @@ export const BaseCrudTableSearch = ({
                                 <Button
                                     startIcon={
                                         <FontAwesomeIcon
-                                            icon={faPlus}
+                                            icon={faSearch}
                                         ></FontAwesomeIcon>
                                     }
                                     type={ButtonType.Primary}

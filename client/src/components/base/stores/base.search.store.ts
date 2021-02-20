@@ -44,9 +44,11 @@ export abstract class BaseSearchStore<IModel extends BaseModel> {
             ...this.criteria,
             page: pagination.current as number,
             pageSize: pagination.pageSize as number,
-            sortField: (sorter as any).field,
-            sortOrder: (sorter as any).order,
         };
+        if ((sorter as any).field) {
+            this.criteria.sortField = (sorter as any).field;
+            this.criteria.sortOrder = (sorter as any).order;
+        }
         const defaultQueryOptions = this.buildDefaultQueryOptions();
         const queryOptions = this.buildQueryOptions(defaultQueryOptions);
         this.store.paginate(queryOptions);

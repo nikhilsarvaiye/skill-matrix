@@ -6,6 +6,9 @@
     $rowPadding: 0.5em;
 
     .ant-table {
+        .ant-table-body {
+            overflow-y: auto !important;
+        }
         .ant-table-thead {
             > tr {
                 > th {

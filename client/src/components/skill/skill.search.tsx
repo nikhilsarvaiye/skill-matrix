@@ -26,10 +26,7 @@ export const SkillSearch = ({
             onReset={onReset}
             validationSchema={validationSchema}
         >
-            <FormSection
-                layout={FormSectionLayoutType.Horizontal}
-                numberOfRowFields={2}
-            >
+            <FormSection>
                 <FormField name="name" label="Name">
                     <Input />
                 </FormField>

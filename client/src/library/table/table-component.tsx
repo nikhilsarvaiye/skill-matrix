@@ -37,6 +37,8 @@ export interface ITableComponentProps {
     scroll?: {
         x?: number | true | string;
         y?: number | string;
+    } & {
+        scrollToFirstRowOnChange?: boolean;
     };
     bordered?: boolean;
     expandable?: ExpandableConfig<any>;
@@ -103,9 +105,14 @@ export const TableComponent = ({
                 : (pagination as TablePaginationConfig).current,
         showSizeChanger: false,
         hideOnSinglePage: true,
+        showTotal: (total: number, range: [number, number]) => (
+            <span>Total {total} Records</span>
+        ),
         ...pagination,
     };
-    scroll = scroll || {};
+    scroll = scroll || {
+        scrollToFirstRowOnChange: true,
+    };
     scroll.y = scroll.y || maxHeight;
     rowSelection = rowSelection
         ? {
