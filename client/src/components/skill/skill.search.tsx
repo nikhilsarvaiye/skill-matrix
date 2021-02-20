@@ -1,30 +1,29 @@
-import { validationSchema } from './skill.validator';
 import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
 import { Input } from '@library/input';
-import { BaseCrudForm } from '@components/base/components';
+import { BaseCrudTableSearch } from '@components/base/components';
 import { SkillPicker } from './skill.picker';
-import { SkillModel } from './skill.model';
+import { validationSchema } from './skill.search.validator';
 
-export const Skill = ({
+export const SkillSearch = ({
     defaultValues,
-    skill,
+    criteria,
     loading,
-    onSave,
-    onCancel,
+    onSearch,
+    onReset,
 }: {
     defaultValues: any;
-    skill: SkillModel | null;
+    criteria: any;
     loading: boolean;
-    onSave: (values: SkillModel) => void;
-    onCancel: () => void;
+    onSearch: (values: any) => void;
+    onReset: (values: any) => void;
 }) => {
     return (
-        <BaseCrudForm
+        <BaseCrudTableSearch
             defaultValues={defaultValues}
-            model={skill}
+            criteria={criteria}
             loading={loading}
-            onSave={onSave}
-            onCancel={onCancel}
+            onSearch={onSearch}
+            onReset={onReset}
             validationSchema={validationSchema}
         >
             <FormSection
@@ -38,6 +37,6 @@ export const Skill = ({
                     <SkillPicker />
                 </FormField>
             </FormSection>
-        </BaseCrudForm>
+        </BaseCrudTableSearch>
     );
 };

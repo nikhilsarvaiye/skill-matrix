@@ -6,10 +6,7 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
     const [skills, setSkills] = useState<SkillModel[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const getSkills = async (key: string) => {
-        if (!key) {
-            return;
-        }
+    const getSkills = async (key?: string) => {
         try {
             setLoading(true);
             var skillService = new SkillService();
@@ -31,6 +28,7 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
                       }
                     : {},
                 select: ['id', 'name'],
+                top: 20,
             });
             setSkills(skills);
         } finally {
@@ -43,7 +41,7 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
     };
 
     useEffect(() => {
-        getSkills('');
+        getSkills();
     }, []);
 
     return (
@@ -52,7 +50,7 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
             value={value}
             onChange={onChange}
             onBlur={onBlur}
-            type={DropdownType.Combobox}
+            type={DropdownType.AutoComplete}
             textField={'name'}
             valueField={'id'}
             dataItemKey={'id'}

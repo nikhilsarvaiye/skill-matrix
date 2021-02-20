@@ -5,6 +5,7 @@ import {
     AppstoreOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
+import { Avatar } from '@library/avatar';
 
 const { SubMenu } = Menu;
 
@@ -33,6 +34,14 @@ export const TopNav = () => {
                         <Link to="/employees">Employees</Link>
                     </Menu.Item>
                 </SubMenu>
+                <Menu.Item
+                    title={'Nikhil Sarvaiye'}
+                    key="avatar"
+                    direction="rtl"
+                    style={{ float: 'right' }}
+                >
+                    <Avatar name={'Nikhil Sarvaiye'} />
+                </Menu.Item>
             </Menu>
         </div>
         // <Router>

@@ -1,7 +1,6 @@
 import { useEffect, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEraser } from '@fortawesome/free-solid-svg-icons';
-import { ScrollBar } from '@library/scrollbar';
 import {
     Form,
     FormSection,
@@ -20,40 +19,41 @@ import { Spin } from '@library/spin';
 import { Button, ButtonType } from '@library/button';
 import { IModel } from '../models';
 
-export const BaseCrudForm = ({
+export const BaseCrudTableSearch = ({
     defaultValues,
-    model,
+    criteria,
     loading,
-    onSave,
-    onCancel,
+    onSearch,
+    onReset,
     validationSchema,
     children,
 }: {
     defaultValues: any;
-    model: IModel | null;
+    criteria: any;
     loading: boolean;
-    onSave: (values: IModel) => void;
-    onCancel: () => void;
+    onSearch: (values: IModel) => void;
+    onReset: (values: IModel) => void;
     validationSchema: any;
     children?: ReactNode;
 }) => {
-    const isUpdate = (): boolean => {
-        return model && model.id ? true : false;
-    };
     const form = useForm({
-        defaultValues: isUpdate() ? model : defaultValues,
+        defaultValues: defaultValues,
         validationSchema: validationSchema,
         onSubmit: (values: IModel, form: IForm) => {
-            if (onSave) {
-                onSave(values);
+            if (onSearch) {
+                onSearch(values);
             }
         },
-        onReset: (values: IModel, form: IForm) => {},
+        onReset: (values: IModel, form: IForm) => {
+            if (onReset) {
+                onReset(values);
+            }
+        },
     });
 
     useEffect(() => {
-        form.setValues(model);
-    }, [model]);
+        form.setValues(criteria);
+    }, [criteria]);
 
     return (
         <Form form={form}>
@@ -67,16 +67,12 @@ export const BaseCrudForm = ({
                                 ></FontAwesomeIcon>
                             }
                         >
-                            Add New Skill
+                            Search
                         </FormSectionHeaderTitle>
                     </FormSection>
                 </FormSectionHeader>
                 <Spin spinning={loading}>
-                    <FormSectionBody padding>
-                        <ScrollBar autoHeightMax={'calc(100vh - 200px)'}>
-                            {children}
-                        </ScrollBar>
-                    </FormSectionBody>
+                    <FormSectionBody padding>{children}</FormSectionBody>
                     <FormSectionFooter>
                         <FormSection
                             layout={FormSectionLayoutType.Horizontal}
@@ -95,7 +91,7 @@ export const BaseCrudForm = ({
                                         form.submitForm();
                                     }}
                                 >
-                                    {isUpdate() ? 'Update' : 'Add'}
+                                    Search
                                 </Button>
                             </FormAction>
                             <FormAction>
@@ -111,19 +107,6 @@ export const BaseCrudForm = ({
                                     }}
                                 >
                                     Reset
-                                </Button>
-                            </FormAction>
-                            <FormAction>
-                                <Button
-                                    startIcon={
-                                        <FontAwesomeIcon
-                                            icon={faEraser}
-                                        ></FontAwesomeIcon>
-                                    }
-                                    type={ButtonType.Secondary}
-                                    onClick={onCancel}
-                                >
-                                    Cancel
                                 </Button>
                             </FormAction>
                         </FormSection>

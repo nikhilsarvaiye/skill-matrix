@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
     Table,
@@ -19,7 +20,6 @@ import {
     FormSectionHeaderTitle,
 } from '@library/form';
 import { IModel } from '../models';
-import { Label } from '@library/label';
 
 export interface IBaseCrudTableProps {
     loading: boolean;
@@ -39,6 +39,7 @@ export interface IBaseCrudTableProps {
 export interface IBaseCrudTableAdditionalProps extends IBaseCrudTableProps {
     title: string;
     columns: any[];
+    headerTitleIcon: IconDefinition;
 }
 
 export const BaseCrudTable = ({
@@ -51,6 +52,7 @@ export const BaseCrudTable = ({
     onChange,
     columns,
     onDelete,
+    headerTitleIcon,
 }: IBaseCrudTableAdditionalProps) => {
     const addDelete = () => {
         if (onDelete) {
@@ -87,7 +89,15 @@ export const BaseCrudTable = ({
             <FormSection>
                 <FormSectionHeader>
                     <FormSection align={FormSectionAlignment.Left}>
-                        <FormSectionHeaderTitle>{title}</FormSectionHeaderTitle>
+                        <FormSectionHeaderTitle
+                            startIcon={
+                                <FontAwesomeIcon
+                                    icon={headerTitleIcon}
+                                ></FontAwesomeIcon>
+                            }
+                        >
+                            {title}
+                        </FormSectionHeaderTitle>
                     </FormSection>
                     <FormSection
                         layout={FormSectionLayoutType.Horizontal}

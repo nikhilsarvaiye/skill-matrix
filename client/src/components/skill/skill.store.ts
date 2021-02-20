@@ -1,6 +1,5 @@
-import { SkillModel } from './skill.model';
-import { SkillService } from './skill.service';
-import { BaseStore } from '@components/base/store/base.store';
+import { BaseStore } from '@components/base/stores/base.store';
+import { SkillModel, SkillService, SkillSearchStore } from '.';
 
 export class SkillStore extends BaseStore<SkillModel> {
     defaultValues: any = {

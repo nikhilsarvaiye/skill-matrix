@@ -186,7 +186,9 @@ export const Input = ({
                     onKeyDown={handleKeydown}
                     onKeyUp={onKeyUp}
                     disabled={disabled}
-                    autoComplete="off"
+                    autoComplete="new-password"
+                    autoCorrect="off"
+                    spellCheck="false"
                     tabIndex={tabIndex}
                     autoFocus={autoFocus}
                 />

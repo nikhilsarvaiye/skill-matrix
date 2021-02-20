@@ -2,6 +2,7 @@ import {
     BaseCrudTable,
     IBaseCrudTableProps,
 } from '@components/base/components';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 export interface ISKillsProps extends IBaseCrudTableProps {}
 
@@ -40,6 +41,7 @@ export const Skills = ({
             pagination={pagination}
             onChange={onChange}
             onDelete={onDelete}
+            headerTitleIcon={faBook}
         />
     );
 };

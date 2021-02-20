@@ -1,17 +1,9 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
-import {
-    TablePaginationConfig,
-    Key,
-    SorterResult,
-    TableCurrentDataSource,
-    SortOrder,
-} from '@library/table';
 import { QueryOptions } from 'odata-query';
-import { success, confirm } from '@library/modal';
+import { confirm } from '@library/modal';
 import { message } from '@library/message';
 import { IService } from '../services';
 import { BaseModel, IPageResponse } from '../models';
-import { IPageCriteria } from '../models/page-criteria';
 
 export abstract class BaseStore<IModel extends BaseModel> {
     loading = false;
@@ -20,22 +12,11 @@ export abstract class BaseStore<IModel extends BaseModel> {
         items: [],
     };
     selectedItem: IModel | null = null;
-    criteria: IPageCriteria = {
-        page: 1,
-        pageSize: 10,
-        sortField: 'name',
-        sortOrder: SortOrder.Ascend,
-    };
-
     abstract defaultValues: any;
 
-    /**
-     *
-     */
     constructor(public service: IService<IModel>) {
         makeObservable(this, {
             loading: observable,
-            criteria: observable,
             items: observable,
             paginate: action,
             list: action,
@@ -43,7 +24,6 @@ export abstract class BaseStore<IModel extends BaseModel> {
             update: action,
             delete: action,
             confirmDelete: action,
-            change: action,
             clearSelectedItem: action,
         });
     }
@@ -51,7 +31,7 @@ export abstract class BaseStore<IModel extends BaseModel> {
     paginate = async (queryOptions?: Partial<QueryOptions<IModel>>) => {
         try {
             this.loading = true;
-            queryOptions = this.buildDefaultQueryOptions(queryOptions);
+            queryOptions = queryOptions || {};
             queryOptions.count = true;
             this.items = ((await this.service.paginate(
                 queryOptions,
@@ -64,8 +44,6 @@ export abstract class BaseStore<IModel extends BaseModel> {
     list = async (queryOptions?: Partial<QueryOptions<IModel>>) => {
         try {
             this.loading = true;
-            this.criteria.page = 1;
-            queryOptions = this.buildDefaultQueryOptions(queryOptions);
             const items = (await this.service.list(queryOptions)) as IModel[];
             this.items = {
                 count: items.length,
@@ -135,46 +113,13 @@ export abstract class BaseStore<IModel extends BaseModel> {
             if (onDelete) {
                 onDelete();
             }
-            this.criteria.page = 1;
             this.paginate();
         } finally {
             this.loading = false;
         }
     };
 
-    change = async (
-        pagination: TablePaginationConfig,
-        filters: Record<string, (Key | boolean)[] | null>,
-        sorter: SorterResult<any> | SorterResult<any>[],
-        extra: TableCurrentDataSource<any>,
-    ) => {
-        this.criteria = {
-            ...this.criteria,
-            page: pagination.current as number,
-            pageSize: pagination.pageSize as number,
-            sortField: (sorter as any).field,
-            sortOrder: (sorter as any).order,
-        };
-        this.paginate();
-    };
-
     clearSelectedItem = () => {
         this.selectedItem = null;
-    };
-
-    buildDefaultQueryOptions = (
-        queryOptions?: Partial<QueryOptions<IModel>>,
-    ): Partial<QueryOptions<IModel>> => {
-        queryOptions = queryOptions || {};
-        queryOptions.top = this.criteria.pageSize;
-        queryOptions.skip = this.criteria.page - 1;
-        if (this.criteria.sortField) {
-            const order =
-                this.criteria.sortOrder == SortOrder.Ascend ? 'asc' : 'desc';
-            queryOptions.orderBy = [
-                `${this.criteria.sortField} ${order}`,
-            ] as any;
-        }
-        return queryOptions;
     };
 }

@@ -36,6 +36,7 @@ export const SkillEdit = () => {
                             }
                         }}
                         onCancel={() => {
+                            skillStore.clearSelectedItem();
                             history.goBack();
                         }}
                     />

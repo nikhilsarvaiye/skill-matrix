@@ -31,9 +31,9 @@ import { filterBySearchText } from '@library/util/data-filter';
 import './dropdown.scss';
 
 export enum DropdownType {
-    AutoComplete = 'autocomplete',
-    Combobox = 'combobox',
-    Dropdown = 'dropdown',
+    AutoComplete = 'autocomplete', // use for dynamic values
+    Combobox = 'combobox', // use for static values but filterable
+    Dropdown = 'dropdown', // use for static values
 }
 
 interface IProps {
@@ -638,7 +638,7 @@ export const Dropdown = ({
                 defaultOnEndIconClick = onEndIconClick;
                 break;
             case DropdownType.AutoComplete:
-                defaultEndIcon = endIcon;
+                defaultEndIcon = <SearchOutlined />;
                 defaultOnEndIconClick = onEndIconClick;
                 break;
         }
