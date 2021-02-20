@@ -5,7 +5,7 @@ export class SkillStore extends BaseStore<SkillModel> {
     defaultValues: any = {
         id: '',
         name: '',
-        skillId: undefined,
+        parentSkillId: undefined,
     };
     constructor(skillService: SkillService) {
         super(skillService);

@@ -8,12 +8,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public static class MongoDbQueryHelper
     {
         public static IFindFluent<T, T> Query<T>(this IMongoCollection<T> collection, IRequest request)
             where T : BaseModel
         {
+            if (request == null)
+            {
+                return collection.Find(_ => true);
+            }
+
             var filter = request.ToFilterDefinition<T>();
 
             return collection.Find(filter).Paginate(request).Sort(request).Project(request);
@@ -160,7 +166,7 @@
             where T : BaseModel
         {
             var filterColumn = $"{filter.Property}";
-            var filterValue = GetFilterValue(filter.Value);
+            var filterValue = GetFilterValue<T>(filter.Value);
 
             switch (filter.Operator)
             {
@@ -185,7 +191,7 @@
                 case FilterOperator.IsNull:
                     return Builders<T>.Filter.Exists(filterColumn, false);
                 case FilterOperator.IsContainedIn:
-                    return Builders<T>.Filter.In(filterColumn, new List<object>() { filter.Value });
+                    return Builders<T>.Filter.In(filterColumn, filterValue as List<string>);
                 case FilterOperator.DoesNotContain:
                     return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"^((?!{filterValue}).)*$", "i"));
                 case FilterOperator.IsNotNull:
@@ -199,7 +205,7 @@
             }
         }
 
-        private static object GetFilterValue(object value)
+        private static object GetFilterValue<T>(object value)
         {
             // [NS] TODO: Need to write for other types like date
             // ObjectId? objectId = null;

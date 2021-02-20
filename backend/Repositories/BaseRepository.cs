@@ -24,23 +24,25 @@
             _collection = database.GetCollection<T>(collectionName);
         }
 
-        public async Task<List<T>> GetAsync() => (await _collection.FindAsync(book => true)).ToList();
+        public async Task<List<T>> GetAsync(IRequest request = null)
+        {
+            var query = this._collection.Query(request);
 
-        public async Task<T> GetAsync(string id) => (await _collection.FindAsync<T>(book => book.Id == id)).FirstOrDefault();
+            return await Task.FromResult(query.ToList());
+        }
 
+        public async Task<T> GetAsync(string id) => (await _collection.FindAsync<T>(x => x.Id == id)).FirstOrDefault();
+                
+        public async Task<List<T>> GetAsync(List<string> ids) => (await _collection.FindAsync<T>(x => ids.Contains(x.Id))).ToList();
+        
         public async Task<IResponse<T>> PaginateAsync(IRequest request)
         {
             var query = this._collection.Query(request);
 
-            if (!request.Count)
-            {
-                return query.ToList().ToResponse();
-            }
-
             return new Response<T>
             {
                 Count = await this._collection.QueryCount(request).CountDocumentsAsync().ConfigureAwait(false),
-                Items = query.ToList().ToResponse()
+                Items = query.ToList()
             };
         }
 

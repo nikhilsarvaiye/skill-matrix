@@ -91,15 +91,5 @@
 
 			return collection;
 		}
-
-		public static ResponseItemCollection<T> ToResponse<T>(this List<T> items)
-		{
-			var responseItemCollection = new ResponseItemCollection<T>();
-			for (int i = 0; i < items.Count; i++)
-			{
-				responseItemCollection.Add(items[i]);
-			}
-			return responseItemCollection;
-		}
 	}
 }

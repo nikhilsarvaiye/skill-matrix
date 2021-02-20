@@ -8,7 +8,7 @@ import { SkillStore } from './skill.store';
 
 export interface ISkillSearchCriteria extends ISearchCriteria {
     name?: string;
-    skillId?: string | null;
+    parentSkillId?: string | null;
 }
 
 export class SkillSearchStore extends BaseSearchStore<SkillModel> {
@@ -19,7 +19,7 @@ export class SkillSearchStore extends BaseSearchStore<SkillModel> {
         sortField: 'name',
         sortOrder: SortOrder.Ascend,
         name: '',
-        skillId: null,
+        parentSkillId: null,
     };
     criteria: ISkillSearchCriteria = {
         page: 1,
@@ -27,7 +27,7 @@ export class SkillSearchStore extends BaseSearchStore<SkillModel> {
         sortField: 'name',
         sortOrder: SortOrder.Ascend,
         name: '',
-        skillId: null,
+        parentSkillId: null,
     };
 
     constructor(public store: SkillStore) {
@@ -50,9 +50,9 @@ export class SkillSearchStore extends BaseSearchStore<SkillModel> {
                           },
                       }
                     : {},
-                this.criteria.skillId
+                this.criteria.parentSkillId
                     ? {
-                          skillId: this.criteria.skillId,
+                          parentSkillId: this.criteria.parentSkillId,
                       }
                     : {},
             ],

@@ -4,6 +4,8 @@
     {
         public string Name { get; set; }
 
-        public string SkillId { get; set; }
+        public string ParentSkillId { get; set; }
+
+        public virtual string ParentSkillName { get; set; }
     }
 }

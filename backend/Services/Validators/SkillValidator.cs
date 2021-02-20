@@ -23,7 +23,7 @@
 
             RuleFor(x => x.Name).Required();
 
-            RuleFor(x => x).Must(x => !this.IsUpdate(x) ? true : !string.IsNullOrEmpty(x.Id) && x.Id != x.SkillId).WithMessage("Skill cannot be its own Parent");
+            RuleFor(x => x).Must(x => !this.IsUpdate(x) ? true : !string.IsNullOrEmpty(x.Id) && x.Id != x.ParentSkillId).WithMessage("Skill cannot be its own Parent");
 
             RuleFor(x => x).MustAsync(async (skill, cancellation) =>
             {
@@ -33,7 +33,7 @@
 
         private async Task<bool> NameIsUnique(Skill skill)
         {
-            var skills = await this._skillService.PaginateAsync(new Request
+            var skills = await this._skillService.GetAsync(new Request
             {
                 Filters = this.IsUpdate(skill) ? new List<IFilter>
                 {
@@ -66,7 +66,7 @@
                                 },
                     }
             });
-            return !(skills as IEnumerable<Skill>).Any(x => x.Name == skill.Name);
+            return !skills.Any(x => x.Name == skill.Name);
         }
 
         private bool IsUpdate(Skill skill)

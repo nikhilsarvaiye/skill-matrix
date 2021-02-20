@@ -16,6 +16,9 @@
         public static IRequest ToPaginationCriteria<T>(this HttpRequest httpRequest)
             where T : class, new()
         {
+            // Examples OData
+            // https://localhost:5001/skill?$select=Id&$filter=Id eq '01'&$orderby=Id desc&$top=1&$count=true&$search=tom
+            
             var requestUri = new Uri($"{nameof(T)}/{httpRequest.QueryString.Value}", UriKind.Relative);
             var parser = new ODataUriParser(GetEdmModel<T>(nameof(T)), requestUri)
             {

@@ -6,61 +6,81 @@
     using FluentValidation;
     using Models;
     using Repositories.Abstractions;
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Validators;
 
-    public class SkillService : ISkillService
+    public class SkillService : BaseService<Skill>, ISkillService
     {
-        private readonly ISkillRepository _skillRepository;
-
         public SkillService(ISkillRepository skillRepository)
+            : base(skillRepository)
         {
-            this._skillRepository = skillRepository ?? throw new ArgumentException(nameof(skillRepository));
         }
 
-        public async Task<Skill> CreateAsync(Skill skill)
+        public override async Task<IResponse<Skill>> PaginateAsync(IRequest request)
+        {
+            var skills = await base.PaginateAsync(request);
+
+            skills.Items = await this.UpdateParentSkills(skills.Items);
+
+            return skills;
+        }
+
+        public override async Task<List<Skill>> GetAsync(IRequest request = null)
+        {
+            var skills = await base.GetAsync(request).ConfigureAwait(false);
+
+            skills = await this.UpdateParentSkills(skills);
+
+            return skills;
+        }
+
+        public override async Task<Skill> GetAsync(string id)
+        {
+            var skill = await base.GetAsync(id).ConfigureAwait(false);
+
+            skill = (await this.UpdateParentSkills(new List<Skill> { skill })).FirstOrDefault();
+
+            return skill;
+        }
+
+        public override async Task ValidateOnCreate(Skill skill)
         {
             var patientValidator = new SkillValidator(this);
 
             patientValidator.ValidateAndThrow(skill);
 
-            return await this._skillRepository.CreateAsync(skill).ConfigureAwait(false);
+            await Task.CompletedTask;
         }
 
-        public async Task<IResponse<Skill>> PaginateAsync(IRequest request)
+        public override async Task ValidateOnUpdate(Skill skill)
         {
-            return await this._skillRepository.PaginateAsync(request);
+            await this.ValidateOnCreate(skill);
         }
 
-        public async Task<List<Skill>> GetAsync()
+        public override async Task ValidateOnDelete(string id)
         {
-            return await this._skillRepository.GetAsync().ConfigureAwait(false);
+            await Task.CompletedTask;
         }
 
-        public async Task<Skill> GetAsync(string id)
+        private async Task<List<Skill>> UpdateParentSkills(List<Skill> skills)
         {
-            return await this._skillRepository.GetAsync(id).ConfigureAwait(false);
-        }
+            var parentSkillIds = skills.Where(x => !string.IsNullOrEmpty(x.ParentSkillId)).Select(x => x.ParentSkillId).ToList();
 
-        public async Task RemoveAsync(Skill skill)
-        {
-            await this._skillRepository.RemoveAsync(skill).ConfigureAwait(false);
-        }
+            if(!parentSkillIds.Any())
+            {
+                return skills;
+            }
 
-        public async Task RemoveAsync(string id)
-        {
-            await this._skillRepository.RemoveAsync(id).ConfigureAwait(false);
-        }
+            var parentSkills = await this.GetAsync(parentSkillIds).ConfigureAwait(false);
 
-        public async Task UpdateAsync(string id, Skill skill)
-        {
-            var patientValidator = new SkillValidator(this);
+            foreach (var skill in skills)
+            {
+                skill.ParentSkillName = parentSkills.FirstOrDefault(x => x.Id == skill.ParentSkillId)?.Name;
+            }
 
-            patientValidator.ValidateAndThrow(skill);
-
-            await this._skillRepository.UpdateAsync(id, skill).ConfigureAwait(false);
+            return skills;
         }
     }
 }

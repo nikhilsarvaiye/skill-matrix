@@ -6,9 +6,11 @@
 
     public interface IService<T>
     {
-        Task<List<T>> GetAsync();
+        Task<List<T>> GetAsync(IRequest request = null);
 
         Task<T> GetAsync(string id);
+
+        Task<List<T>> GetAsync(List<string> ids);
 
         Task<T> CreateAsync(T t);
 

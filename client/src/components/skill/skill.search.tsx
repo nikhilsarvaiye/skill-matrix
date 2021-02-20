@@ -33,7 +33,7 @@ export const SkillSearch = ({
                 <FormField name="name" label="Name">
                     <Input />
                 </FormField>
-                <FormField name="skillId" label="Parent Skill">
+                <FormField name="parentSkillId" label="Parent Skill">
                     <SkillPicker />
                 </FormField>
             </FormSection>
