@@ -68,27 +68,18 @@
 
             switch (queryNode.GetType().Name)
             {
+                // case nameof(SingleValuePropertyAccessNode): return filters.ToFilters(queryNode as SingleValuePropertyAccessNode);
+                // case nameof(ConstantNode): return filters.ToFilters(queryNode as ConstantNode);
+                case nameof(ConvertNode): return filters.ToFilters((queryNode as ConvertNode).Source);
                 case nameof(BinaryOperatorNode):
                     {
                         var binaryOperator = queryNode as BinaryOperatorNode;
-                        
+
+                        filters = filters.ToFilters(binaryOperator.Left);
+                        filters = filters.ToFilters(binaryOperator.Right);
+
                         var property = binaryOperator.Left.GetProperty();
-                        if (property == null)
-                        {
-                            filters = filters.ToFilters(binaryOperator.Left);
-                        }
-
                         var value = binaryOperator.Right.GetValue();
-                        if (value == null)
-                        {
-                            filters = filters.ToFilters(binaryOperator.Right);
-                        }
-
-                        if (binaryOperator.OperatorKind.IsLogicalOperator() && filters.Count >= 2)
-                        {
-                            filters = filters.ClubFilters(binaryOperator.OperatorKind);
-                        }
-                        
                         if (property != null && value != null)
                         {
                             filters.Add(new Filter()
@@ -97,6 +88,25 @@
                                 Property = property,
                                 Value = value
                             });
+                        }
+                        /*
+                        if (property == null)
+                        {
+                            filters = filters.ToFilters(binaryOperator.Left);
+                        }
+                        */
+                        
+                        /*
+                        var value = binaryOperator.Right.GetValue();
+                        if (value == null)
+                        {
+                            filters = filters.ToFilters(binaryOperator.Right);
+                        }
+                        */
+
+                        if (binaryOperator.OperatorKind.IsLogicalOperator() && filters.Count >= 2)
+                        {
+                            filters = filters.ClubFilters(binaryOperator.OperatorKind);
                         }
                     };
                     break;
@@ -162,9 +172,9 @@
             {
                 return filters;
             }
-            
+
             var clubFilters = new List<IFilter>();
-            
+
             foreach (var range in Enumerable.Range(0, filters.Count - 2).Select(x => x))
             {
                 clubFilters.Add(filters[range]);
