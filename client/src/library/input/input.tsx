@@ -90,13 +90,6 @@ export const Input = ({
     const isFirstRun = useRef(true);
     const debouncedValue = useDebounce(value, 300);
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setInputValue(event.target.value);
-        if (onChange) {
-            onChange(event);
-        }
-    };
-
     const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
         if (!alwaysVisiblePlaceholder) {
             setVisiblePlaceholder(false);
@@ -180,7 +173,7 @@ export const Input = ({
                     value={inputValue}
                     placeholder={visiblePlaceholder ? placeholder : undefined}
                     maxLength={maxLength}
-                    onChange={handleChange}
+                    onChange={onChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     onKeyDown={handleKeydown}

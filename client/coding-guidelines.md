@@ -5,13 +5,13 @@
 1. Use lower case names for folder, file path which is general of javascript naming conventions
         <br />
 e.g.
-    >folder -> patient-search
+    >folder -> skill-search
     <br />
-    file -> patient-search.component.js
+    file -> skill-search.component.js
     <br />
-    file -> patient-search.test.js
+    file -> skill-search.test.js
     <br />
-    file -> patient-search.fake.json
+    file -> skill-search.fake.json
 
 2. Do use
     - singlular and plural names to component
@@ -85,9 +85,9 @@ Please Follow directory structure in below format:
 
 `library` - <em>here code has no dependancy of application logic</em>
 
-`library` - <em>here code has no dependancy of application UI, but has dependancy of application components and can be used across multiple projects</em>
+`components` - <em>here code has no dependancy of application UI, but has dependancy of application components and can be used across multiple projects</em>
 
-`modules` - <em>can be used across multiple project, there is no dependancy of domain/application logic</em>
+`screens` - <em>dependancy of domain/application logic</em>
 
 + library
     + components
@@ -107,7 +107,7 @@ Please Follow directory structure in below format:
     + styles
         + theme
             + `theme.scss`
-+ modules
++ screens
     + shared
 	    + components
 				+ country
@@ -120,14 +120,14 @@ Please Follow directory structure in below format:
             + country
                 + `country.service.js`
 
-	+ patient
+	+ skill
         + information
-            + `patient-information.js`
-            + `patient-information.store.js`
+            + `skill-information.js`
+            + `skill-information.store.js`
         + insurance
-            + `patient-insurance.js`
-            + `patient-insurance.scss`
-        + patient.js
+            + `skill-insurance.js`
+            + `skill-insurance.scss`
+        + skill.js
         + index.js
 
     + employee

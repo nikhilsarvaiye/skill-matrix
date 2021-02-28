@@ -28,7 +28,7 @@ export const Table = ({
     scroll = scroll || {};
 
     // Uncomment for Fix Heigh
-    scroll.y = scroll.y || maxHeight;
+    // scroll.y = scroll.y || maxHeight;
 
     // const handleResizeColumns = () => {
     //     const htmlDocumentFontSize = getHtmlDocumentFontSize();

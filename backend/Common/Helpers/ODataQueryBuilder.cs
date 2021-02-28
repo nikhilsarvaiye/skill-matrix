@@ -83,7 +83,7 @@
 
                         var property = binaryOperator.Left.GetProperty();
                         var value = binaryOperator.Right.GetValue();
-                        if (property != null && value != null)
+                        if (property != null)
                         {
                             filters.Add(new Filter()
                             {

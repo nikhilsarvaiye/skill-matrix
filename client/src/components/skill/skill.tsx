@@ -20,6 +20,7 @@ export const Skill = ({
 }) => {
     return (
         <BaseCrudForm
+            title={'Skill'}
             defaultValues={defaultValues}
             model={skill}
             loading={loading}

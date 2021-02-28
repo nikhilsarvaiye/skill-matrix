@@ -1,4 +1,5 @@
 import { ScreenRoutes } from '@screens/screens.router';
+import { Internationalization } from './internationalization';
 import { configure } from 'mobx';
 // import { AppDemo } from './App-Demo';
 import './App.css';
@@ -10,7 +11,9 @@ configure({
 function App() {
     return (
         <div className="app">
-            <ScreenRoutes />
+            <Internationalization>
+                <ScreenRoutes />
+            </Internationalization>
         </div>
     );
 }

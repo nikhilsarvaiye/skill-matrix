@@ -21,6 +21,7 @@ import { Button, ButtonType } from '@library/button';
 import { IModel } from '../models';
 
 export const BaseCrudForm = ({
+    title,
     defaultValues,
     model,
     loading,
@@ -29,6 +30,7 @@ export const BaseCrudForm = ({
     validationSchema,
     children,
 }: {
+    title: string;
     defaultValues: any;
     model: IModel | null;
     loading: boolean;
@@ -67,7 +69,7 @@ export const BaseCrudForm = ({
                                 ></FontAwesomeIcon>
                             }
                         >
-                            Add New Skill
+                            Add New {title}
                         </FormSectionHeaderTitle>
                     </FormSection>
                 </FormSectionHeader>

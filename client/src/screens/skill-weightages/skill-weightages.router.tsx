@@ -1,11 +1,10 @@
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { BaseRouter, Routes } from '@screens/base';
-import { SkillsScreen } from './skills';
-import { SkillEdit } from './skill-edit';
+import { SkillWeightagesScreen } from './skill-weightages';
 
 interface SkillRoutes extends Routes {}
 
-class SkillRouter extends BaseRouter<SkillRoutes> {
+class SkillWeightagesRouter extends BaseRouter<SkillRoutes> {
     baseRouteName = 'skill';
     customRoutes: SkillRoutes | null = null;
 
@@ -16,20 +15,15 @@ class SkillRouter extends BaseRouter<SkillRoutes> {
         let { url } = useRouteMatch();
         return (
             <Switch>
-                {/* <Route path={`${this.getRoutes().edit}`}>
-                    <SkillEdit />
-                </Route> */}
-                <Route path={`/skill/:id?`}>
-                    <SkillEdit />
-                </Route>
+                <Route path={`/skill/:id?`}>{/* <SkillEdit /> */}</Route>
                 <Route path={url}>
-                    <SkillsScreen />
+                    <SkillWeightagesScreen />
                 </Route>
             </Switch>
         );
     };
 }
 
-const skillRouter = new SkillRouter();
+const skillWeightagesRouter = new SkillWeightagesRouter();
 
-export { skillRouter as SkillRouter };
+export { skillWeightagesRouter as SkillWeightagesRouter };
