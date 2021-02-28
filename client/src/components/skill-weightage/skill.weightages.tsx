@@ -1,7 +1,10 @@
 import * as Yup from 'yup';
+import { FormField, FormSection } from '@library/form';
+import { Input } from '@library/input';
 import { BaseCrudForm } from '@components/base/components';
 import { IModel } from '@components/base/models';
 import { SkillWeightage, SkillWeightagesModel } from '.';
+import { Label } from '@library/label';
 
 export const SkillWeightages = ({
     defaultValues,
@@ -30,7 +33,23 @@ export const SkillWeightages = ({
             onCancel={onCancel}
             validationSchema={Yup.object()}
         >
-            <SkillWeightage data={data} loading={loading} onExpand={onExpand} />
+            <FormSection>
+                <FormSection width={'30%'}>
+                    <FormField name="name" label="Name">
+                        <Input />
+                    </FormField>
+                </FormSection>
+                <FormSection padding={'1em'}>
+                    <Label title="Weightages" />
+                    <FormSection padding={'1em'}>
+                        <SkillWeightage
+                            data={data}
+                            loading={loading}
+                            onExpand={onExpand}
+                        />
+                    </FormSection>
+                </FormSection>
+            </FormSection>
         </BaseCrudForm>
     );
 };

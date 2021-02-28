@@ -6,5 +6,6 @@ export class SkillWeightageModel extends SkillModel {
 }
 
 export class SkillWeightagesModel extends BaseModel {
+    name: string = '';
     skills: SkillModel[] = [];
 }

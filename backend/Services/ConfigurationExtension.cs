@@ -11,6 +11,7 @@
             services.ConfigureRepositories();
 
             services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<IDesignationService, DesignationService>();
 
             return services;
         }

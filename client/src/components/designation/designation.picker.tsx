@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Dropdown, DropdownType } from '@library/dropdown';
-import { SkillModel, skillService } from '.';
+import { designationService, DesignationModel } from '.';
 
-export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
-    const [skills, setSkills] = useState<SkillModel[]>([]);
+export const DesignationPicker = ({ name, value, onChange, onBlur }: any) => {
+    const [skills, setSkills] = useState<DesignationModel[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const getSkills = async (key?: string) => {
+    const getDesignations = async (key?: string) => {
         try {
             setLoading(true);
-            const skills = await skillService.list({
+            const skills = await designationService.list({
                 filter: key
                     ? {
                           or: [
@@ -36,11 +36,11 @@ export const SkillPicker = ({ name, value, onChange, onBlur }: any) => {
     };
 
     const handleDebouncedValueChange = (debouncedValue: string) => {
-        getSkills(debouncedValue);
+        getDesignations(debouncedValue);
     };
 
     useEffect(() => {
-        getSkills();
+        getDesignations();
     }, []);
 
     return (

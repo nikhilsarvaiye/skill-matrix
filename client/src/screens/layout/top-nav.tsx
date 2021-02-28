@@ -22,6 +22,9 @@ export const TopNav = () => {
                 <Menu.Item key="skills" icon={<AppstoreOutlined />}>
                     <Link to="/skills">Skills</Link>
                 </Menu.Item>
+                <Menu.Item key="designations" icon={<AppstoreOutlined />}>
+                    <Link to="/designations">Designations</Link>
+                </Menu.Item>
                 <Menu.Item key="skill-weightages" icon={<AppstoreOutlined />}>
                     <Link to="/skill-weightages">SKill Weightages</Link>
                 </Menu.Item>

@@ -7,10 +7,12 @@ export class SkillWeightageStore {
     loading: boolean = false;
     skillWeightages: SkillWeightagesModel = {
         id: '',
+        name: '',
         skills: [],
     };
     defaultValues: SkillWeightagesModel = {
         id: '',
+        name: '',
         skills: [],
         loading: false,
     } as any;

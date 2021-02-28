@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { SkillRouter } from './skill';
+import { DesignationRouter } from './designation';
 import { SkillWeightagesRouter } from './skill-weightages';
 
 export const ScreenRoutes = () => {
@@ -9,14 +10,17 @@ export const ScreenRoutes = () => {
             renders the first one that matches the current URL. */}
             {/* NS - Switch Route Order is important, as keeping Home route as last, else use 'exact' */}
             <Switch>
-                <Route path="/skill-weightages">
-                    <SkillWeightagesRouter.Router />
+                <Route path="/designations">
+                    <DesignationRouter.Router />
                 </Route>
                 <Route path="/skills">
                     <SkillRouter.Router />
                 </Route>
+                <Route path="/skill-weightages">
+                    <SkillWeightagesRouter.Router />
+                </Route>
                 <Route path="/">
-                    <SkillRouter.Router />
+                    <DesignationRouter.Router />
                 </Route>
             </Switch>
         </Router>
