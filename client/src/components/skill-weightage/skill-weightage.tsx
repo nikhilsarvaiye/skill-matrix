@@ -47,7 +47,7 @@ export const SkillWeightage = ({
                     return item.skills && item.skills.length ? (
                         <SkillWeightage
                             data={item.skills || []}
-                            loading={loading}
+                            loading={item.loading}
                             onExpand={onExpand}
                         />
                     ) : null;
