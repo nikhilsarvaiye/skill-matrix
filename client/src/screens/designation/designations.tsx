@@ -11,6 +11,7 @@ import {
     DesignationSearch,
 } from '@components/designation';
 import { DesignationRouter } from './designation.router';
+import { SideFloater } from '@components/base/components/side-floater';
 
 export const DesignationsScreen = () => {
     const history = useHistory();
@@ -22,21 +23,38 @@ export const DesignationsScreen = () => {
             {() => (
                 <Screen>
                     <Spliter>
-                        <SpliterContainer width={'25%'}>
-                            <DesignationSearch
-                                defaultValues={designationSearchStore.defaultValues}
-                                criteria={designationSearchStore.criteria}
-                                loading={designationSearchStore.loading}
-                                onSearch={(criteria: any) => {
-                                    designationSearchStore.search(criteria);
-                                }}
-                                onReset={(criteria: any) => {
-                                    designationSearchStore.search(criteria);
-                                }}
-                            />
-                        </SpliterContainer>
+                        {!designationSearchStore.visible && (
+                            <SpliterContainer width={'1.5%'}>
+                                <SideFloater
+                                    title="Search"
+                                    onClick={designationSearchStore.toggle}
+                                />
+                            </SpliterContainer>
+                        )}
+                        {designationSearchStore.visible && (
+                            <SpliterContainer width={'20%'}>
+                                <DesignationSearch
+                                    defaultValues={
+                                        designationSearchStore.defaultValues
+                                    }
+                                    criteria={designationSearchStore.criteria}
+                                    loading={designationSearchStore.loading}
+                                    onSearch={(criteria: any) => {
+                                        designationSearchStore.search(criteria);
+                                    }}
+                                    onReset={(criteria: any) => {
+                                        designationSearchStore.search(criteria);
+                                    }}
+                                    onHide={designationSearchStore.toggle}
+                                />
+                            </SpliterContainer>
+                        )}
                         <SpliterContainer
-                            width={'73.8%'}
+                            width={
+                                designationSearchStore.visible
+                                    ? '78.8%'
+                                    : '97.3%'
+                            }
                             style={{ marginLeft: '1.5em' }}
                         >
                             <Designations
@@ -54,15 +72,19 @@ export const DesignationsScreen = () => {
                                 onEdit={(designation: DesignationModel) => {
                                     designationStore.clearSelectedItem();
                                     history.push(
-                                        DesignationRouter.getRoutes().edit.build({
-                                            id: designation.id,
-                                        }),
+                                        DesignationRouter.getRoutes().edit.build(
+                                            {
+                                                id: designation.id,
+                                            },
+                                        ),
                                     );
                                 }}
                                 pagination={{
-                                    current: designationSearchStore.criteria.page,
+                                    current:
+                                        designationSearchStore.criteria.page,
                                     pageSize:
-                                        designationSearchStore.criteria.pageSize,
+                                        designationSearchStore.criteria
+                                            .pageSize,
                                     total: designationStore.items.count,
                                 }}
                                 onDelete={(id: string) => {

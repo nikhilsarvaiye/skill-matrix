@@ -1,6 +1,10 @@
 import { useEffect, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faEraser } from '@fortawesome/free-solid-svg-icons';
+import {
+    faSearch,
+    faEraser,
+    faArrowCircleLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { ScrollBar } from '@library/scrollbar';
 import {
     Form,
@@ -26,6 +30,7 @@ export const BaseCrudTableSearch = ({
     loading,
     onSearch,
     onReset,
+    onHide,
     validationSchema,
     children,
 }: {
@@ -34,6 +39,7 @@ export const BaseCrudTableSearch = ({
     loading: boolean;
     onSearch: (values: IModel) => void;
     onReset: (values: IModel) => void;
+    onHide?: () => void;
     validationSchema: any;
     children?: ReactNode;
 }) => {
@@ -71,6 +77,20 @@ export const BaseCrudTableSearch = ({
                             Search
                         </FormSectionHeaderTitle>
                     </FormSection>
+                    {onHide && (
+                        <FormSection
+                            layout={FormSectionLayoutType.Horizontal}
+                            align={FormSectionAlignment.Right}
+                            autoSpacing={true}
+                        >
+                            <FontAwesomeIcon
+                                icon={faArrowCircleLeft}
+                                size="lg"
+                                onClick={onHide}
+                                style={{ cursor: 'pointer' }}
+                            ></FontAwesomeIcon>
+                        </FormSection>
+                    )}
                 </FormSectionHeader>
                 <Spin spinning={loading}>
                     <FormSectionBody padding>

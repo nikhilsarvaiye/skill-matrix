@@ -16,14 +16,21 @@ export abstract class BaseSearchStore<IModel extends BaseModel> {
         page: 1,
         pageSize: 10,
     };
+    visible: boolean = false;
     abstract defaultValues: any;
 
     constructor(public store: BaseStore<IModel>) {
         makeObservable(this, {
             loading: observable,
+            visible: observable,
             change: action,
+            toggle: action,
         });
     }
+
+    toggle = () => {
+        this.visible = !this.visible;
+    };
 
     search = async (criteria: any) => {
         this.criteria = {
