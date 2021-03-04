@@ -24,6 +24,7 @@ export const Internationalization = ({ children, ...props }: IProps) => {
             locale={internationalizationService.getLocale()}
             messages={internationalizationService.getMessages()}
         >
+            <div></div>
             {children}
         </IntlProvider>
     );

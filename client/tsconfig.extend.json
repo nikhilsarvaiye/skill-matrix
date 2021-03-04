@@ -2,6 +2,7 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
+            "@auth": ["./auth"],
             "@library/*": ["./library/*"],
             "@components/*": ["./components/*"],
             "@screens/*": ["./screens/*"],

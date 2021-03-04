@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Common.Abstractions;
     using Common.Helpers;
-    using Common.Models;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Identity.Web.Resource;
     using Models;
     using Services.Abstractions;
 
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public abstract class BaseController<T> : ControllerBase
@@ -22,9 +23,14 @@
             this._service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+        // The Web API will only accept tokens 1) for users, and 2) having the "access_as_user" scope for this API
+        static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
+
         [HttpGet]
         public async Task<dynamic> GetAsync(string id = null)
         {
+            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
+            
             if (!string.IsNullOrEmpty(id))
             {
                 return new List<T>() { await this._service.GetAsync(id) };

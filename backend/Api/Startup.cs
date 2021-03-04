@@ -4,7 +4,9 @@ namespace Api
     using Configuration.Options;
     using Configuration.Options.Abstractions;
     using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -12,11 +14,13 @@ namespace Api
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using Microsoft.Identity.Web;
     using Microsoft.OData.Edm;
     using Microsoft.OpenApi.Models;
     using Models;
     using Serilog;
     using Services;
+    using System.Collections.Generic;
     using IApplicationLifetime = Microsoft.Extensions.Hosting.IApplicationLifetime;
 
     public class Startup
@@ -33,6 +37,48 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // ------ Authentication --------
+
+            // -- Direct web api authentication --
+            // services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+            // services.AddControllersWithViews(options =>
+            // {
+            // var policy = new AuthorizationPolicyBuilder()
+            //         .RequireAuthenticatedUser()
+            //         .Build();
+            // options.Filters.Add(new AuthorizeFilter(policy));
+            // });
+            // -- End direct web api authentication --
+
+            // -- JWT web api authentication --
+            // Use below for JWT web api authentication from authentication header
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+            services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd", "Bearer", true);
+            /* Customization */
+            //services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options => 
+            //{
+            //    var existingOnTokenValidatedHandler = options.Events.OnTokenValidated;
+            //    options.Events.OnMessageReceived = async context =>
+            //    {
+
+            //    };
+            //    options.Events.OnTokenValidated = async context =>
+            //    {
+            //        await existingOnTokenValidatedHandler(context);
+            //        // Your code to add extra configuration that will be executed after the current event implementation.
+            //        // options.TokenValidationParameters.ValidIssuers = new List<string>() { /* list of valid issuers */ };
+            //        // options.TokenValidationParameters.ValidAudiences = new List<string>() { /* list of valid audiences */ };
+            //    };
+            //    options.Events.OnAuthenticationFailed = async context =>
+            //    {
+
+            //    };
+            //});
+            /* End Customization */
+            // -- End JWT web api authentication --
+
+            // ------ End Authentication --------
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -72,8 +118,6 @@ namespace Api
 
             app.UseCors();
 
-            app.UseAuthorization();
-
             /* Enable
             services.AddCors(options =>
             {
@@ -94,6 +138,10 @@ namespace Api
 
             // Logging
             app.UseMiddleware<RequestLoggingMiddleware>();
+
+            // Authentication
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
