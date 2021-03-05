@@ -53,7 +53,7 @@ export const DesignationsScreen = () => {
                             width={
                                 designationSearchStore.visible
                                     ? '78.8%'
-                                    : '97.3%'
+                                    : '96.5%'
                             }
                             style={{ marginLeft: '1.5em' }}
                         >
