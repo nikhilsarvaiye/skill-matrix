@@ -54,7 +54,9 @@ namespace Api
             // -- JWT web api authentication --
             // Use below for JWT web api authentication from authentication header
             // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+            
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd", "Bearer", true);
+            
             /* Customization */
             //services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options => 
             //{

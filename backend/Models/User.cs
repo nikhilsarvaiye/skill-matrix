@@ -39,5 +39,7 @@
         public string Phone1 { get; set; }
 
         public string Phone2 { get; set; }
+
+        public string DesignationId { get; set; }
     }
 }

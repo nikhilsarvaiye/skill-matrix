@@ -9,6 +9,8 @@
         {
             services.AddScoped<ISkillRepository, SkillRepository>();
             services.AddScoped<IDesignationRepository, DesignationRepository>();
+            services.AddScoped<IDesignationSkillWeightagesRepository, DesignationSkillWeightagesRepository>();
+            services.AddScoped<ISkillWeightagesRepository, SkillWeightagesRepository>();
 
             return services;
         }

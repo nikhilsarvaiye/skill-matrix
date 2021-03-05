@@ -1,18 +1,22 @@
-import { validationSchema } from './designation.validator';
+import * as Yup from 'yup';
 import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudForm } from '@components/base/components';
-import { DesignationModel } from '.';
+import { DesignationModel } from './designation.types';
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string().nullable().required('Name is required'),
+});
 
 export const Designation = ({
     defaultValues,
-    designation,
+    model,
     loading,
     onSave,
     onCancel,
 }: {
     defaultValues: any;
-    designation: DesignationModel | null;
+    model: DesignationModel | null;
     loading: boolean;
     onSave: (values: DesignationModel) => void;
     onCancel: () => void;
@@ -21,7 +25,7 @@ export const Designation = ({
         <BaseCrudForm
             title={'Designation'}
             defaultValues={defaultValues}
-            model={designation}
+            model={model}
             loading={loading}
             onSave={onSave}
             onCancel={onCancel}

@@ -11,13 +11,16 @@ export abstract class BaseStore<IModel extends BaseModel> {
         count: 0,
         items: [],
     };
-    selectedItem: IModel | null = null;
+    selectedItem: IModel = {
+        id: '',
+    } as any;
     abstract defaultValues: any;
 
     constructor(public service: IService<IModel>) {
         makeObservable(this, {
             loading: observable,
             items: observable,
+            selectedItem: observable,
             paginate: action,
             list: action,
             create: action,
@@ -120,6 +123,8 @@ export abstract class BaseStore<IModel extends BaseModel> {
     };
 
     clearSelectedItem = () => {
-        this.selectedItem = null;
+        this.selectedItem = {
+            id: '',
+        } as any;
     };
 }

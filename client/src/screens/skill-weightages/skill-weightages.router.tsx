@@ -1,21 +1,24 @@
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { BaseRouter, Routes } from '@screens/base';
+import { SkillWeightageEdit } from './skill-weightage-edit';
 import { SkillWeightagesScreen } from './skill-weightages';
 
-interface SkillRoutes extends Routes {}
+interface SkillWeightagesRoutes extends Routes {}
 
-class SkillWeightagesRouter extends BaseRouter<SkillRoutes> {
-    baseRouteName = 'skill';
-    customRoutes: SkillRoutes | null = null;
+class SkillWeightagesRouter extends BaseRouter<SkillWeightagesRoutes> {
+    baseRouteName = 'skill-weightages';
+    customRoutes: SkillWeightagesRoutes | null = null;
 
     Router = ({ routes }: any) => {
-        // The `path` lets us build <Route> paths that are
-        // relative to the parent route, while the `url` lets
-        // us build relative links.
         let { url } = useRouteMatch();
         return (
             <Switch>
-                <Route path={`/skill/:id?`}>{/* <SkillEdit /> */}</Route>
+                <Route path={this.getBaseRoutes().new.path}>
+                    <SkillWeightageEdit />
+                </Route>
+                <Route path={this.getBaseRoutes().edit.path}>
+                    <SkillWeightageEdit />
+                </Route>
                 <Route path={url}>
                     <SkillWeightagesScreen />
                 </Route>

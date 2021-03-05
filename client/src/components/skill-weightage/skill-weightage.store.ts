@@ -1,76 +1,143 @@
 import { makeObservable, observable, action } from 'mobx';
+import { BaseStore } from '@components/base/stores';
 import { SkillModel, SkillService } from '@components/skill';
-import { SkillWeightagesModel } from '.';
-import { SkillWeightageModel } from './skill-weightage.model';
+import {
+    SkillWeightageModel,
+    SkillWeightagesModel,
+} from './skill-weightage.types';
+import { SkillWeightagesService } from './skill-weightage.service';
 
-export class SkillWeightageStore {
-    loading: boolean = false;
-    skillWeightages: SkillWeightagesModel = {
-        id: '',
-        name: '',
-        skills: [],
-    };
+export class SkillWeightageStore extends BaseStore<SkillWeightagesModel> {
     defaultValues: SkillWeightagesModel = {
         id: '',
         name: '',
         skills: [],
         loading: false,
     } as any;
+    selectedSkill: SkillModel | null = null;
 
-    constructor(skillService: SkillService) {
+    constructor(
+        public skillWeightagesService: SkillWeightagesService,
+        public skillService: SkillService,
+    ) {
+        super(skillWeightagesService);
         makeObservable(this, {
-            loading: observable,
-            skillWeightages: observable,
+            selectedSkill: observable,
             getParentSkills: action,
             getChildSkills: action,
+            onSkillSelection: action,
+            get: action,
         });
     }
 
-    getParentSkills = async () => {
+    get = async (id: string) => {
         try {
             this.loading = true;
-            var skillService = new SkillService();
-            const skills = await skillService.list({
-                filter: {
-                    parentSkillId: null,
-                },
-                select: ['id', 'name'],
-            });
-            this.skillWeightages.skills = this.addKeys(skills);
+            const item = (await this.service.get(id)) as SkillWeightagesModel;
+            this.selectedItem = this.addKeys(item);
         } finally {
             this.loading = false;
         }
     };
 
-    getChildSkills = async (item: SkillModel) => {
-        if (!this.skillWeightages) {
-            return;
+    onSkillSelection = (
+        skill: SkillModel,
+        skillWeightages: SkillWeightagesModel,
+    ) => {
+        if (
+            skill &&
+            !(skillWeightages.skills || []).find((x) => x.id === skill.id)
+        ) {
+            skillWeightages.skills = [
+                ...(skillWeightages.skills || []),
+                {
+                    id: skill.id,
+                    name: skill.name,
+                    weightage: 0,
+                    skills: [],
+                } as any,
+            ];
+            skillWeightages = this.addKeys(skillWeightages);
         }
-        const existingItem = this.skillWeightages.skills.find(
-            (x) => x.id == item.id,
-        ) as any;
-        if (existingItem) {
+    };
+
+    deleteSkillWeightage = (
+        skillWeightage: SkillWeightageModel,
+        skillWeightages: SkillWeightagesModel,
+    ) => {
+        if (skillWeightage) {
+            if (skillWeightages.skills) {
+                const filteredData = skillWeightages.skills.filter(
+                    (x) => x !== skillWeightage,
+                );
+                skillWeightages.skills = filteredData;
+            } else {
+                const filteredData = this.selectedItem.skills.filter(
+                    (x) => x !== skillWeightage,
+                );
+                this.selectedItem.skills = filteredData;
+            }
+        }
+    };
+
+    getParentSkills = async () => {
+        try {
+            this.loading = true;
+            const skills = await this.skillService.list({
+                filter: {
+                    parentSkillId: null,
+                },
+                select: ['id', 'name'],
+            });
+            // this.selectedItem = {
+            //     id: '',
+            //     name: '',
+            //     skills: this.addKeys(skills),
+            // };
+            // this.selectedItem.skills = ;
+        } finally {
+            this.loading = false;
+        }
+    };
+
+    getChildSkills = async (item: SkillWeightageModel) => {
+        if (item) {
             try {
-                existingItem.loading = true;
-                var skillService = new SkillService();
-                const skills = await skillService.list({
+                (item as any).loading = true;
+                const skills = await this.skillService.list({
                     filter: {
                         parentSkillId: item.id,
                     },
                     select: ['id', 'name'],
                 });
-                existingItem.skills = this.addKeys(skills, existingItem);
+                const skillWeightages = skills.map((x) => {
+                    return {
+                        id: x.id,
+                        name: x.name,
+                        weightage: 0,
+                        skills: [],
+                    } as SkillWeightageModel;
+                });
+                item.skills = skillWeightages;
+                item = this.addKeys(item) as any;
             } finally {
-                existingItem.loading = false;
+                (item as any).loading = false;
             }
         }
     };
 
-    addKeys = (skills: any[], skill?: any) => {
-        skills.forEach((x) => {
-            x.index = skills.indexOf(x);
-            x.key = `${skill ? `${skill.key}.` : ''}skills[${x.index}]`;
+    addKeys = (skillWeightages: SkillWeightagesModel) => {
+        skillWeightages.skills.forEach((x: any) => {
+            x.index = skillWeightages.skills.indexOf(x);
+            x.key = `${
+                skillWeightages && (skillWeightages as any).key
+                    ? `${(skillWeightages as any).key}.`
+                    : ''
+            }skills[${x.index}]`;
+            if (x.skills && x.skills.length) {
+                x = this.addKeys(x);
+            }
         });
-        return skills;
+        return skillWeightages;
     };
 }

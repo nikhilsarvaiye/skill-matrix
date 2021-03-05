@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 export interface Route {
     path: string;
-    build: (args: any) => string;
+    redirect: (args: any) => string;
 }
 
 export interface Routes {
@@ -19,16 +19,16 @@ export abstract class BaseRouter<T extends Routes> {
     getBaseRoutes(): Routes {
         return {
             root: {
-                path: `/${this.baseRouteName}s`,
-                build: (args: any) => '',
+                path: `/${this.baseRouteName}`,
+                redirect: (args: any) => '',
             },
             new: {
-                path: `/${this.baseRouteName}`,
-                build: (args: any) => '',
+                path: `/${this.baseRouteName}/new`,
+                redirect: (args: any) => '',
             },
             edit: {
-                path: `/${this.baseRouteName}/:id?`,
-                build: (args: any) => {
+                path: `/${this.baseRouteName}/:id`,
+                redirect: (args: any) => {
                     return args && args.id
                         ? `${this.baseRouteName}/${args.id}`
                         : `/${this.baseRouteName}`;

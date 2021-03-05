@@ -21,14 +21,14 @@ export const TopNav = () => {
                 <Menu.Item key="mail" icon={<MailOutlined />}>
                     <Link to="/">Home</Link>
                 </Menu.Item>
-                <Menu.Item key="skills" icon={<AppstoreOutlined />}>
-                    <Link to="/skills">Skills</Link>
+                <Menu.Item key="skill" icon={<AppstoreOutlined />}>
+                    <Link to="/skill">Skills</Link>
                 </Menu.Item>
-                <Menu.Item key="designations" icon={<AppstoreOutlined />}>
-                    <Link to="/designations">Designations</Link>
+                <Menu.Item key="designation" icon={<AppstoreOutlined />}>
+                    <Link to="/designation">Designations</Link>
                 </Menu.Item>
                 <Menu.Item key="skill-weightages" icon={<AppstoreOutlined />}>
-                    <Link to="/skill-weightages">SKill Weightages</Link>
+                    <Link to="/skill-weightages">Skill Weightages</Link>
                 </Menu.Item>
                 <Menu.Item
                     title={'Logout'}

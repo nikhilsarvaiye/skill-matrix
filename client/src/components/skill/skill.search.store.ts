@@ -3,7 +3,7 @@ import { SortOrder } from '@library/table';
 import { QueryOptions } from 'odata-query';
 import { BaseSearchStore } from '@components/base/stores';
 import { ISearchCriteria } from '../base/models';
-import { SkillModel } from './skill.model';
+import { SkillModel } from './skill.types';
 import { SkillStore } from './skill.store';
 
 export interface ISkillSearchCriteria extends ISearchCriteria {
@@ -13,31 +13,26 @@ export interface ISkillSearchCriteria extends ISearchCriteria {
 
 export class SkillSearchStore extends BaseSearchStore<SkillModel> {
     loading = false;
-    defaultValues: any = {
-        page: 1,
-        pageSize: 10,
-        sortField: 'name',
-        sortOrder: SortOrder.Ascend,
-        name: '',
-        parentSkillId: null,
-    };
-    criteria: ISkillSearchCriteria = {
-        page: 1,
-        pageSize: 10,
-        sortField: 'name',
-        sortOrder: SortOrder.Ascend,
-        name: '',
-        parentSkillId: null,
-    };
+    defaultValues: any = null;
+    criteria: ISkillSearchCriteria = null as any;
 
     constructor(public store: SkillStore) {
         super(store);
+        this.criteria = {
+            page: 1,
+            pageSize: 10,
+            sortField: 'name',
+            sortOrder: SortOrder.Ascend,
+            name: '',
+            parentSkillId: null,
+        } as ISkillSearchCriteria;
+        this.defaultValues = this.criteria;
         makeObservable(this, {
             criteria: observable,
         });
     }
 
-    buildQueryOptions = (
+    public buildQueryOptions = (
         queryOptions?: Partial<QueryOptions<SkillModel>>,
     ): Partial<QueryOptions<SkillModel>> => {
         queryOptions = this.buildDefaultQueryOptions(queryOptions);

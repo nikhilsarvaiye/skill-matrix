@@ -24,6 +24,17 @@ import { Spin } from '@library/spin';
 import { Button, ButtonType } from '@library/button';
 import { IModel } from '../models';
 
+export interface IBaseCrudTableSearch {
+    defaultValues: any;
+    criteria: any;
+    loading: boolean;
+    onSearch: (values: IModel) => void;
+    onReset: (values: IModel) => void;
+    onHide?: () => void;
+    validationSchema: any;
+    children?: ReactNode;
+}
+
 export const BaseCrudTableSearch = ({
     defaultValues,
     criteria,
@@ -33,16 +44,7 @@ export const BaseCrudTableSearch = ({
     onHide,
     validationSchema,
     children,
-}: {
-    defaultValues: any;
-    criteria: any;
-    loading: boolean;
-    onSearch: (values: IModel) => void;
-    onReset: (values: IModel) => void;
-    onHide?: () => void;
-    validationSchema: any;
-    children?: ReactNode;
-}) => {
+}: IBaseCrudTableSearch) => {
     const form = useForm({
         defaultValues: defaultValues,
         validationSchema: validationSchema,

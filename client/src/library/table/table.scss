@@ -5,6 +5,10 @@
     background: transparent;
     $rowPadding: 0.5em;
 
+    .bordered {
+        border: 0.1em solid $primary-border-color;
+    }
+
     .ant-table {
         .ant-table-body {
             overflow-y: auto !important;

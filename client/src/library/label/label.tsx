@@ -27,7 +27,7 @@ export const Label = ({
     onClick,
     href,
 }: ILabelProps) => {
-    className = link ? classNames('link', className) : className;
+    className = link ? classNames('link', className) : classNames('label', className);
 
     return link ? (
         <a

@@ -10,7 +10,7 @@
     using Models;
     using Services.Abstractions;
 
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("[controller]")]
     public abstract class BaseController<T> : ControllerBase
@@ -29,7 +29,7 @@
         [HttpGet]
         public async Task<dynamic> GetAsync(string id = null)
         {
-            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
+            // HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             
             if (!string.IsNullOrEmpty(id))
             {

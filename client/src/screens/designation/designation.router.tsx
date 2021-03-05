@@ -15,7 +15,10 @@ class DesignationRouter extends BaseRouter<DesignationRoutes> {
         let { url } = useRouteMatch();
         return (
             <Switch>
-                <Route path={`/designation/:id?`}>
+                <Route path={this.getBaseRoutes().new.path}>
+                    <DesignationEdit />
+                </Route>
+                <Route path={this.getBaseRoutes().edit.path}>
                     <DesignationEdit />
                 </Route>
                 <Route path={url}>

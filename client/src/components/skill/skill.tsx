@@ -1,19 +1,23 @@
-import { validationSchema } from './skill.validator';
+import * as Yup from 'yup';
 import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudForm } from '@components/base/components';
 import { SkillPicker } from './skill.picker';
-import { SkillModel } from './skill.model';
+import { SkillModel } from './skill.types';
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string().nullable().required('Name is required'),
+});
 
 export const Skill = ({
     defaultValues,
-    skill,
+    model,
     loading,
     onSave,
     onCancel,
 }: {
     defaultValues: any;
-    skill: SkillModel | null;
+    model: SkillModel | null;
     loading: boolean;
     onSave: (values: SkillModel) => void;
     onCancel: () => void;
@@ -22,7 +26,7 @@ export const Skill = ({
         <BaseCrudForm
             title={'Skill'}
             defaultValues={defaultValues}
-            model={skill}
+            model={model}
             loading={loading}
             onSave={onSave}
             onCancel={onCancel}

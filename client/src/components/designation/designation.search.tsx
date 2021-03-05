@@ -1,7 +1,11 @@
-import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
+import * as Yup from 'yup';
+import { FormSection, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudTableSearch } from '@components/base/components';
-import { validationSchema } from './designation.search.validator';
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string().nullable(),
+});
 
 export const DesignationSearch = ({
     defaultValues,

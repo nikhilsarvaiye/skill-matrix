@@ -20,6 +20,17 @@ import { Spin } from '@library/spin';
 import { Button, ButtonType } from '@library/button';
 import { IModel } from '../models';
 
+export interface IBaseCrudForm {
+    title: string;
+    defaultValues: any;
+    model: IModel | null;
+    loading: boolean;
+    onSave: (values: IModel) => void;
+    onCancel: () => void;
+    validationSchema: any;
+    children?: ReactNode;
+}
+
 export const BaseCrudForm = ({
     title,
     defaultValues,
@@ -29,16 +40,7 @@ export const BaseCrudForm = ({
     onCancel,
     validationSchema,
     children,
-}: {
-    title: string;
-    defaultValues: any;
-    model: IModel | null;
-    loading: boolean;
-    onSave: (values: IModel) => void;
-    onCancel: () => void;
-    validationSchema: any;
-    children?: ReactNode;
-}) => {
+}: IBaseCrudForm) => {
     const isUpdate = (): boolean => {
         return model && model.id ? true : false;
     };

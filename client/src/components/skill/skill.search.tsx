@@ -1,8 +1,13 @@
-import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
+import * as Yup from 'yup';
+import { FormSection, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudTableSearch } from '@components/base/components';
 import { SkillPicker } from './skill.picker';
-import { validationSchema } from './skill.search.validator';
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string().nullable(),
+    parentSkillId: Yup.string().nullable(),
+});
 
 export const SkillSearch = ({
     defaultValues,

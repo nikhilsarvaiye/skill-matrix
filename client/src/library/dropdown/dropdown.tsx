@@ -186,6 +186,7 @@ export const Dropdown = ({
     };
 
     const handleFocus = (event: any) => {
+        toggleDropdownContainer();
         if (onFocus) {
             onFocus(event);
         }

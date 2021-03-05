@@ -10,13 +10,13 @@ export const ScreenRoutes = () => {
             renders the first one that matches the current URL. */}
             {/* NS - Switch Route Order is important, as keeping Home route as last, else use 'exact' */}
             <Switch>
-                <Route path="/designations">
+                <Route path={DesignationRouter.getBaseRoutes().root.path}>
                     <DesignationRouter.Router />
                 </Route>
-                <Route path="/skills">
+                <Route path={SkillRouter.getBaseRoutes().root.path}>
                     <SkillRouter.Router />
                 </Route>
-                <Route path="/skill-weightages">
+                <Route path={SkillWeightagesRouter.getBaseRoutes().root.path}>
                     <SkillWeightagesRouter.Router />
                 </Route>
                 <Route path="/">

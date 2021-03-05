@@ -16,10 +16,10 @@ class SkillRouter extends BaseRouter<SkillRoutes> {
         let { url } = useRouteMatch();
         return (
             <Switch>
-                {/* <Route path={`${this.getRoutes().edit}`}>
+                <Route path={this.getBaseRoutes().new.path}>
                     <SkillEdit />
-                </Route> */}
-                <Route path={`/skill/:id?`}>
+                </Route>
+                <Route path={this.getBaseRoutes().edit.path}>
                     <SkillEdit />
                 </Route>
                 <Route path={url}>

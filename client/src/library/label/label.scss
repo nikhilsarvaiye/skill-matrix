@@ -1,11 +1,14 @@
 @import '~styles/variables';
 
-div.label {
+.label {
+    font-size: 1.2rem;
+    font-weight: 500;
     text-decoration: none;
-}
+    margin-bottom: 1px;
 
-.link {
-    text-decoration: underline;
-    color: $label-link-color !important;
-    cursor: pointer;
+    .link {
+        text-decoration: underline;
+        color: $label-link-color !important;
+        cursor: pointer;
+    }
 }
