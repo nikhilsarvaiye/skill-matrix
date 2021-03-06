@@ -29,6 +29,7 @@ Yup.addMethod(Yup.array, 'isPercentageWeightage', function (fieldName) {
 const isPercentageWeightage = (skillWeightages: SkillWeightageModel[]) => {
     let isMatch = false;
     skillWeightages = skillWeightages || [];
+    if (!skillWeightages.length) return true;
     const sum = skillWeightages
         .map((x) => x.weightage || 0)
         .reduce((a, b) => a + b, 0);
@@ -39,11 +40,9 @@ const isPercentageWeightage = (skillWeightages: SkillWeightageModel[]) => {
         return isMatch;
     }
     skillWeightages.every((skillWeightage) => {
-        if (skillWeightage.skills.length) {
-            isMatch = isPercentageWeightage(skillWeightage.skills);
-            if (!isMatch) {
-                return false;
-            }
+        isMatch = isPercentageWeightage(skillWeightage.skills);
+        if (!isMatch) {
+            return false;
         }
         return true;
     });
@@ -51,7 +50,7 @@ const isPercentageWeightage = (skillWeightages: SkillWeightageModel[]) => {
 };
 
 const validationSchema = Yup.object().shape({
-    id: Yup.string().required(),
+    id: Yup.string(),
     name: Yup.string().required(),
     weightage: Yup.number(),
     skills: (Yup as any).array().min(1).isPercentageWeightage('Skills'),
