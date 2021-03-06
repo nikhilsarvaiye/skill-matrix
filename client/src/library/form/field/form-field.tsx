@@ -148,6 +148,10 @@ export const FormField = ({
     }, [formContext.register]);
 
     useEffect(() => {
+        formContext.unregister(name);
+    }, [formContext.unregister]);
+
+    useEffect(() => {
         setInputValue(formContext.getValues(name));
     }, [formContext.getValues(name)]);
 
@@ -170,6 +174,7 @@ export const FormField = ({
                 key={name}
                 name={name}
                 error={formContext.errors[name]}
+                showIcon={true}
             />
         </div>
     );

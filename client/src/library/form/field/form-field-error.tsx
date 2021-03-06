@@ -5,9 +5,11 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 export const FormFieldError = ({
     name,
     error,
+    showIcon = false,
 }: {
     name: string;
     error: any;
+    showIcon?: boolean;
 }) => {
     const getErrors = () => {
         if (!error) {
@@ -40,12 +42,14 @@ export const FormFieldError = ({
                 <div className="form-error">
                     <div className="form-error-content">
                         <i className="arrow up"></i>
-                        <span className="icon">
-                            <FontAwesomeIcon
-                                size={'lg'}
-                                icon={faExclamationTriangle}
-                            />
-                        </span>
+                        {showIcon && (
+                            <span className="icon">
+                                <FontAwesomeIcon
+                                    size={'lg'}
+                                    icon={faExclamationTriangle}
+                                />
+                            </span>
+                        )}
                         {errors.map((error, index) => {
                             return (
                                 <div key={index} className="text">

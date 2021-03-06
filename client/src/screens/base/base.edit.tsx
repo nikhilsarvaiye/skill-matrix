@@ -41,20 +41,15 @@ export const BaseEdit = ({
                             loading={store.loading}
                             model={store.selectedItem}
                             onSave={(model: IModel) => {
-                                // below merge is only for Skill weightage control
-                                // but it works with others so keeping it
-                                const output = { ...store.selectedItem };
-                                _.merge(output, model);
-                                // end merge
                                 if (!model.id) {
-                                    store.create(output, () => {
+                                    store.create(model, () => {
                                         store.clearSelectedItem();
                                         history.push(
                                             router.getRoutes().root.path,
                                         );
                                     });
                                 } else {
-                                    store.update(model.id, output, () => {
+                                    store.update(model.id, model, () => {
                                         store.clearSelectedItem();
                                         history.push(
                                             router.getRoutes().root.path,

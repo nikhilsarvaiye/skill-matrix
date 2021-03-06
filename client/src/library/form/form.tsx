@@ -112,19 +112,21 @@ export const Form = ({ form, style, children }: IFormProps) => {
         }
         /** end */
 
-        if (Array.isArray(value)) {
-            for (const subKey in value) {
-                for (const subNestKey in value[parseInt(subKey)]) {
-                    const key = `${name}[${subKey}].${subNestKey}`;
-                    form.register({
-                        name: key,
-                    });
-                    setValue(key, value[parseInt(subKey)][subNestKey], {
-                        shouldValidate: true,
-                    });
+        /** rethink
+         * if (Array.isArray(value)) {
+                for (const subKey in value) {
+                    for (const subNestKey in value[parseInt(subKey)]) {
+                        const key = `${name}[${subKey}].${subNestKey}`;
+                        form.register({
+                            name: key,
+                        });
+                        setValue(key, value[parseInt(subKey)][subNestKey], {
+                            shouldValidate: true,
+                        });
+                    }
                 }
             }
-        }
+         */
 
         config = config || {};
         setValue(name, value, {

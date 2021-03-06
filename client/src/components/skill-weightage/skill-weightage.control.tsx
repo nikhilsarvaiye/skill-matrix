@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Table } from '@library/table';
-import { FormField } from '@library/form';
 import { SkillPicker } from '@components/skill';
 import {
     SkillWeightageModel,
@@ -29,8 +29,8 @@ export const SkillWeightageControl = ({
         skillWeightages: SkillWeightagesModel,
     ) => void;
 }) => {
+    const formContext = useFormContext();
     const [skill, setSkill] = useState<SkillModel | null>();
-
     const columns = [
         {
             title: 'Name',
@@ -42,11 +42,15 @@ export const SkillWeightageControl = ({
             dataIndex: 'weightage',
             key: 'weightage',
             render: (text: string, item: any) => {
-                const weightageName = `${item.key}.weightage`;
                 return (
-                    <FormField name={weightageName}>
-                        <NumberInput />
-                    </FormField>
+                    <NumberInput
+                        value={item.weightage}
+                        onChange={(event: any) => {
+                            item.weightage = event.target.value;
+                            // trigger validations
+                            formContext.trigger();
+                        }}
+                    />
                 );
             },
             width: '20em',
@@ -86,14 +90,14 @@ export const SkillWeightageControl = ({
                     placeholder={'Type to Add Skill'}
                     value={skill}
                     onChange={(event: any) => {
-                        setSkill(event.target.value);
                         if (onSelection) {
                             onSelection(event.target.item, skillWeightages);
                         }
+                        // TODO [NS]: master stroke to always clear values
+                        // still need to find better way
+                        setSkill(skill == null ? ('' as any) : null);
                     }}
-                    onBlur={(event: any) => {
-                        setSkill(null);
-                    }}
+                    onBlur={(event: any) => {}}
                     parentSkillId={skillWeightages.id}
                 />
             </div>

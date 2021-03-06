@@ -54,18 +54,7 @@
             margin-bottom: 1px;
         }
         .form-error {
-            font-size: 1rem;
-            font-weight: 500;
-            color: $error-text-color;
-            background: $error-background-color;
-            position: relative;
-            margin-top: 0.8em;
-            padding: 0.8em;
-            border: 0.1em solid $error-border-color;
-            border-radius: 0.41em !important;
-
             .form-error-content {
-                font-size: 1.2em;
                 .icon {
                     position: absolute;
                     right: 0.7em;
@@ -217,5 +206,21 @@
 
     &.theme {
         // background-color: $panel-body-color;
+    }
+}
+
+.form-error {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $error-text-color;
+    background: $error-background-color;
+    position: relative;
+    margin-top: 0.8em;
+    padding: 0.8em;
+    border: 0.1em solid $error-border-color;
+    border-radius: 0.41em !important;
+
+    .form-error-content {
+        font-size: 1.2em;
     }
 }

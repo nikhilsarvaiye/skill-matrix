@@ -57,7 +57,7 @@ export class SkillWeightageStore extends BaseStore<SkillWeightagesModel> {
                     skills: [],
                 } as any,
             ];
-            skillWeightages = this.addKeys(skillWeightages);
+            // skillWeightages = this.addKeys(skillWeightages);
         }
     };
 
