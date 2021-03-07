@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { configure } from 'mobx';
 import { Observer } from 'mobx-react';
 import { ScreenRoutes } from '@screens/screens.router';
-import { Internationalization } from './internationalization';
-import { configure } from 'mobx';
-// import { AppDemo } from './App-Demo';
-import { AuthContext } from '@auth';
-import './App.css';
+import { Internationalization } from './../internationalization';
+import { UserContext } from '@auth';
+import './App.scss';
 
 configure({
     enforceActions: 'never',
@@ -15,8 +13,8 @@ const MainContent = () => {
     return (
         <Observer>
             {() => (
-                <div className="App">
-                    {AuthContext.User ? (
+                <div className="">
+                    {UserContext.User ? (
                         <ScreenRoutes />
                     ) : (
                         <h3 style={{ margin: '0.5em' }}>
@@ -29,7 +27,7 @@ const MainContent = () => {
     );
 };
 
-function App() {
+export function App() {
     return (
         <div className="app">
             <Internationalization>
@@ -39,4 +37,4 @@ function App() {
     );
 }
 
-export default App;
+// export default App;

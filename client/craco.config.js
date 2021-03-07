@@ -3,6 +3,7 @@ const WebpackBar = require('webpackbar');
 const CracoAntDesignPlugin = require('craco-antd');
 const CracoAlias = require('craco-alias');
 const sassResourcesLoader = require('craco-sass-resources-loader');
+const resolveUrlLoader = require('craco-resolve-url-loader');
 const path = require('path');
 
 // Don't open the browser during development
@@ -39,6 +40,7 @@ module.exports = {
                 tsConfigPath: './tsconfig.extend.json',
             },
         },
+        { plugin: resolveUrlLoader },
         {
             plugin: sassResourcesLoader,
             options: {

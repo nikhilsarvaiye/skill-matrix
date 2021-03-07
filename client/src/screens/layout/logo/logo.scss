@@ -1,0 +1,31 @@
+@import '~styles/variables';
+
+.logo-container {
+    font-size: 1rem;
+    .logo {
+        width: $side-nav-width;
+        height: $top-nav-height;
+        .logo-wrapper {
+            background-color: rgba(0, 0, 0, 0.3);
+            img {
+                width: $side-nav-width;
+                height: $top-nav-height;
+            }
+        }
+        &.blue {
+            background: $theme-blue-primary-color;
+        }
+        &.red {
+            background: $theme-red-primary-color;
+        }
+        &.green {
+            background: $theme-green-primary-color;
+        }
+        &.purple {
+            background: $theme-purple-primary-color;
+        }
+        &.yellow {
+            background: $theme-yellow-primary-color;
+        }
+    }
+}

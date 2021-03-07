@@ -1,3 +1,3 @@
 export * from './auth-config';
 export * from './auth-types';
-export * from './auth.ioc';
+export * from './auth.instances';

@@ -1,11 +1,11 @@
 // import env from 'react-dotenv';
-import { Internationalization } from './internationalization';
+import { Internationalization } from '../internationalization';
 import { Input } from '@library/input';
 import { Dropdown } from '@library/dropdown';
 import { DatePicker } from '@library/date-picker';
 import { TableDemo } from '@library/table/demo';
 // import { DemoForm } from '@library/form/demo';
-import { Button, ButtonHTMLType, ButtonType } from './library/button';
+import { Button, ButtonHTMLType, ButtonType } from '../library/button';
 
 export const AppDemo = () => {
     return (

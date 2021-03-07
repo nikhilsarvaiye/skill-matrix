@@ -61,7 +61,7 @@ export const BaseListScreen = ({
                             </SpliterContainer>
                         )}
                         <SpliterContainer
-                            width={searchStore.visible ? '78.8%' : '96.5%'}
+                            width={searchStore.visible ? '78%' : '97%'}
                             style={{ marginLeft: '1.5em' }}
                         >
                             <ListComponent

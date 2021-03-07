@@ -12,6 +12,7 @@ $primary-content-text-color: #5a5a5b;
 $transitionAnimation: cubic-bezier(0.4, 0, 1, 1);
 $color42: #424242;
 
+$body-background-color: #f3f4f7;
 $primary-color: #1890ff;
 $primary-heading-color: #1890ff;
 $primary-background-color: #ffffff;
@@ -23,6 +24,54 @@ $error-text-color: $primary-highlight-color;
 $error-background-color: #fffbfb;
 $error-box-shadow-color: #f7ccd0;
 $error-border-color: $error-text-color;
+
+// layout
+$top-nav-height: 4.8em;
+$side-nav-width: 10rem;
+// nice colors
+// #64c3d1 - light blue
+// #fbc02d - yellow
+// #98b433 - light green
+// #9785c2 - light purple
+// #f9ead8 - light red selection color
+// #f16987 - perfect pink
+
+// theme
+$theme-blue-primary-color: #2986ce;
+$theme-blue-secondary-color: #46599b;
+$theme-blue-background-image: linear-gradient(
+    to right,
+    $theme-blue-primary-color,
+    $theme-blue-secondary-color
+);
+$theme-red-primary-color: #b64f79;
+$theme-red-secondary-color: #713a6e;
+$theme-red-background-image: linear-gradient(
+    to right,
+    $theme-red-primary-color,
+    $theme-red-secondary-color
+);
+$theme-green-primary-color: #5ca177;
+$theme-green-secondary-color: #3e6d76;
+$theme-green-background-image: linear-gradient(
+    to right,
+    $theme-green-primary-color,
+    $theme-green-secondary-color
+);
+$theme-purple-primary-color: #76618b;
+$theme-purple-secondary-color: #494562;
+$theme-purple-background-image: linear-gradient(
+    to right,
+    $theme-purple-primary-color,
+    $theme-purple-secondary-color
+);
+$theme-yellow-primary-color: #e1983d;
+$theme-yellow-secondary-color: #b87249;
+$theme-yellow-background-image: linear-gradient(
+    to right,
+    $theme-yellow-primary-color,
+    $theme-yellow-secondary-color
+);
 
 // form
 $form-padding: 2.3em 1.7em 1.7em;

@@ -1,0 +1,47 @@
+@import '~styles/variables';
+
+.top-nav {
+    width: 100%;
+}
+
+.theme-selection {
+    width: 1.4em;
+    height: 1.4em;
+    border-radius: 0.1em;
+    display: inline-block;
+    margin: 0.2em;
+    cursor: default;
+    span {
+        cursor: pointer;
+    }
+    &.blue {
+        background: $theme-blue-primary-color;
+    }
+    &.red {
+        background: $theme-red-primary-color;
+    }
+    &.green {
+        background: $theme-green-primary-color;
+    }
+    &.purple {
+        background: $theme-purple-primary-color;
+    }
+    &.yellow {
+        background: $theme-yellow-primary-color;
+    }
+}
+
+.ant-menu-submenu-popup {
+    .ant-menu {
+        background-color: #273143;
+        color: #fff;
+        .ant-menu-item {
+            a,
+            &:hover {
+                background-color: #394253;
+                color: #fff !important;
+                border-color: #fff !important;
+            }
+        }
+    }
+}

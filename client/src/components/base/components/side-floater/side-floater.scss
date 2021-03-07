@@ -1,15 +1,15 @@
 .side-floater {
     font-size: 1rem;
-    border-radius: 0rem 0.7rem;
+    border-radius: 0rem 0.7rem 0.7rem 0rem;
     width: 3.5em;
-    height: 100vh;
+    height: 88vh;
     z-index: 100;
     background: #fff;
+    margin-left: -1em;
     .form-section-header {
         background: transparent;
         border-bottom: none;
     }
-    margin-left: -1.5em;
     .form-section-body {
         font-size: 1.4em;
         font-weight: 600;

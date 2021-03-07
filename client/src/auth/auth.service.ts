@@ -6,14 +6,14 @@ import {
 } from '@azure/msal-browser';
 import { AuthType, IAuthConfiguration, User } from './auth-types';
 import { graphConfig, loginRequest } from './auth-config';
-import { AuthContext } from './auth.ioc';
+import { UserContext } from './auth.instances';
 
 export class AuthService {
     userKey = 'userKey';
     constructor(public config: IAuthConfiguration) {
         const user = this.getUser();
         if (user) {
-            AuthContext.setUser(user);
+            UserContext.setUser(user);
         } else {
             this.logIn();
         }
@@ -45,7 +45,7 @@ export class AuthService {
                             pictureUrl,
                         ),
                     );
-                    return AuthContext.User;
+                    return UserContext.User;
 
                 default:
                     throw new Error(
@@ -78,7 +78,7 @@ export class AuthService {
 
     private setUser = (user: User) => {
         localStorage.setItem(this.userKey, JSON.stringify(user));
-        AuthContext.setUser(user);
+        UserContext.setUser(user);
     };
 
     private clearAccessToken = (): void => {
