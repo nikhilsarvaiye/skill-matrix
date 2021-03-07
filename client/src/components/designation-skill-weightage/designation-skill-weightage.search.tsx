@@ -1,15 +1,14 @@
 import { Yup } from '@library/yup';
 import { FormSection, FormField } from '@library/form';
-import { Input } from '@library/input';
 import { BaseCrudTableSearch } from '@components/base/components';
-import { SkillPicker } from './skill.picker';
+import { DesignationPicker } from '@components/designation';
+import { SkillWeightagePicker } from '@components/skill-weightage';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().nullable(),
-    parentSkillId: Yup.string().nullable(),
 });
 
-export const SkillSearch = ({
+export const DesignationSkillWeightagesSearch = ({
     defaultValues,
     criteria,
     loading,
@@ -32,11 +31,11 @@ export const SkillSearch = ({
             validationSchema={validationSchema}
         >
             <FormSection>
-                <FormField name="name" label="Name">
-                    <Input />
+                <FormField name="designationId" label="Designation">
+                    <DesignationPicker />
                 </FormField>
-                <FormField name="parentSkillId" label="Parent Skill">
-                    <SkillPicker />
+                <FormField name="skillWeightagesId" label="Skill Weightage">
+                    <SkillWeightagePicker />
                 </FormField>
             </FormSection>
         </BaseCrudTableSearch>

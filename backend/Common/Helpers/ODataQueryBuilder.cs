@@ -18,7 +18,7 @@
         {
             // Examples OData
             // https://localhost:5001/skill?$select=Id&$filter=Id eq '01'&$orderby=Id desc&$top=1&$count=true&$search=tom
-            
+
             var requestUri = new Uri($"{nameof(T)}/{httpRequest.QueryString.Value}", UriKind.Relative);
             var parser = new ODataUriParser(GetEdmModel<T>(nameof(T)), requestUri)
             {
@@ -68,22 +68,39 @@
         {
             filters = filters ?? new List<IFilter>();
 
-
             switch (queryNode.GetType().Name)
             {
                 // case nameof(SingleValuePropertyAccessNode): return filters.ToFilters(queryNode as SingleValuePropertyAccessNode);
                 // case nameof(ConstantNode): return filters.ToFilters(queryNode as ConstantNode);
                 case nameof(ConvertNode): return filters.ToFilters((queryNode as ConvertNode).Source);
+                case nameof(UnaryOperatorNode):
+                    {
+                        var unaryOperator = queryNode as UnaryOperatorNode;
+                        var filterItems = filters.ToFilters(unaryOperator.Operand);
+                        if (filters.Count >= 1)
+                        {
+                            filters = filters.WrapUnaryFilters(unaryOperator.OperatorKind.ToLogicalOperator());
+                        }
+                    }; break;
                 case nameof(BinaryOperatorNode):
                     {
                         var binaryOperator = queryNode as BinaryOperatorNode;
 
-                        filters = filters.ToFilters(binaryOperator.Left);
-                        filters = filters.ToFilters(binaryOperator.Right);
+                        var binaryFilters = new List<IFilter>();
+                        var leftFilters = new List<IFilter>().ToFilters(binaryOperator.Left);
+                        var rightFilters = new List<IFilter>().ToFilters(binaryOperator.Right);
+
+                        binaryFilters.AddRange(leftFilters);
+                        binaryFilters.AddRange(rightFilters);
+
+                        if (binaryOperator.OperatorKind.IsLogicalOperator() && binaryFilters.Count >= 2)
+                        {
+                            filters = binaryFilters.ClubFilters(binaryOperator.OperatorKind.ToLogicalOperator());
+                        }
 
                         var property = binaryOperator.Left.GetProperty();
                         var value = binaryOperator.Right.GetValue();
-                        if (property != null)
+                        if (property != null && binaryOperator.OperatorKind.IsFilterOperator())
                         {
                             filters.Add(new Filter()
                             {
@@ -92,24 +109,10 @@
                                 Value = value
                             });
                         }
-                        /*
-                        if (property == null)
-                        {
-                            filters = filters.ToFilters(binaryOperator.Left);
-                        }
-                        */
-                        
-                        /*
-                        var value = binaryOperator.Right.GetValue();
-                        if (value == null)
-                        {
-                            filters = filters.ToFilters(binaryOperator.Right);
-                        }
-                        */
 
                         if (binaryOperator.OperatorKind.IsLogicalOperator() && filters.Count >= 2)
                         {
-                            filters = filters.ClubFilters(binaryOperator.OperatorKind);
+                            filters = filters.ClubFilters(binaryOperator.OperatorKind.ToLogicalOperator());
                         }
                     };
                     break;
@@ -127,6 +130,22 @@
                             Value = value
                         });
 
+                    }; break;
+                case nameof(InNode):
+                    {
+                        var inNode = queryNode as InNode;
+
+                        var property = inNode.Left.GetProperty();
+                        var value = inNode.Right.GetValue();
+                        if (property != null)
+                        {
+                            filters.Add(new Filter()
+                            {
+                                Operator = inNode.Kind.ToFilterOperator(),
+                                Property = property,
+                                Value = value
+                            });
+                        }
                     }; break;
             }
 
@@ -164,12 +183,18 @@
                 case nameof(ConvertNode): return (queryNode as ConvertNode).Source.GetValue();
                 case nameof(SingleValuePropertyAccessNode): return (queryNode as SingleValuePropertyAccessNode).GetValue();
                 case nameof(ConstantNode): return (queryNode as ConstantNode).Value;
+                case nameof(CollectionConstantNode):
+                    {
+                        var collection = (queryNode as CollectionConstantNode).Collection;
+                        var values = collection.Select(x => x.GetValue()).ToList();
+                        return values;
+                    };
             }
 
             return null;
         }
 
-        private static List<IFilter> ClubFilters(this List<IFilter> filters, BinaryOperatorKind binaryOperatorKind)
+        private static List<IFilter> ClubFilters(this List<IFilter> filters, LogicalOperator logicalOperator)
         {
             if (filters.Count <= 1)
             {
@@ -185,7 +210,7 @@
 
             clubFilters.Add(new CompositeFilter()
             {
-                LogicalOperator = binaryOperatorKind.ToLogicalOperator(),
+                LogicalOperator = logicalOperator,
                 Filters = new List<IFilter>()
                                     {
                                         filters[filters.Count - 2],
@@ -193,6 +218,26 @@
                                     }
             });
             return clubFilters;
+        }
+
+        private static List<IFilter> WrapUnaryFilters(this List<IFilter> filters, LogicalOperator logicalOperator)
+        {
+            if (filters.Count == 0)
+            {
+                return filters;
+            }
+
+            var unaryFilters = new List<IFilter>();
+
+            unaryFilters.Add(new CompositeFilter()
+            {
+                LogicalOperator = logicalOperator,
+                Filters = new List<IFilter>()
+                                    {
+                                        filters.FirstOrDefault()
+                                    }
+            });
+            return unaryFilters;
         }
 
         private static List<string> ToSelect(this SelectExpandClause selectExpandClause)
@@ -265,6 +310,31 @@
             throw new NotImplementedException(nameof(binaryOperatorKind));
         }
 
+        private static LogicalOperator ToLogicalOperator(this UnaryOperatorKind unaryOperatorKind)
+        {
+            switch (unaryOperatorKind)
+            {
+                case UnaryOperatorKind.Not: return LogicalOperator.Not;
+            }
+
+            throw new NotImplementedException(nameof(unaryOperatorKind));
+        }
+
+        private static bool IsFilterOperator(this BinaryOperatorKind binaryOperatorKind)
+        {
+            switch (binaryOperatorKind)
+            {
+                case BinaryOperatorKind.And: return false;
+                case BinaryOperatorKind.Or: return false;
+                case BinaryOperatorKind.Add: return false;
+                case BinaryOperatorKind.Subtract: return false;
+                case BinaryOperatorKind.Multiply: return false;
+                case BinaryOperatorKind.Divide: return false;
+            }
+
+            return true;
+        }
+
         private static FilterOperator ToFilterOperator(this BinaryOperatorKind binaryOperatorKind)
         {
             switch (binaryOperatorKind)
@@ -279,6 +349,16 @@
             }
 
             throw new NotImplementedException(nameof(binaryOperatorKind));
+        }
+
+        private static FilterOperator ToFilterOperator(this QueryNodeKind queryNodeKind)
+        {
+            switch (queryNodeKind)
+            {
+                case QueryNodeKind.In: return FilterOperator.IsContainedIn;
+            }
+
+            throw new NotImplementedException(nameof(queryNodeKind));
         }
 
         private static FilterOperator ToFilterOperator(this string operatorName)

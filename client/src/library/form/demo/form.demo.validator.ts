@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import { Yup } from '@library/yup';
 
 export const validationSchema = Yup.object().shape({
     // isRead: Yup.string().required(),

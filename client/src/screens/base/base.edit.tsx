@@ -35,7 +35,9 @@ export const BaseEdit = ({
             <Observer>
                 {() => (
                     <div>
-                        {JSON.stringify(store.selectedItem, null, 2)}
+                        <div style={{ height: 0, overflow: 'hidden' }}>
+                            {JSON.stringify(store.selectedItem, null, 2)}
+                        </div>
                         <Component
                             defaultValues={store.defaultValues}
                             loading={store.loading}

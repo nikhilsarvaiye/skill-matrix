@@ -99,6 +99,7 @@ export const SkillWeightageControl = ({
                     }}
                     onBlur={(event: any) => {}}
                     parentSkillId={skillWeightages.id}
+                    notSkillIds={(skillWeightages.skills || []).map(x => x.id)}
                 />
             </div>
             <Table

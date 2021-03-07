@@ -1,5 +1,6 @@
 import { BaseStore } from '@components/base/stores/base.store';
-import { DesignationModel, DesignationService } from '.';
+import { DesignationService } from './designation.service';
+import { DesignationModel } from './designation.types';
 
 export class DesignationStore extends BaseStore<DesignationModel> {
     defaultValues: any = {

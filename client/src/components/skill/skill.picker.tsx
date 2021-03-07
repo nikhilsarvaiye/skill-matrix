@@ -9,6 +9,7 @@ export const SkillPicker = ({
     onBlur,
     placeholder,
     parentSkillId,
+    notSkillIds,
 }: any) => {
     const [skills, setSkills] = useState<SkillModel[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -48,6 +49,20 @@ export const SkillPicker = ({
                     ],
                 } as any;
             }
+            if (notSkillIds && notSkillIds.length) {
+                queryOptions.filter = {
+                    and: [
+                        {
+                            not: {
+                                id: {
+                                    in: notSkillIds,
+                                },
+                            },
+                        },
+                        queryOptions.filter,
+                    ],
+                } as any;
+            }
             const skills = await skillService.list(queryOptions);
             setSkills(skills);
         } finally {
@@ -59,9 +74,17 @@ export const SkillPicker = ({
         getSkills(debouncedValue);
     };
 
+    // useEffect(() => {
+    //     getSkills();
+    // }, []);
+
     useEffect(() => {
         getSkills();
-    }, []);
+    }, [notSkillIds]);
+
+    useEffect(() => {
+        getSkills();
+    }, [parentSkillId]);
 
     return (
         <Dropdown

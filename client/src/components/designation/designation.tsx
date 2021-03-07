@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import { Yup } from '@library/yup';
 import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudForm } from '@components/base/components';

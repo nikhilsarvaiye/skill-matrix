@@ -6,3 +6,4 @@ export * from './skill.weightages';
 export * from './skill-weightage.instances';
 export * from './skill-weightage.search';
 export * from './skill-weightage.search.store';
+export * from './skill-weightage.picker';

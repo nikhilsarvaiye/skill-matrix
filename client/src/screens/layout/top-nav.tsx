@@ -31,6 +31,14 @@ export const TopNav = () => {
                     <Link to="/skill-weightages">Skill Weightages</Link>
                 </Menu.Item>
                 <Menu.Item
+                    key="designation-skill-weightage"
+                    icon={<AppstoreOutlined />}
+                >
+                    <Link to="/designation-skill-weightages">
+                        Designation Skill Weightages
+                    </Link>
+                </Menu.Item>
+                <Menu.Item
                     title={'Logout'}
                     key="logout"
                     direction="rtl"

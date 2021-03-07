@@ -3,25 +3,28 @@ import { SortOrder } from '@library/table';
 import { QueryOptions } from 'odata-query';
 import { BaseSearchStore } from '@components/base/stores';
 import { ISearchCriteria } from '../base/models';
-import { DesignationModel, DesignationStore } from '.';
+import { DesignationSkillWeightagesModel } from './designation-skill-weightage.types';
+import { DesignationSkillWeightagesStore } from './designation-skill-weightage.store';
 
 export interface IDesignationSearchCriteria extends ISearchCriteria {
-    name?: string;
+    designationId: string | null;
+    skillWeightagesId: string | null;
 }
 
-export class DesignationSearchStore extends BaseSearchStore<DesignationModel> {
+export class DesignationSkillWeightagesSearchStore extends BaseSearchStore<DesignationSkillWeightagesModel> {
     loading = false;
     defaultValues: any = null;
     criteria: IDesignationSearchCriteria = null as any;
 
-    constructor(public store: DesignationStore) {
+    constructor(public store: DesignationSkillWeightagesStore) {
         super(store);
         this.criteria = {
             page: 1,
             pageSize: 10,
-            sortField: 'name',
+            sortField: 'designationId',
             sortOrder: SortOrder.Ascend,
-            name: '',
+            designationId: null,
+            skillWeightagesId: null,
         } as IDesignationSearchCriteria;
         this.defaultValues = this.criteria;
         makeObservable(this, {
@@ -30,16 +33,19 @@ export class DesignationSearchStore extends BaseSearchStore<DesignationModel> {
     }
 
     buildQueryOptions = (
-        queryOptions?: Partial<QueryOptions<DesignationModel>>,
-    ): Partial<QueryOptions<DesignationModel>> => {
+        queryOptions?: Partial<QueryOptions<DesignationSkillWeightagesModel>>,
+    ): Partial<QueryOptions<DesignationSkillWeightagesModel>> => {
         queryOptions = this.buildDefaultQueryOptions(queryOptions);
         queryOptions.filter = {
             and: [
-                this.criteria.name
+                this.criteria.designationId
                     ? {
-                          name: {
-                              contains: this.criteria.name,
-                          },
+                          designationId: this.criteria.designationId,
+                      }
+                    : {},
+                this.criteria.skillWeightagesId
+                    ? {
+                          skillWeightagesId: this.criteria.skillWeightagesId,
                       }
                     : {},
             ],

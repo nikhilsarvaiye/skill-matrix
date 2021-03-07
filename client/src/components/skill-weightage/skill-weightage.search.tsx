@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import { Yup } from '@library/yup';
 import { FormSection, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudTableSearch } from '@components/base/components';

@@ -119,6 +119,11 @@
 
             if (filterDefinitions.Count == 1)
             {
+                if(logicalOperator == LogicalOperator.Not)
+                {
+                    return logicalOperator.GetFilterExpression<T>(filterDefinitions);
+
+                }
                 return filterDefinitions.FirstOrDefault();
             }
             else if (filterDefinitions.Count == 2)
@@ -157,6 +162,8 @@
                     return Builders<T>.Filter.And(filters);
                 case LogicalOperator.Or:
                     return Builders<T>.Filter.Or(filters);
+                case LogicalOperator.Not:
+                    return Builders<T>.Filter.Not(filters.FirstOrDefault());
                 default:
                     throw new NotImplementedException(nameof(logicalOperator));
             }
@@ -191,7 +198,7 @@
                 case FilterOperator.IsNull:
                     return Builders<T>.Filter.Exists(filterColumn, false);
                 case FilterOperator.IsContainedIn:
-                    return Builders<T>.Filter.In(filterColumn, filterValue as List<string>);
+                    return Builders<T>.Filter.In(filterColumn, filterValue as List<object>);
                 case FilterOperator.DoesNotContain:
                     return Builders<T>.Filter.Regex(filterColumn, new BsonRegularExpression($"^((?!{filterValue}).)*$", "i"));
                 case FilterOperator.IsNotNull:
