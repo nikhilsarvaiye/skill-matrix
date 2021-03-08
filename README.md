@@ -12,6 +12,7 @@
 8. Configurable Custom JWT Authentication and Azure Authentication support using [msal](https://www.npmjs.com/7ackage/@azure/msal-browser) library
 9. Customizable Table, Add/Edit Form components
 10. Internationalization support using [react-intl](https://github.com/formatjs/formatjs)
+11. UI Theme support at user level
 
 ### Run
 
