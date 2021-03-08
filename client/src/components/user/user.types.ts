@@ -1,3 +1,4 @@
+import { ThemeType } from '@app';
 import { BaseModel } from '@components/base/models';
 
 export class User extends BaseModel {
@@ -9,6 +10,7 @@ export class User extends BaseModel {
     pictureUrl: string = '';
     designationId: string = '';
     skillWeightagesId: string = '';
+    theme: string = '';
 }
 
 export class LoggedInUser {

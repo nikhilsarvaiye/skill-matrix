@@ -19,4 +19,8 @@ export class UserService extends BaseService<User> implements IService<User> {
         const response = await Api.get<User[]>(`${this.routePath}${query}`);
         return response.data.length ? response.data[0] : null;
     };
+
+    updateTheme = async (id: string, theme: string): Promise<void> => {
+        await Api.put(`${this.routePath}/update-theme/${id}/${theme}`);
+    };
 }

@@ -31,6 +31,15 @@ namespace Services
             return await base.CreateAsync(user).ConfigureAwait(false);
         }
 
+        public async Task UpdateThemeAsync(string id, string theme)
+        {
+            var user = await this.GetOrThrowAsync(id);
+
+            user.Theme = theme;
+
+            await this.UpdateAsync(id, user);
+        }
+
         public async Task<LoggedInUser> LogInAsync(string id, string password)
         {
             var user = await this.GetAsync(id);

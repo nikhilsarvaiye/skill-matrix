@@ -45,6 +45,16 @@
             return await this._repository.GetAsync(id).ConfigureAwait(false);
         }
 
+        public virtual async Task<M> GetOrThrowAsync(string id)
+        {
+            var item = await this._repository.GetAsync(id).ConfigureAwait(false);
+            if(item == null)
+            {
+                throw new Exception("Resource not found with Id " + id);
+            }
+            return item;
+        }
+
         public virtual async Task<List<M>> GetAsync(List<string> ids)
         {
             return await this._repository.GetAsync(ids).ConfigureAwait(false);

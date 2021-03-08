@@ -8,6 +8,7 @@ import { IAuthConfiguration } from './../auth-types';
 import { graphConfig, loginRequest } from './../auth-config';
 import { IAuthService } from './../auth.service';
 import { User, LoggedInUser, UserService } from '@components/user';
+import { AppContext } from '@app';
 
 export class AzureAuthService implements IAuthService {
     constructor(
@@ -36,6 +37,7 @@ export class AzureAuthService implements IAuthService {
         );
         let user = await this.userService.getByUserId(azureUser.userId);
         if (user == null) {
+            azureUser.theme = AppContext.theme;
             user = await this.userService.create(azureUser);
         }
         user.pictureUrl = azureUser.pictureUrl;

@@ -19,6 +19,22 @@
             this._userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
+        [HttpPut("update-theme/{id}/{theme}")]
+        public async Task UpdateThemeAsync(string id, string theme)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            if (string.IsNullOrEmpty(theme))
+            {
+                throw new ArgumentNullException(nameof(theme));
+            }
+
+            await this._userService.UpdateThemeAsync(id, theme);
+        }
+
         [HttpPost("login")]
         public async Task<LoggedInUser> LogInAsync(JObject model)
         {

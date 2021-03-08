@@ -24,6 +24,8 @@
 
         public DateTime? DOB { get; set; }
 
+        public string Theme { get; set; }
+
         public Gender Gender { get; set; } = Gender.Unknown;
 
         public string Address1 { get; set; }
