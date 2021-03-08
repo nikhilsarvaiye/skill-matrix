@@ -1,154 +1,94 @@
-import {
-    AccountInfo,
-    AuthenticationResult,
-    IPublicClientApplication,
-    PublicClientApplication,
-} from '@azure/msal-browser';
-import { AuthType, IAuthConfiguration, User } from './auth-types';
-import { graphConfig, loginRequest } from './auth-config';
-import { UserContext } from './auth.instances';
+import { LoggedInUser, UserContext, UserService } from '@components/user';
+import { message } from '@library/message';
+import { AuthType, IAuthConfiguration } from './auth-types';
+import { AzureAuthService } from './azure';
+
+export interface IAuthService {
+    logIn: () => Promise<LoggedInUser>;
+    logout: () => Promise<void>;
+}
 
 export class AuthService {
     userKey = 'userKey';
-    constructor(public config: IAuthConfiguration) {
-        const user = this.getUser();
-        if (user) {
-            UserContext.setUser(user);
+    authService: IAuthService;
+    constructor(
+        public config: IAuthConfiguration,
+        public userService: UserService,
+    ) {
+        switch (this.config.type) {
+            case AuthType.Azure:
+                {
+                    this.authService = new AzureAuthService(
+                        config,
+                        userService,
+                    );
+                }
+                break;
+            default:
+                throw new Error(
+                    'No IAuthService defined for ' + this.config.type,
+                );
+        }
+        const storedUser = this.getUser();
+        if (storedUser) {
+            this.reLogIn(storedUser)
+                .then((user) => {
+                    if (user) {
+                        UserContext.setLoggedInUser(user);
+                    } else {
+                        this.logIn();
+                    }
+                })
+                .catch((e) => {
+                    this.logIn();
+                });
         } else {
             this.logIn();
         }
     }
 
-    logIn = async (): Promise<User | null> => {
+    reLogIn = async (
+        storedUser: LoggedInUser,
+    ): Promise<LoggedInUser | null> => {
+        const user = await this.userService.get(storedUser.user?.id);
+        return user == null
+            ? null
+            : new LoggedInUser(
+                  user,
+                  storedUser.accessToken,
+                  storedUser.configuration,
+              );
+    };
+
+    logIn = async (): Promise<void> => {
         try {
-            switch (this.config.type) {
-                case AuthType.Azure:
-                    const instance = new PublicClientApplication(this.config);
-
-                    const authenticationResult = await instance.loginPopup(
-                        loginRequest,
-                    );
-                    const account = this.getAzureAccountFromAuthenticationResult(
-                        instance,
-                        authenticationResult,
-                    );
-                    const tokenResponse = await instance.acquireTokenSilent({
-                        ...loginRequest,
-                        account: account,
-                    });
-                    const pictureUrl = await this.getAzureUserPicture(
-                        tokenResponse.accessToken,
-                    );
-                    this.setUser(
-                        this.getUserFromAzureTokenResponse(
-                            tokenResponse,
-                            pictureUrl,
-                        ),
-                    );
-                    return UserContext.User;
-
-                default:
-                    throw new Error(
-                        'Log In not defined for ' + this.config.type,
-                    );
+            const user = await this.authService.logIn();
+            if (user) {
+                this.setUser(user);
             }
         } catch (e) {
-            alert('Failed to log in, please try again');
-            return null;
+            const errorMessage = 'Failed to log in, please try again: ';
+            message.error(errorMessage, e);
+            console.error(errorMessage, e);
         }
     };
 
     logout = async (): Promise<void> => {
-        debugger;
-        switch (this.config.type) {
-            case AuthType.Azure:
-                this.clearAccessToken();
-                const instance = new PublicClientApplication(this.config);
-                await instance.logout();
-                break;
-            default:
-                throw new Error('Log Out not defined for ' + this.config.type);
-        }
+        this.clearAccessToken();
+        await this.authService.logout();
     };
 
-    getUser = (): User | null => {
+    getUser = (): LoggedInUser | null => {
         const value = localStorage.getItem(this.userKey);
         return value ? JSON.parse(value) : null;
     };
 
-    private setUser = (user: User) => {
+    private setUser = (user: LoggedInUser) => {
         localStorage.setItem(this.userKey, JSON.stringify(user));
-        UserContext.setUser(user);
+        UserContext.setLoggedInUser(user);
     };
 
     private clearAccessToken = (): void => {
         localStorage.removeItem(this.userKey);
     };
-
-    private getUserFromAzureTokenResponse = (
-        tokenResponse: AuthenticationResult,
-        pictureUrl: string,
-    ): User => {
-        return {
-            userId: tokenResponse.account?.username,
-            name: tokenResponse.account?.name,
-            pictureUrl: pictureUrl,
-            ...tokenResponse,
-        } as any;
-    };
-
-    private getAzureAccountFromAuthenticationResult(
-        instance: IPublicClientApplication,
-        response: AuthenticationResult,
-    ) {
-        if (response !== null && response.account !== null) {
-            return response.account;
-        } else {
-            return this.getAzureAccount(instance);
-        }
-    }
-
-    private getAzureAccount(
-        instance: IPublicClientApplication,
-    ): AccountInfo | undefined {
-        console.log(`loadAuthModule`);
-        const currentAccounts = instance.getAllAccounts();
-        if (currentAccounts === null) {
-            // @ts-ignore
-            console.log('No accounts detected');
-            return undefined;
-        }
-
-        if (currentAccounts.length > 1) {
-            // TBD: Add choose account code here
-            // @ts-ignore
-            console.log(
-                'Multiple accounts detected, need to add choose account code.',
-            );
-            return currentAccounts[0];
-        } else if (currentAccounts.length === 1) {
-            return currentAccounts[0];
-        }
-    }
-
-    private async getAzureUserPicture(accessToken: string) {
-        const headers = new Headers();
-        const bearer = `Bearer ${accessToken}`;
-        headers.append('Authorization', bearer);
-        const options = {
-            method: 'GET',
-            headers: headers,
-        };
-
-        const binaryImageResponse = (await fetch(
-            graphConfig.graphPictureUrl,
-            options,
-        )
-            .then((response) => response)
-            .catch((error) => console.log(error))) as Response;
-        var blob = await binaryImageResponse.blob();
-        const url = window.URL || window.webkitURL;
-        const blobUrl = url.createObjectURL(blob);
-        return blobUrl;
-    }
 }

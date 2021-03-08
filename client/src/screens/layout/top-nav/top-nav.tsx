@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import { Menu } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Avatar } from '@library/avatar';
-import { UserContext, authService } from '@auth';
+import { ThemeType } from '@app';
+import { UserContext } from '@components/user';
+import { authService } from '@auth';
 import './../nav.scss';
 import './top-nav.scss';
-import { ThemeType } from '@app';
 
 const { SubMenu } = Menu;
 
@@ -13,7 +14,7 @@ export const TopNav = ({ className }: { className?: string }) => {
     const handleClick = (e: any) => {
         console.log('click ', e);
     };
-    if (!UserContext.User) {
+    if (!UserContext.isLoggedIn) {
         return <div></div>;
     }
     className = classNames(
@@ -23,20 +24,18 @@ export const TopNav = ({ className }: { className?: string }) => {
         'top-nav',
     );
     return (
-        <div
-            className={className}
-        >
+        <div className={className}>
             <Menu onClick={handleClick} selectedKeys={[]} mode="horizontal">
                 <Menu.Item
                     key="avatar"
                     direction="rtl"
                     style={{ float: 'right' }}
                 >
-                    <Avatar name={''} url={UserContext.User.pictureUrl} />
+                    <Avatar name={''} url={UserContext.LoggedInUser.user.pictureUrl} />
                 </Menu.Item>
                 <SubMenu
-                    key={UserContext.User.name}
-                    title={UserContext.User.name}
+                    key={UserContext.LoggedInUser.user.name}
+                    title={UserContext.LoggedInUser.user.name}
                     className="settings"
                     style={{ float: 'right', margin: 0 }}
                 >

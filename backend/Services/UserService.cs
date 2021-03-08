@@ -17,15 +17,18 @@ namespace Services
         {
         }
 
-        public async Task<User> CreateAsync(User user)
+        public new async Task<User> CreateAsync(User user)
         {
             await this.ValidateOnCreate(user);
 
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            user.Password = null;
-            user.ConfirmPassword = null;
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password = null;
+                user.ConfirmPassword = null;
+            }
 
-            return await this.CreateAsync(user).ConfigureAwait(false);
+            return await base.CreateAsync(user).ConfigureAwait(false);
         }
 
         public async Task<LoggedInUser> LogInAsync(string id, string password)

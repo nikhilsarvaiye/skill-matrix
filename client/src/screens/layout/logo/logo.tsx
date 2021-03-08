@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { UserContext } from '@auth';
+import { UserContext } from '@components/user';
 import './logo.scss';
 
 export const Logo = () => {

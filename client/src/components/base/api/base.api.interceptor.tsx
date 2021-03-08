@@ -17,7 +17,7 @@ export const requestHandler = (request: any) => {
 
 export const errorHandler = (error: any) => {
     if (!disableInterceptor(error.config)) {
-        const url = formatApiUrl(error.config.url);
+        const url = error.config ? formatApiUrl(error.config.url) : '';
         // Handle errors
         if (error.response) {
             // The request was made and the server responded with a status code

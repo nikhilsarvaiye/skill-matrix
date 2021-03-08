@@ -1,4 +1,4 @@
-import { UserContext } from '@auth';
+import { UserContext } from '@components/user';
 import axios from 'axios';
 import {
     requestHandler,
@@ -20,7 +20,11 @@ api.interceptors.request.use((request) => requestHandler(request));
 
 api.interceptors.request.use((config) => {
     //config.headers[''] = '';
-    config.headers['Authorization'] = `Bearer ${UserContext.User.accessToken}`;
+    if (UserContext.LoggedInUser) {
+        config.headers[
+            'Authorization'
+        ] = `Bearer ${UserContext.LoggedInUser.accessToken}`;
+    }
     return config;
 });
 

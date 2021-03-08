@@ -4,6 +4,8 @@
 
     public class User : BaseModel
     {
+        public string UserId { get; set; }
+
         public string Name { get; set; }
 
         public string Email { get; set; }
@@ -41,5 +43,7 @@
         public string Phone2 { get; set; }
 
         public string DesignationId { get; set; }
+
+        public string SkillWeightagesId { get; set; }
     }
 }

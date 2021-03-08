@@ -1,0 +1,19 @@
+@import '~styles/variables';
+
+.ant-spin {
+    &.blue {
+        color: $theme-blue-primary-color;
+    }
+    &.red {
+        color: $theme-red-primary-color;
+    }
+    &.green {
+        color: $theme-green-primary-color;
+    }
+    &.purple {
+        color: $theme-purple-primary-color;
+    }
+    &.yellow {
+        color: $theme-yellow-primary-color;
+    }
+}

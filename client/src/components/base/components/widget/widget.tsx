@@ -13,7 +13,7 @@ export enum WidgetColor {
 export const Widget = ({
     color,
     title,
-    contentTitle = 'Total Count',
+    contentTitle,
     className,
     style,
     children,

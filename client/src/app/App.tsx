@@ -1,25 +1,33 @@
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { configure } from 'mobx';
 import { Observer } from 'mobx-react';
+import { UserContext } from '@components/user';
 import { ScreenRoutes } from '@screens/screens.router';
 import { Internationalization } from './../internationalization';
-import { UserContext } from '@auth';
 import './App.scss';
 
 configure({
     enforceActions: 'never',
 });
 
+Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: '2em' }} />);
+
 const MainContent = () => {
     return (
         <Observer>
             {() => (
                 <div className="">
-                    {UserContext.User ? (
-                        <ScreenRoutes />
+                    {UserContext.LoggedInUser ? (
+                        <ScreenRoutes
+                            user={UserContext.LoggedInUser}
+                            theme={UserContext.theme}
+                        />
                     ) : (
-                        <h3 style={{ margin: '0.5em' }}>
-                            Please sign-in to proceed further
-                        </h3>
+                        <div style={{ margin: '0.5em' }}>
+                            <Spin spinning={true}></Spin>
+                            <h3>Loading...</h3>
+                        </div>
                     )}
                 </div>
             )}

@@ -1,3 +1,4 @@
+import { Spin } from '@library/spin';
 import { Chart } from '@components/base/components/charts';
 import { Widget, WidgetColor } from '@components/base/components/widget';
 import './summary.scss';
@@ -7,21 +8,33 @@ export const Summary = () => {
         <div className="summary-container">
             <div className="summary">
                 <div className="widgets">
-                    <Widget color={WidgetColor.Red} title="Employee">
-                        5
+                    <Widget
+                        color={WidgetColor.Red}
+                        title="Skill Index"
+                        contentTitle="Percentage"
+                    >
+                        65%
                     </Widget>
-                    <Widget color={WidgetColor.Blue} title="Employee">
-                        20
+                    <Widget
+                        color={WidgetColor.Blue}
+                        title="Skilled Designation"
+                    >
+                        Tech Lead
                     </Widget>
-                    <Widget color={WidgetColor.Green} title="Employee">
-                        10
+                    <Widget
+                        color={WidgetColor.Green}
+                        title="Skilled Employees"
+                        contentTitle="Percentage"
+                    >
+                        55%
                     </Widget>
-                    <Widget color={WidgetColor.Purple} title="Employee">
-                        200
+                    <Widget color={WidgetColor.Purple} title="Trending Skill">
+                        React JS
                     </Widget>
                 </div>
                 <div className="charts">
-                    <Chart
+                    <Spin spinning={false}>
+                        <Chart
                         // options={{
                         //     chart: {
                         //         backgroundColor: 'transparent',
@@ -29,7 +42,8 @@ export const Summary = () => {
                         //     },
                         //     // colors: ['#7bd6c7', '#a3e1d6'],
                         // }}
-                    />
+                        />
+                    </Spin>
                 </div>
             </div>
         </div>

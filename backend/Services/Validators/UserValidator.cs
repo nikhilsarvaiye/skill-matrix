@@ -11,13 +11,15 @@
 
             RuleFor(x => x.Name).Required().IsAlphaNumeric();
 
+            RuleFor(x => x.Email).Required();
+
             RuleFor(x => x.FirstName).Required().IsAlphaNumeric().HasMaximumLength();
             RuleFor(x => x.MiddleName).IsAlphaNumeric().HasMaximumLength();
-            RuleFor(x => x.LastName).Required().IsAlphaNumeric().HasMaximumLength();
+            RuleFor(x => x.LastName).IsAlphaNumeric().HasMaximumLength();
 
             RuleFor(x => x.DOB).HasNotManimumValue();
 
-            RuleFor(x => x).Must(x => !this.IsUpdate(x) ? true : x.Password != x.ConfirmPassword).WithMessage("Password and Confirm Password are not matching.");
+            RuleFor(x => x).Must(x => this.IsUpdate(x) && !string.IsNullOrEmpty(x.Password) ? x.Password != x.ConfirmPassword : true).WithMessage("Password and Confirm Password are not matching.");
 
             RuleFor(x => new Address
             {

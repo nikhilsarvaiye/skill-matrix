@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
-import { HomeFilled, AppstoreOutlined } from '@ant-design/icons';
-import { UserContext } from '@auth';
+import { HomeFilled, AppstoreOutlined, UserOutlined } from '@ant-design/icons';
+import { UserContext } from '@components/user';
 import './../nav.scss';
 import './side-nav.scss';
 
@@ -9,7 +9,7 @@ export const SideNav = () => {
     const handleClick = (e: any) => {
         console.log('click ', e);
     };
-    if (!UserContext.User) {
+    if (!UserContext.isLoggedIn) {
         return <div></div>;
     }
     return (
@@ -19,21 +19,24 @@ export const SideNav = () => {
                     <Link to="/">Home</Link>
                 </Menu.Item>
                 <Menu.Item key="skill" icon={<AppstoreOutlined />}>
-                    <Link to="/skill">Skills</Link>
+                    <Link to="/skill">Skill</Link>
                 </Menu.Item>
                 <Menu.Item key="designation" icon={<AppstoreOutlined />}>
-                    <Link to="/designation">Designations</Link>
+                    <Link to="/designation">Designation</Link>
                 </Menu.Item>
                 <Menu.Item key="skill-weightages" icon={<AppstoreOutlined />}>
-                    <Link to="/skill-weightages">Skill Weightages</Link>
+                    <Link to="/skill-weightages">Skill Weightage</Link>
                 </Menu.Item>
                 <Menu.Item
                     key="designation-skill-weightage"
                     icon={<AppstoreOutlined />}
                 >
                     <Link to="/designation-skill-weightages">
-                        Designation Skill Weightages
+                        Designation Skill Weightage
                     </Link>
+                </Menu.Item>
+                <Menu.Item key="user" icon={<UserOutlined />}>
+                    <Link to="/user">Users</Link>
                 </Menu.Item>
             </Menu>
         </div>

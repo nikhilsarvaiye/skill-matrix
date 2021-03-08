@@ -1,6 +1,6 @@
 import { useEffect, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faEraser } from '@fortawesome/free-solid-svg-icons';
 import { ScrollBar } from '@library/scrollbar';
 import {
     Form,
@@ -67,11 +67,11 @@ export const BaseCrudForm = ({
                         <FormSectionHeaderTitle
                             startIcon={
                                 <FontAwesomeIcon
-                                    icon={faPlus}
+                                    icon={isUpdate() ? faEdit : faPlus}
                                 ></FontAwesomeIcon>
                             }
                         >
-                            Add New {title}
+                            {isUpdate() ? 'Edit' : 'Add New'} {title}
                         </FormSectionHeaderTitle>
                     </FormSection>
                 </FormSectionHeader>
@@ -91,7 +91,7 @@ export const BaseCrudForm = ({
                                 <Button
                                     startIcon={
                                         <FontAwesomeIcon
-                                            icon={faPlus}
+                                            icon={isUpdate() ? faEdit : faPlus}
                                         ></FontAwesomeIcon>
                                     }
                                     type={ButtonType.Primary}

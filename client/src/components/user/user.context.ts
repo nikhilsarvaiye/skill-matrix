@@ -1,30 +1,33 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { AppContext, ThemeType } from '@app';
-import { User } from './auth-types';
+import { LoggedInUser } from './user.types';
 
-export class UserContext {
-    User: User = null as any;
+class UserContext {
+    LoggedInUser: LoggedInUser = null as any;
     theme: ThemeType = ThemeType.Red;
     constructor() {
+        this.theme = AppContext.theme;
         makeObservable(this, {
-            User: observable,
+            LoggedInUser: observable,
             theme: observable,
             isLoggedIn: computed,
-            setUser: action,
+            setLoggedInUser: action,
             setTheme: action,
         });
-        this.theme = AppContext.theme;
     }
 
     get isLoggedIn(): boolean {
-        return this.User != null;
+        return this.LoggedInUser != null;
     }
 
-    setUser = (user: User): void => {
-        this.User = user;
+    setLoggedInUser = (user: LoggedInUser): void => {
+        this.LoggedInUser = user;
     };
 
     setTheme = (theme: ThemeType) => {
         this.theme = theme;
     };
 }
+
+const userContext = new UserContext();
+export { userContext as UserContext };
