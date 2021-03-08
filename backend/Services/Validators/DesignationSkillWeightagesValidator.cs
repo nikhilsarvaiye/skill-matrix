@@ -9,7 +9,10 @@
         {
             CascadeMode = CascadeMode.Stop;
 
-            RuleFor(x => x.DesignationId).Required();
+            RuleFor(x => x).Must(x =>
+                (string.IsNullOrEmpty(x.DesignationId) && string.IsNullOrEmpty(x.UserId)) ||
+                (!string.IsNullOrEmpty(x.DesignationId) && !string.IsNullOrEmpty(x.UserId))
+                ? false : true).WithMessage("Please select either Designation or User");
             RuleFor(x => x.SkillWeightagesId).Required();
         }
     }

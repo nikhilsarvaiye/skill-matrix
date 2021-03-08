@@ -47,13 +47,13 @@
             {
                 request.PageSize = Convert.ToInt32(top.Value);
             }
-            request.Filters = filterClause.ToFilters();
+            request.Filter = filterClause.ToFilter();
             request.Select = selectExpandClause.ToSelect();
             request.Sorts = orderby.ToSorts();
             return request;
         }
 
-        private static List<IFilter> ToFilters(this FilterClause filterClause)
+        private static IFilter ToFilter(this FilterClause filterClause)
         {
             // Parsing a filter, e.g. /Products?$filter=Name eq 'beer' 
             if (filterClause == null)
@@ -61,7 +61,7 @@
                 return null;
             }
 
-            return new List<IFilter>().ToFilters(filterClause.Expression);
+            return new List<IFilter>().ToFilters(filterClause.Expression).FirstOrDefault();
         }
 
         private static List<IFilter> ToFilters(this List<IFilter> filters, QueryNode queryNode)

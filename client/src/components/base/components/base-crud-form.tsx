@@ -2,6 +2,7 @@ import { useEffect, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faEraser } from '@fortawesome/free-solid-svg-icons';
 import { ScrollBar } from '@library/scrollbar';
+import { RenderChildrenAsFunctionChild } from '@util/component';
 import {
     Form,
     FormSection,
@@ -44,6 +45,7 @@ export const BaseCrudForm = ({
     const isUpdate = (): boolean => {
         return model && model.id ? true : false;
     };
+
     const form = useForm({
         defaultValues: isUpdate() ? model : defaultValues,
         validationSchema: validationSchema,
@@ -78,7 +80,7 @@ export const BaseCrudForm = ({
                 <Spin spinning={loading}>
                     <FormSectionBody padding>
                         <ScrollBar autoHeightMax={'calc(100vh - 17.5em)'}>
-                            {children}
+                            {RenderChildrenAsFunctionChild(children, { form })}
                         </ScrollBar>
                     </FormSectionBody>
                     <FormSectionFooter>

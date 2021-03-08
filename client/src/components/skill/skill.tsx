@@ -1,5 +1,5 @@
 import { Yup } from '@library/yup';
-import { FormSection, FormSectionLayoutType, FormField } from '@library/form';
+import { FormSection, FormSectionLayoutType, FormField, IForm } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudForm } from '@components/base/components';
 import { SkillPicker } from './skill.picker';
@@ -32,17 +32,21 @@ export const Skill = ({
             onCancel={onCancel}
             validationSchema={validationSchema}
         >
-            <FormSection
-                layout={FormSectionLayoutType.Horizontal}
-                numberOfRowFields={2}
-            >
-                <FormField name="name" label="Name">
-                    <Input />
-                </FormField>
-                <FormField name="parentSkillId" label="Parent Skill">
-                    <SkillPicker />
-                </FormField>
-            </FormSection>
+            {({ form }: { form: IForm }) => {
+                return (
+                    <FormSection
+                        layout={FormSectionLayoutType.Horizontal}
+                        numberOfRowFields={2}
+                    >
+                        <FormField name="name" label="Name">
+                            <Input />
+                        </FormField>
+                        <FormField name="parentSkillId" label="Parent Skill">
+                            <SkillPicker />
+                        </FormField>
+                    </FormSection>
+                );
+            }}
         </BaseCrudForm>
     );
 };

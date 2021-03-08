@@ -7,3 +7,4 @@ export * from './user';
 export * from './user.store';
 export * from './user.search';
 export * from './user.search.store';
+export * from './user.picker';

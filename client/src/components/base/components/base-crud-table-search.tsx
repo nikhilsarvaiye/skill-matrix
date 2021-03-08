@@ -30,7 +30,7 @@ export interface IBaseCrudTableSearch {
     loading: boolean;
     onSearch: (values: IModel) => void;
     onReset: (values: IModel) => void;
-    onHide?: () => void;
+    onHide: () => void;
     validationSchema: any;
     children?: ReactNode;
 }
@@ -79,20 +79,19 @@ export const BaseCrudTableSearch = ({
                             Search
                         </FormSectionHeaderTitle>
                     </FormSection>
-                    {onHide && (
-                        <FormSection
-                            layout={FormSectionLayoutType.Horizontal}
-                            align={FormSectionAlignment.Right}
-                            autoSpacing={true}
-                        >
-                            <FontAwesomeIcon
-                                icon={faArrowCircleLeft}
-                                size="lg"
-                                onClick={onHide}
-                                style={{ cursor: 'pointer' }}
-                            ></FontAwesomeIcon>
-                        </FormSection>
-                    )}
+                    <FormSection
+                        layout={FormSectionLayoutType.Horizontal}
+                        align={FormSectionAlignment.Right}
+                        autoSpacing={true}
+                    >
+                        <FontAwesomeIcon
+                            icon={faArrowCircleLeft}
+                            className="icon"
+                            size="lg"
+                            onClick={onHide}
+                            style={{ cursor: 'pointer' }}
+                        ></FontAwesomeIcon>
+                    </FormSection>
                 </FormSectionHeader>
                 <Spin spinning={loading}>
                     <FormSectionBody padding>

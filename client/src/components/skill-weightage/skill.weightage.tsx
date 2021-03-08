@@ -1,5 +1,5 @@
 import { Yup } from '@library/yup';
-import { FormField, FormSection } from '@library/form';
+import { FormField, FormSection, IForm } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudForm } from '@components/base/components';
 import { IModel } from '@components/base/models';
@@ -11,7 +11,7 @@ const validationSchema = Yup.object().shape({
     id: Yup.string(),
     name: Yup.string().required(),
     weightage: Yup.number(),
-    skills: Yup.array().min(1).hasPercentageWeightage('Skills'),
+    skills: Yup.array().min(1).hasPercentageWeightage('Skills', 'weightage'),
 });
 
 export const SkillWeightage = ({
@@ -39,23 +39,28 @@ export const SkillWeightage = ({
             onCancel={onCancel}
             validationSchema={validationSchema}
         >
-            <FormSection>
-                <FormSection width={'30%'}>
-                    <FormField name="name" label="Name">
-                        <Input />
-                    </FormField>
-                </FormSection>
-                <FormSection style={{ padding: '1.2em' }}>
-                    <Label title="Weightages" />
+            {({ form }: { form: IForm }) => {
+                return (
                     <FormSection>
-                        <SkillWeightageFormControl
-                            loading={loading}
-                            model={model}
-                            onExpand={onExpand}
-                        />
+                        <FormSection width={'30%'}>
+                            <FormField name="name" label="Name">
+                                <Input />
+                            </FormField>
+                        </FormSection>
+                        <FormSection style={{ padding: '1.2em' }}>
+                            <Label title="Weightages" />
+                            <FormSection>
+                                <SkillWeightageFormControl
+                                    loading={loading}
+                                    model={model}
+                                    onExpand={onExpand}
+                                    renderActualWeightage={false}
+                                />
+                            </FormSection>
+                        </FormSection>
                     </FormSection>
-                </FormSection>
-            </FormSection>
+                );
+            }}
         </BaseCrudForm>
     );
 };

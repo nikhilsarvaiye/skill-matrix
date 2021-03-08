@@ -11,7 +11,7 @@ export const Logo = () => {
         <div className="logo-container">
             <div className={className}>
                 <div className="logo-wrapper">
-                    <img src={'logo.png'} />
+                    <img src={'/logo.png'} />
                 </div>
             </div>
         </div>

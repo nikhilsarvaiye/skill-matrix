@@ -11,6 +11,7 @@
             services.AddScoped<IDesignationRepository, DesignationRepository>();
             services.AddScoped<IDesignationSkillWeightagesRepository, DesignationSkillWeightagesRepository>();
             services.AddScoped<ISkillWeightagesRepository, SkillWeightagesRepository>();
+            services.AddScoped<IUserSkillWeightagesRepository, UserSkillWeightagesRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

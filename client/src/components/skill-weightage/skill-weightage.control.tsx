@@ -16,6 +16,7 @@ export const SkillWeightageControl = ({
     onExpand,
     onSelection,
     onDelete,
+    renderActualWeightage,
 }: {
     loading: boolean;
     skillWeightages: SkillWeightagesModel;
@@ -24,10 +25,11 @@ export const SkillWeightageControl = ({
         skill: SkillModel,
         skillWeightages: SkillWeightagesModel,
     ) => void;
-    onDelete: (
+    onDelete?: (
         skillWeightage: SkillWeightageModel,
         skillWeightages: SkillWeightagesModel,
     ) => void;
+    renderActualWeightage: boolean;
 }) => {
     const formContext = useFormContext();
     const [skill, setSkill] = useState<SkillModel | null>();
@@ -37,16 +39,19 @@ export const SkillWeightageControl = ({
             dataIndex: 'name',
             key: 'name',
         },
-        {
-            title: 'Weightage',
-            dataIndex: 'weightage',
-            key: 'weightage',
+        ,
+    ];
+    if (renderActualWeightage) {
+        columns.push({
+            title: 'Actual Weightage',
+            dataIndex: 'actualWeightage',
+            key: 'actualWeightage',
             render: (text: string, item: any) => {
                 return (
                     <NumberInput
-                        value={item.weightage}
+                        value={item.actualWeightage}
                         onChange={(event: any) => {
-                            item.weightage = event.target.value;
+                            item.actualWeightage = event.target.value;
                             // trigger validations
                             formContext.trigger();
                         }}
@@ -54,28 +59,50 @@ export const SkillWeightageControl = ({
                 );
             },
             width: '20em',
-        },
-        {
-            title: 'Delete',
-            key: 'delete',
-            width: '10em',
-            render: (text: string, item: any) => (
-                <Fragment>
-                    <Button
-                        type={ButtonType.Quaternary}
-                        onClick={() => {
-                            if (onDelete) {
-                                onDelete(item, skillWeightages);
-                            }
-                        }}
-                        danger
-                    >
-                        Delete
-                    </Button>
-                </Fragment>
-            ),
-        },
-    ];
+        } as any);
+    } else {
+        columns.push(
+            {
+                title: 'Weightage',
+                dataIndex: 'weightage',
+                key: 'weightage',
+                render: (text: string, item: any) => {
+                    return (
+                        <NumberInput
+                            value={item.weightage}
+                            onChange={(event: any) => {
+                                item.weightage = event.target.value;
+                                // trigger validations
+                                formContext.trigger();
+                            }}
+                            disabled={renderActualWeightage}
+                        />
+                    );
+                },
+                width: '20em',
+            } as any,
+            {
+                title: 'Delete',
+                key: 'delete',
+                width: '10em',
+                render: (text: string, item: any) => (
+                    <Fragment>
+                        <Button
+                            type={ButtonType.Quaternary}
+                            onClick={() => {
+                                if (onDelete) {
+                                    onDelete(item, skillWeightages);
+                                }
+                            }}
+                            danger
+                        >
+                            Delete
+                        </Button>
+                    </Fragment>
+                ),
+            } as any,
+        );
+    }
 
     return (
         <div
@@ -85,23 +112,28 @@ export const SkillWeightageControl = ({
                 border: '1px solid #d2d2d2',
             }}
         >
-            <div style={{ paddingBottom: '1rem' }}>
-                <SkillPicker
-                    placeholder={'Type to Add Skill'}
-                    value={skill}
-                    onChange={(event: any) => {
-                        if (onSelection) {
-                            onSelection(event.target.item, skillWeightages);
-                        }
-                        // TODO [NS]: master stroke to always clear values
-                        // still need to find better way
-                        setSkill(skill == null ? ('' as any) : null);
-                    }}
-                    onBlur={(event: any) => {}}
-                    parentSkillId={skillWeightages.id}
-                    notSkillIds={(skillWeightages.skills || []).map(x => x.id)}
-                />
-            </div>
+            {!renderActualWeightage ?? (
+                <div style={{ paddingBottom: '1rem' }}>
+                    <SkillPicker
+                        placeholder={'Type to Add Skill'}
+                        value={skill}
+                        onChange={(event: any) => {
+                            if (onSelection) {
+                                onSelection(event.target.item, skillWeightages);
+                            }
+                            // TODO [NS]: master stroke to always clear values
+                            // still need to find better way
+                            setSkill(skill == null ? ('' as any) : null);
+                        }}
+                        onBlur={(event: any) => {}}
+                        parentSkillId={skillWeightages.id}
+                        notSkillIds={(skillWeightages.skills || []).map(
+                            (x) => x.id,
+                        )}
+                    />
+                </div>
+            )}
+
             <Table
                 bordered
                 columns={columns}
@@ -117,6 +149,7 @@ export const SkillWeightageControl = ({
                                 onExpand={onExpand}
                                 onSelection={onSelection}
                                 onDelete={onDelete}
+                                renderActualWeightage={renderActualWeightage}
                             />
                         ) : null;
                     },

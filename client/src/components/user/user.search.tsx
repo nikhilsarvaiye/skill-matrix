@@ -2,8 +2,6 @@ import { Yup } from '@library/yup';
 import { FormSection, FormField } from '@library/form';
 import { Input } from '@library/input';
 import { BaseCrudTableSearch } from '@components/base/components';
-import { DesignationPicker } from '@components/designation';
-import { SkillWeightagePicker } from '@components/skill-weightage';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().nullable(),
@@ -46,12 +44,6 @@ export const UserSearch = ({
                 </FormField>
                 <FormField name="email" label="Email">
                     <Input />
-                </FormField>
-                <FormField name="designationId" label="Designation">
-                    <DesignationPicker />
-                </FormField>
-                <FormField name="skillWeightagesId" label="Skill Weightage">
-                    <SkillWeightagePicker />
                 </FormField>
             </FormSection>
         </BaseCrudTableSearch>

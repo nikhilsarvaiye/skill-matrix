@@ -78,9 +78,9 @@
             where T : BaseModel
         {
             // return Builders<T>.Filter.Eq("", "1");
-            if (request.Filters?.Count > 0)
+            if (request.Filter != null)
             {
-                var filterDefinition = GetFilterDefinitions<T>(null, request.Filters);
+                var filterDefinition = GetFilterDefinitions<T>(null, new List<IFilter> { request.Filter });
                 return filterDefinition;
             }
             return Builders<T>.Filter.Empty;

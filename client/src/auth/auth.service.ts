@@ -40,7 +40,10 @@ export class AuthService {
                     }
                 })
                 .catch((e) => {
-                    this.logIn();
+                    const errorMessage =
+                        'Something went wrong. Please try again letter';
+                    message.error(errorMessage);
+                    console.error(errorMessage, e);
                 });
         } else {
             this.logIn();

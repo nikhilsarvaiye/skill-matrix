@@ -1,8 +1,7 @@
 ﻿namespace Services
 {
     using Abstractions;
-    using Common.Abstractions;
-    using Common.Helpers;
+    using Services.Helpers;
     using FluentValidation;
     using Models;
     using Repositories.Abstractions;
@@ -26,7 +25,7 @@
         {
             var skillWeightage = await base.GetAsync(id).ConfigureAwait(false);
 
-            skillWeightage = (await this.UpdateSkillNames(new List<SkillWeightages> { skillWeightage })).FirstOrDefault();
+            skillWeightage = (await (new List<SkillWeightages> { skillWeightage }).UpdateSkillNames(_skillService)).FirstOrDefault();
 
             return skillWeightage;
         }
@@ -48,58 +47,6 @@
         public override async Task ValidateOnDelete(string id)
         {
             await Task.CompletedTask;
-        }
-
-        private async Task<List<SkillWeightages>> UpdateSkillNames(List<SkillWeightages> skillWeightages)
-        {
-            var allSkillWeightages = skillWeightages.Select(x => x.Skills).ToList().FlattenList().ToList();
-
-            var skillIds = GetSkillIdsFromSkillWeightages(allSkillWeightages);
-
-            if (!skillIds.Any())
-            {
-                return skillWeightages;
-            }
-
-            var skills = await _skillService.GetAsync(skillIds).ConfigureAwait(false);
-
-            foreach (var skillWeightage in skillWeightages)
-            {
-                skillWeightage.Skills = UpdateSkillNamesToSkillWeightages(skillWeightage.Skills, skills);
-            }
-
-            return skillWeightages;
-        }
-
-        private List<string> GetSkillIdsFromSkillWeightages(List<SkillWeightage> skillWeightages)
-        {
-            var skillIds = new List<string>();
-
-            foreach (var skillWeightage in skillWeightages)
-            {
-                if(skillWeightage.Skills.Count > 0)
-                {
-                    skillIds.AddRange(GetSkillIdsFromSkillWeightages(skillWeightage.Skills));
-                }
-                skillIds.Add(skillWeightage.Id);
-            }
-
-            return skillIds;
-        }
-
-        private List<SkillWeightage> UpdateSkillNamesToSkillWeightages(List<SkillWeightage> skillWeightages, List<Skill> skills)
-        {
-            foreach (var skillWeightage in skillWeightages)
-            {
-                if (skillWeightage.Skills.Count > 0)
-                {
-                    skillWeightage.Skills = UpdateSkillNamesToSkillWeightages(skillWeightage.Skills, skills);
-                }
-
-                skillWeightage.Name = skills.FirstOrDefault(x => x.Id == skillWeightage.Id).Name;
-            }
-
-            return skillWeightages;
         }
     }
 }

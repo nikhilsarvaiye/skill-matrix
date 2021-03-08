@@ -12,8 +12,6 @@ export interface IUserSearchCriteria extends ISearchCriteria {
     firstName: string;
     lastName: string;
     email?: string;
-    designationId: string;
-    skillWeightagesId: string;
 }
 
 export class UserSearchStore extends BaseSearchStore<User> {
@@ -66,16 +64,6 @@ export class UserSearchStore extends BaseSearchStore<User> {
                           email: {
                               contains: this.criteria.email,
                           },
-                      }
-                    : {},
-                this.criteria.designationId
-                    ? {
-                          designationId: this.criteria.designationId,
-                      }
-                    : {},
-                this.criteria.skillWeightagesId
-                    ? {
-                          skillWeightagesId: this.criteria.skillWeightagesId,
                       }
                     : {},
             ],

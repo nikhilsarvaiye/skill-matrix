@@ -14,13 +14,18 @@
     public class DesignationSkillWeightagesService : BaseService<DesignationSkillWeightages>, IDesignationSkillWeightagesService
     {
         private readonly IDesignationService _designationService;
+        private readonly IUserService _userService;
         private readonly ISkillWeightagesService _skillWeightagesService;
 
-        public DesignationSkillWeightagesService(IDesignationSkillWeightagesRepository designationSkillWeightagesRepository, IDesignationService designationService, ISkillWeightagesService skillWeightagesService)
+        public DesignationSkillWeightagesService(IDesignationSkillWeightagesRepository designationSkillWeightagesRepository,
+            IDesignationService designationService,
+            IUserService userService,
+            ISkillWeightagesService skillWeightagesService)
             : base(designationSkillWeightagesRepository)
         {
-            this._designationService = designationService ?? throw new ArgumentNullException(nameof(designationService));
-            this._skillWeightagesService = skillWeightagesService ?? throw new ArgumentNullException(nameof(skillWeightagesService));
+            _designationService = designationService ?? throw new ArgumentNullException(nameof(designationService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _skillWeightagesService = skillWeightagesService ?? throw new ArgumentNullException(nameof(skillWeightagesService));
         }
 
         public override async Task<IResponse<DesignationSkillWeightages>> PaginateAsync(IRequest request)
@@ -71,16 +76,19 @@
 
         private async Task<List<DesignationSkillWeightages>> UpdateNames(List<DesignationSkillWeightages> designationSkillWeightages)
         {
-            var designationIds = designationSkillWeightages.Select(x => x.DesignationId).ToList();
+            var designationIds = designationSkillWeightages.Where(x => !string.IsNullOrEmpty(x.DesignationId)).Select(x => x.DesignationId).ToList();
+            var userIds = designationSkillWeightages.Where(x => !string.IsNullOrEmpty(x.UserId)).Select(x => x.UserId).ToList();
             var skillWeightagesIds = designationSkillWeightages.Select(x => x.SkillWeightagesId).ToList();
 
             var designations = await _designationService.GetAsync(designationIds).ConfigureAwait(false);
+            var users = await _userService.GetAsync(userIds).ConfigureAwait(false);
             var skillWeightages = await _skillWeightagesService.GetAsync(skillWeightagesIds).ConfigureAwait(false);
 
             foreach (var designationSkillWeightage in designationSkillWeightages)
             {
-                designationSkillWeightage.DesignationName = designations.FirstOrDefault(x => designationSkillWeightage.DesignationId == x.Id).Name;
-                designationSkillWeightage.SkillWeightagesName = skillWeightages.FirstOrDefault(x => designationSkillWeightage.SkillWeightagesId == x.Id).Name;
+                designationSkillWeightage.DesignationName = designations.FirstOrDefault(x => designationSkillWeightage.DesignationId == x.Id)?.Name;
+                designationSkillWeightage.UserName = users.FirstOrDefault(x => designationSkillWeightage.UserId == x.Id)?.Name;
+                designationSkillWeightage.SkillWeightagesName = skillWeightages.FirstOrDefault(x => designationSkillWeightage.SkillWeightagesId == x.Id)?.Name;
             }
 
             return designationSkillWeightages;

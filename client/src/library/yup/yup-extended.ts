@@ -3,12 +3,15 @@ import { AnySchema, Asserts, TypeOf } from 'yup';
 import Lazy from 'yup/lib/Lazy';
 import { AnyObject, Maybe, Optionals } from 'yup/lib/types';
 
-const hasPercentageWeightage = (skillWeightages: any[]) => {
+const hasPercentageWeightage = (
+    skillWeightages: any[],
+    weightageFieldName: string,
+) => {
     let isMatch = false;
     skillWeightages = skillWeightages || [];
     if (!skillWeightages.length) return true;
     const sum = skillWeightages
-        .map((x) => x.weightage || 0)
+        .map((x) => x[weightageFieldName] || 0)
         .reduce((a, b) => a + b, 0);
     if (sum === 100) {
         isMatch = true;
@@ -17,7 +20,10 @@ const hasPercentageWeightage = (skillWeightages: any[]) => {
         return isMatch;
     }
     skillWeightages.every((skillWeightage) => {
-        isMatch = hasPercentageWeightage(skillWeightage.skills);
+        isMatch = hasPercentageWeightage(
+            skillWeightage.skills,
+            weightageFieldName,
+        );
         if (!isMatch) {
             return false;
         }
@@ -39,12 +45,12 @@ yup.addMethod<yup.NumberSchema>(yup.number, 'emptyAsUndefined', function () {
 yup.addMethod<yup.AnySchema>(
     yup.array,
     'hasPercentageWeightage',
-    function (fieldName: string) {
+    function (fieldName: string, weightageFieldName: string) {
         return this.test({
             name: 'name',
             message: `${fieldName} total weightage should be 100`,
             test: (value: any[]) => {
-                return hasPercentageWeightage(value);
+                return hasPercentageWeightage(value, weightageFieldName);
             },
         });
     },
@@ -77,7 +83,10 @@ declare module 'yup' {
     > extends yup.BaseSchema<TIn, C, TOut> {
         // custom methods
         emptyAsUndefined(): ArraySchema<T, C>;
-        hasPercentageWeightage(...args: any): ArraySchema<T, C>;
+        hasPercentageWeightage(
+            fieldName: string,
+            weightageFieldName: string,
+        ): ArraySchema<T, C>;
     }
 }
 

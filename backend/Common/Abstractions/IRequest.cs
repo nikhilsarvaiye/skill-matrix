@@ -11,7 +11,7 @@
 
         bool Count { get; set; }
 
-        List<IFilter> Filters { get; set; }
+        IFilter Filter { get; set; }
 
         List<Sort> Sorts { get; set; }
 

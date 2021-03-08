@@ -8,6 +8,8 @@
 
         public int Weightage { get; set; }
 
+        public int ActualWeightage { get; set; }
+
         public List<SkillWeightage> Skills { get; set; } = new List<SkillWeightage>();
     }
 }

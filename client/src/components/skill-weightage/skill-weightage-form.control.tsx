@@ -14,10 +14,12 @@ export const SkillWeightageFormControl = ({
     model,
     loading,
     onExpand,
+    renderActualWeightage,
 }: {
     model: SkillWeightagesModel | null;
     loading: boolean;
     onExpand: (item: any) => void;
+    renderActualWeightage: boolean;
 }) => {
     const skillFieldName = 'skills';
     const formContext = useFormContext();
@@ -69,6 +71,7 @@ export const SkillWeightageFormControl = ({
                         skillWeightages,
                     );
                 }}
+                renderActualWeightage={renderActualWeightage}
             />
         </div>
     );

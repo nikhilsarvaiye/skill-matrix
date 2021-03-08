@@ -1,4 +1,5 @@
 export * from './skill-weightage.control';
+export * from './skill-weightage-form.control';
 export * from './skill-weightage.types';
 export * from './skill-weightage.store';
 export * from './skill.weightage';

@@ -11,6 +11,10 @@
         border-radius: 0.7rem 0.7rem 0rem 0rem;
         padding: 7px 10px;
         height: 40px;
+
+        .icon {
+            color: $panel-icon-text-color;
+        }
     }
     .form-section-footer {
         background-color: $panel-heading-background-color;

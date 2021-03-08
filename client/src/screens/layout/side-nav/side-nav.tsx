@@ -32,8 +32,14 @@ export const SideNav = () => {
                     icon={<AppstoreOutlined />}
                 >
                     <Link to="/designation-skill-weightages">
-                        Designation Skill Weightage
+                        User/Designation Skill Weightage
                     </Link>
+                </Menu.Item>
+                <Menu.Item
+                    key="user-skill-weightage"
+                    icon={<AppstoreOutlined />}
+                >
+                    <Link to="/user-skill-weightage">Skill Weightage</Link>
                 </Menu.Item>
                 <Menu.Item key="user" icon={<UserOutlined />}>
                     <Link to="/user">Users</Link>

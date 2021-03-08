@@ -33,38 +33,33 @@
 
         private async Task<bool> NameIsUnique(Skill skill)
         {
-            var skills = await this._skillService.GetAsync(new Request
+            var skills = await _skillService.GetAsync(new Request
             {
-                Filters = this.IsUpdate(skill) ? new List<IFilter>
-                {
-                    new CompositeFilter
-                    {
-                        LogicalOperator = LogicalOperator.And,
-                        Filters = new List<IFilter>
+                Filter = IsUpdate(skill) 
+                    ?   new CompositeFilter
                         {
-                            new Filter
+                            LogicalOperator = LogicalOperator.And,
+                            Filters = new List<IFilter>
+                                {
+                                    new Filter
+                                    {
+                                        Property = nameof(Skill.Name),
+                                        Operator = FilterOperator.IsEqualTo,
+                                        Value = skill.Name
+                                    },
+                                    new Filter
+                                    {
+                                        Property = nameof(Skill.Id),
+                                        Operator = FilterOperator.IsNotEqualTo,
+                                        Value = skill.Id
+                                    }
+                                }
+                        } : new Filter
                             {
                                 Property = nameof(Skill.Name),
                                 Operator = FilterOperator.IsEqualTo,
                                 Value = skill.Name
-                            },
-                            new Filter
-                            {
-                                Property = nameof(Skill.Id),
-                                Operator = FilterOperator.IsNotEqualTo,
-                                Value = skill.Id
                             }
-                        }
-                    }
-                } : new List<IFilter>
-                    {
-                        new Filter
-                                {
-                                    Property = nameof(Skill.Name),
-                                    Operator = FilterOperator.IsEqualTo,
-                                    Value = skill.Name
-                                },
-                    }
             });
             return !skills.Any(x => x.Name == skill.Name);
         }

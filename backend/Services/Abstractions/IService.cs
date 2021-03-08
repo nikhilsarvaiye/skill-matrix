@@ -10,6 +10,8 @@
 
         Task<T> GetAsync(string id);
 
+        Task<T> GetOrThrowAsync(string id);
+
         Task<List<T>> GetAsync(List<string> ids);
 
         Task<T> CreateAsync(T t);

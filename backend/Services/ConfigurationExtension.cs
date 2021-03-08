@@ -14,6 +14,7 @@
             services.AddScoped<IDesignationService, DesignationService>();
             services.AddScoped<IDesignationSkillWeightagesService, DesignationSkillWeightagesService>();
             services.AddScoped<ISkillWeightagesService, SkillWeightagesService>();
+            services.AddScoped<IUserSkillWeightagesService, UserSkillWeightagesService>();
             services.AddScoped<IUserService, UserService>();
 
             return services;

@@ -140,7 +140,9 @@ export const Form = ({ form, style, children }: IFormProps) => {
         };
         onReady();
         registerNonControlFields();
-        form.resetForm();
+        // TODO [NS]: Need to think why I put that before
+        // it was causing issues to set default values
+        // form.resetForm();
     }, []);
 
     return (

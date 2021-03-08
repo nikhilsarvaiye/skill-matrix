@@ -45,7 +45,5 @@
         public string Phone2 { get; set; }
 
         public string DesignationId { get; set; }
-
-        public string SkillWeightagesId { get; set; }
     }
 }

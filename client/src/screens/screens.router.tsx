@@ -7,6 +7,7 @@ import { SkillRouter } from './skill';
 import { DesignationRouter } from './designation';
 import { SkillWeightagesRouter } from './skill-weightages';
 import { DesignationSkillWeightageRouter } from './designation-skill-weightage';
+import { UserSkillWeightageRouter } from './user-skill-weightage';
 
 export const ScreenRoutes = ({
     user,
@@ -40,6 +41,9 @@ export const ScreenRoutes = ({
                 </Route>
                 <Route path={UserRouter.getBaseRoutes().root.path}>
                     <UserRouter.Router />
+                </Route>
+                <Route path={UserSkillWeightageRouter.getBaseRoutes().root.path}>
+                    <UserSkillWeightageRouter.Router />
                 </Route>
                 <Route path={SummaryRouter.getBaseRoutes().root.path}>
                     <SummaryRouter.Router />
