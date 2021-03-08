@@ -38,6 +38,7 @@ export class AzureAuthService implements IAuthService {
         if (user == null) {
             user = await this.userService.create(azureUser);
         }
+        user.pictureUrl = azureUser.pictureUrl;
         return new LoggedInUser(user, tokenResponse.accessToken, tokenResponse);
     };
 
