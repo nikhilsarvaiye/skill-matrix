@@ -1,5 +1,7 @@
 # Skill Matrix Client React App
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/da37b28d3b6a489a8e0bc7c9c75bcf66)](https://app.codacy.com/gh/nikhilsarvaiye/skill-matrix?utm_source=github.com&utm_medium=referral&utm_content=nikhilsarvaiye/skill-matrix&utm_campaign=Badge_Grade_Settings)
+
 ## Features
 
 1. Built using [Create React App](https://github.com/facebook/create-react-app) with Typescript
