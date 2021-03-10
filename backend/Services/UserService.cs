@@ -74,7 +74,7 @@ namespace Services
 
         public override async Task ValidateOnDelete(string id)
         {
-            throw new System.NotImplementedException();
+            await Task.CompletedTask;
         }
 
         public override async Task ValidateOnUpdate(User user)

@@ -23,9 +23,11 @@ export const BaseEdit = ({
     let { id } = useParams() as any;
     const Component = component as any;
 
+    const isCreateRoute = history.location.pathname.indexOf('new') > 0;
+
     useEffect(() => {
         store.clearSelectedItem();
-        if (id && id != 'new') {
+        if (id && !isCreateRoute) {
             store.get(id);
         }
     }, [id]);
@@ -43,15 +45,15 @@ export const BaseEdit = ({
                             loading={store.loading}
                             model={store.selectedItem}
                             onSave={(model: IModel) => {
-                                if (!model.id) {
-                                    store.create(model, () => {
+                                if (model.id && !isCreateRoute) {
+                                    store.update(model.id, model, () => {
                                         store.clearSelectedItem();
                                         history.push(
                                             router.getRoutes().root.path,
                                         );
                                     });
                                 } else {
-                                    store.update(model.id, model, () => {
+                                    store.create(model, () => {
                                         store.clearSelectedItem();
                                         history.push(
                                             router.getRoutes().root.path,

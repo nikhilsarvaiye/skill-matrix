@@ -17,6 +17,7 @@ export const SkillWeightageControl = ({
     onSelection,
     onDelete,
     renderActualWeightage,
+    topRender,
 }: {
     loading: boolean;
     skillWeightages: SkillWeightagesModel;
@@ -30,6 +31,7 @@ export const SkillWeightageControl = ({
         skillWeightages: SkillWeightagesModel,
     ) => void;
     renderActualWeightage: boolean;
+    topRender: boolean;
 }) => {
     const formContext = useFormContext();
     const [skill, setSkill] = useState<SkillModel | null>();
@@ -112,7 +114,7 @@ export const SkillWeightageControl = ({
                 border: '1px solid #d2d2d2',
             }}
         >
-            {!renderActualWeightage ?? (
+            {renderActualWeightage ? null : (
                 <div style={{ paddingBottom: '1rem' }}>
                     <SkillPicker
                         placeholder={'Type to Add Skill'}
@@ -126,7 +128,9 @@ export const SkillWeightageControl = ({
                             setSkill(skill == null ? ('' as any) : null);
                         }}
                         onBlur={(event: any) => {}}
-                        parentSkillId={skillWeightages.id}
+                        parentSkillId={
+                            topRender ? undefined : skillWeightages.id
+                        }
                         notSkillIds={(skillWeightages.skills || []).map(
                             (x) => x.id,
                         )}
@@ -150,6 +154,7 @@ export const SkillWeightageControl = ({
                                 onSelection={onSelection}
                                 onDelete={onDelete}
                                 renderActualWeightage={renderActualWeightage}
+                                topRender={false}
                             />
                         ) : null;
                     },

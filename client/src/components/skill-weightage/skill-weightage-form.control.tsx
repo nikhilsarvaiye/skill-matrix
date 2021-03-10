@@ -72,6 +72,7 @@ export const SkillWeightageFormControl = ({
                     );
                 }}
                 renderActualWeightage={renderActualWeightage}
+                topRender={true}
             />
         </div>
     );

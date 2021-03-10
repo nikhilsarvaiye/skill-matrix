@@ -147,6 +147,7 @@
         {
             await Task.CompletedTask;
         }
+        
         private async Task<List<UserSkillWeightages>> UpdateNames(List<UserSkillWeightages> userSkillWeightages)
         {
             var userIds = userSkillWeightages.Where(x => !string.IsNullOrEmpty(x.UserId)).Select(x => x.UserId).ToList();
