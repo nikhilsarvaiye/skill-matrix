@@ -1,6 +1,6 @@
 ﻿namespace Services.Abstractions
 {
-    using Common.Abstractions;
+    using DotnetStandardQueryBuilder.Core;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

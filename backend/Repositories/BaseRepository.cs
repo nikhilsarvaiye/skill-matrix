@@ -1,12 +1,9 @@
 ﻿namespace Repositories
 {
-    using Common.Abstractions;
-    using Common.Helpers;
-    using Common.Models;
     using Configuration.Options.Abstractions;
-    using Helpers;
+    using DotnetStandardQueryBuilder.Core;
+    using DotnetStandardQueryBuilder.Mongo.Extensions;
     using Models;
-    using MongoDB.Bson;
     using MongoDB.Driver;
     using System.Collections.Generic;
     using System.Threading.Tasks;

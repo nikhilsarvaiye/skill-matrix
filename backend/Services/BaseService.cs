@@ -1,6 +1,6 @@
 ﻿namespace Services
 {
-    using Common.Abstractions;
+    using DotnetStandardQueryBuilder.Core;
     using Models;
     using Repositories.Abstractions;
     using System;

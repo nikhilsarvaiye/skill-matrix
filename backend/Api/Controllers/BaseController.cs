@@ -3,10 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Common.Helpers;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Identity.Web.Resource;
     using Models;
     using Services.Abstractions;
 
@@ -20,7 +17,7 @@
 
         public BaseController(IService<T> service)
         {
-            this._service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         // The Web API will only accept tokens 1) for users, and 2) having the "access_as_user" scope for this API
@@ -33,23 +30,23 @@
             
             if (!string.IsNullOrEmpty(id))
             {
-                return new List<T>() { await this._service.GetAsync(id) };
+                return new List<T>() { await _service.GetAsync(id) };
             }
 
-            var request = this.Request.ToPaginationCriteria<T>();
+            var request = new DotnetStandardQueryBuilder.OData.UriParser().Parse<T>(Request.QueryString.ToString());
 
             if(request.Count)
             {
-                return await this._service.PaginateAsync(request);
+                return await _service.PaginateAsync(request);
             }
 
-            return await this._service.GetAsync(request);
+            return await _service.GetAsync(request);
         }
 
         [HttpPost]
         public async Task<T> CreateAsync(T skill)
         {
-            return await this._service.CreateAsync(skill);
+            return await _service.CreateAsync(skill);
         }
 
         [HttpPut]
@@ -60,7 +57,7 @@
                 throw new ArgumentNullException(nameof(id));
             }
 
-            await this._service.UpdateAsync(skill.Id, skill);
+            await _service.UpdateAsync(skill.Id, skill);
         }
 
         [HttpDelete]
@@ -71,7 +68,7 @@
                 throw new ArgumentNullException(nameof(id));
             }
 
-            await this._service.RemoveAsync(id);
+            await _service.RemoveAsync(id);
         }
     }
 }

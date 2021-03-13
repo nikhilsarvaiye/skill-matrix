@@ -1,7 +1,6 @@
 ﻿namespace Repositories.Abstractions
 {
-    using Common.Abstractions;
-    using Common.Models;
+    using DotnetStandardQueryBuilder.Core;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

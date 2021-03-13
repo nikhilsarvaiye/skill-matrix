@@ -1,7 +1,7 @@
 ﻿namespace Services.Validators
 {
-    using Common.Abstractions;
     using Common.Models;
+    using DotnetStandardQueryBuilder.Core;
     using FluentValidation;
     using Models;
     using MongoDB.Driver;

@@ -1,7 +1,7 @@
 ﻿namespace Services
 {
     using Abstractions;
-    using Common.Abstractions;
+    using DotnetStandardQueryBuilder.Core;
     using FluentValidation;
     using Models;
     using Repositories.Abstractions;
